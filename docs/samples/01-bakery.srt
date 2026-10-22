@@ -1,0 +1,40 @@
+1
+00:00:02,750 --> 00:00:06,864
+Bonjour ! Tu veux un croissant ?
+Hello! Do you want a croissant?
+
+2
+00:00:07,364 --> 00:00:10,086
+Oui, s'il te plaît !
+Yes, please!
+
+3
+00:00:10,586 --> 00:00:12,468
+Voilà !
+Here you go!
+
+4
+00:00:12,968 --> 00:00:15,234
+Merci beaucoup !
+Thank you very much!
+
+5
+00:00:15,734 --> 00:00:17,664
+De rien !
+You're welcome!
+
+6
+00:00:18,314 --> 00:00:20,338
+bonjour
+hello
+
+7
+00:00:24,186 --> 00:00:26,330
+s'il te plaît
+please
+
+8
+00:00:30,538 --> 00:00:32,418
+merci
+thank you
+

@@ -1,0 +1,38 @@
+title: Camille et Julien à la boulangerie
+episode: 1
+scene: bakery
+
+[story]
+@scene bakery
+> Camille enters left
+& Julien enters left
+> Camille looks happy
+Camille: Bonjour ! Tu veux un croissant ? | Hello! Do you want a croissant?
+> Julien looks excited
+Julien: Oui, s'il te plaît ! | Yes, please!
+> Camille buys a croissant
+Camille: Voilà ! | Here you go!
+> Camille gives the croissant to Julien
+Julien: Merci beaucoup ! | Thank you very much!
+Camille: De rien ! | You're welcome!
+
+[vocab]
+- bonjour — hello
+  Example: Bonjour, Camille !
+- s'il te plaît — please
+  Example: Un croissant, s'il te plaît.
+- merci — thank you
+  Example: Merci beaucoup !
+
+[grammar]
+- Tu veux...? — Do you want...?
+  Example 1: Tu veux un café ?
+  Example 2: Tu veux un croissant ?
+
+[quiz]
+Q: What does "bonjour" mean?
+A) Goodbye
+B) Hello
+C) Sorry
+Answer: B
+Explanation: "Bonjour" means "hello" or "good day."

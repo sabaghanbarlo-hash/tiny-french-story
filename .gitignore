@@ -1,1 +1,4 @@
-output/\n__pycache__/\n*.pyc\n.env\n
+output/
+__pycache__/
+*.pyc
+.env

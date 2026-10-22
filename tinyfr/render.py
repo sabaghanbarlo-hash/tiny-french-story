@@ -1,0 +1,274 @@
+"""Tiny French - vertical (1080x1920) Reel renderer. Stage 2: parser, French voices, SRT, cards, placeholder figures."""
+import json, math, os, subprocess, sys
+import numpy as np
+from PIL import Image, ImageDraw, ImageFont
+from .config import *
+from .parser import Say, Direction, SceneChange
+from .voice import synth, read_wav, write_wav
+from .srt import write_srt
+
+_fc = {}
+def font(size, bold=True):
+    key = (size, bold)
+    if key not in _fc:
+        for p in (FONT_CANDIDATES if bold else FONT_REG_CANDIDATES):
+            if os.path.exists(p):
+                _fc[key] = ImageFont.truetype(p, size); break
+        else:
+            sys.exit("ERROR: no usable TrueType font found (install fonts-dejavu-core)")
+    return _fc[key]
+
+NB = "\u00a0"
+def frtypo(s):
+    """French spacing: keep ! ? : ; and guillemets attached to their word."""
+    for p in "!?:;":
+        s = s.replace(" " + p, NB + p)
+    return s.replace("\u00ab ", "\u00ab" + NB).replace(" \u00bb", NB + "\u00bb")
+
+def wrap(d, text, f, maxw):
+    lines, cur = [], ""
+    for w in frtypo(text).split(" "):
+        t = (cur + " " + w).strip()
+        if d.textlength(t, font=f) <= maxw or not cur: cur = t
+        else: lines.append(cur); cur = w
+    if cur: lines.append(cur)
+    return lines
+
+def block(d, cx, y, text, size, fill, maxw, bold=True, gap=1.18, maxlines=None):
+    """Centered wrapped text; shrinks the font to fit maxlines. Returns bottom y."""
+    s = size
+    while True:
+        f = font(s, bold); lines = wrap(d, text, f, maxw)
+        if maxlines is None or len(lines) <= maxlines or s <= 28: break
+        s -= 4
+    for ln in lines:
+        d.text((cx, y), ln.replace(NB, " ") if False else ln, font=f, fill=fill, anchor="ma")
+        y += int(s * gap)
+    return y
+
+import functools
+@functools.lru_cache(maxsize=32)
+def _vgrad(top, bot):
+    a = np.linspace(0, 1, H)[:, None, None]
+    arr = (np.array(top)[None, None, :] * (1 - a) + np.array(bot)[None, None, :] * a)
+    return Image.fromarray(np.repeat(arr, W, axis=1).astype("uint8"), "RGB")
+
+def vgrad(top, bot):
+    return _vgrad(tuple(top), tuple(bot)).copy()
+
+def pill(d, cx, y, text, fill, fg=(255, 255, 255), size=34):
+    f = font(size); w = int(d.textlength(text, font=f)) + 56
+    d.rounded_rectangle((cx - w // 2, y, cx + w // 2, y + size + 28), radius=(size + 28) // 2, fill=fill)
+    d.text((cx, y + 14), text, font=f, fill=fg, anchor="ma")
+
+def wordmark(d, y=SAFE_TOP + 10):
+    d.text((W // 2, y), "Tiny French", font=font(56), fill=NAVY, anchor="ma")
+    d.polygon([(W // 2 + 210, y + 8), (W // 2 + 220, y + 32), (W // 2 + 246, y + 34), (W // 2 + 226, y + 50), (W // 2 + 234, y + 76),
+               (W // 2 + 210, y + 60), (W // 2 + 186, y + 76), (W // 2 + 194, y + 50), (W // 2 + 174, y + 34), (W // 2 + 200, y + 32)], fill=BLUSH)
+
+# ---- placeholder scene + figures (real Paris scenes and rigged Camille/Julien arrive in the next stage) ----
+_bg = {}
+SCENE_TINT = {"bakery": ((255, 236, 214), (250, 214, 186)), "street": ((169, 208, 245), (246, 230, 240)),
+              "cafe": ((255, 245, 232), (246, 214, 200)), "park": ((190, 228, 252), (214, 236, 214))}
+def scene_bg(place):
+    if place not in _bg:
+        top, bot = SCENE_TINT.get(place, ((200, 216, 250), (250, 232, 240)))
+        img = vgrad(top, bot); d = ImageDraw.Draw(img)
+        d.rectangle((0, 1180, W, 1290), fill=tuple(int(c * 0.86) for c in bot))
+        _bg[place] = img
+    return _bg[place].copy()
+
+def figure(d, name, cx, feet, mouth=0.0, bob=0.0):
+    c = CHARS[name]; y = feet - int(bob)
+    d.ellipse((cx - 110, feet - 14, cx + 110, feet + 20), fill=(0, 0, 0, 40))
+    for dx in (-36, 36):
+        d.rounded_rectangle((cx + dx - 26, y - 170, cx + dx + 26, y), radius=14, fill=(52, 56, 112))
+        d.rounded_rectangle((cx + dx - 34, y - 22, cx + dx + 34, y + 6), radius=10, fill=(246, 246, 246))
+    d.rounded_rectangle((cx - 104, y - 400, cx + 104, y - 160), radius=60, fill=c["jacket"])
+    d.polygon([(cx - 40, y - 400), (cx + 40, y - 400), (cx, y - 300)], fill=c["top"])
+    for dx in (-128, 128):
+        d.rounded_rectangle((cx + dx - 24, y - 380, cx + dx + 24, y - 210), radius=24, fill=c["jacket"])
+        d.ellipse((cx + dx - 24, y - 232, cx + dx + 24, y - 190), fill=c["skin"])
+    hy = y - 480
+    if name == "Camille":
+        d.rounded_rectangle((cx - 104, hy - 84, cx + 104, hy + 120), radius=70, fill=c["hair"])
+    d.ellipse((cx - 88, hy - 90, cx + 88, hy + 90), fill=c["skin"])
+    if name == "Camille":
+        d.pieslice((cx - 98, hy - 112, cx + 98, hy + 70), 180, 360, fill=c["hair"])
+        d.polygon([(cx - 20, hy - 110), (cx - 12, hy - 92), (cx + 8, hy - 90), (cx - 8, hy - 78), (cx - 2, hy - 60), (cx - 20, hy - 72), (cx - 38, hy - 60), (cx - 32, hy - 78), (cx - 48, hy - 90), (cx - 28, hy - 92)], fill=(255, 214, 120))
+    else:
+        d.pieslice((cx - 98, hy - 116, cx + 98, hy + 56), 180, 360, fill=c["hair"])
+        d.polygon([(cx - 90, hy - 20), (cx - 60, hy - 70), (cx - 30, hy - 30), (cx, hy - 76), (cx + 34, hy - 28), (cx + 70, hy - 66), (cx + 92, hy - 18)], fill=c["hair"])
+    for dx in (-32, 32):
+        d.ellipse((cx + dx - 11, hy - 8, cx + dx + 11, hy + 20), fill=(60, 40, 36) if name == "Camille" else (70, 90, 60))
+        d.ellipse((cx + dx - 4, hy - 3, cx + dx + 2, hy + 3), fill=(255, 255, 255))
+    d.ellipse((cx - 66, hy + 28, cx - 38, hy + 44), fill=(250, 170, 170)); d.ellipse((cx + 38, hy + 28, cx + 66, hy + 44), fill=(250, 170, 170))
+    mh = 6 + int(26 * mouth)
+    d.ellipse((cx - 17, hy + 48, cx + 17, hy + 48 + mh), fill=(150, 60, 70))
+
+# ---- frames ----
+def f_title(seg, t, meta):
+    img = vgrad(LAVENDER, BLUSH); d = ImageDraw.Draw(img); wordmark(d, 520)
+    y = block(d, W // 2, 760, meta["title"], 78, NAVY, 900, maxlines=4)
+    pill(d, W // 2, y + 30, f"Épisode {meta.get('episode', '1')}", NAVY)
+    d.text((W // 2, SAFE_BOTTOM - 130), "Small steps. Big dreams.", font=font(40, False), fill=NAVY, anchor="ma")
+    return img
+
+def f_say(seg, t, meta):
+    img = scene_bg(seg["place"]); d = ImageDraw.Draw(img, "RGBA"); wordmark(d)
+    pill(d, W // 2, 330, seg["place"].title(), (255, 255, 255, 190), fg=NAVY, size=30)
+    k = seg["mouth"](t)
+    for name, cx in (("Camille", 290), ("Julien", 790)):
+        sp = name == seg["speaker"]
+        figure(d, name, cx, 1190, mouth=k if sp else 0.0, bob=(6 * abs(math.sin(t * 6)) if sp else 0))
+    d.rounded_rectangle((60, 1290, W - 60, SAFE_BOTTOM + 20), radius=48, fill=(255, 255, 255, 235))
+    pill(d, W // 2, 1262, seg["speaker"], CHARS[seg["speaker"]]["jacket"], size=32)
+    y = block(d, W // 2, 1340, seg["fr"], 60, NAVY, 900, maxlines=3)
+    block(d, W // 2, y + 10, seg["en"], 40, MUTED, 900, bold=False, maxlines=2)
+    return img
+
+def card_frame(tag, tag_color):
+    img = vgrad(CREAM, (240, 232, 252)); d = ImageDraw.Draw(img); wordmark(d)
+    d.rounded_rectangle((60, 380, W - 60, SAFE_BOTTOM), radius=56, fill=(255, 255, 255)); pill(d, W // 2, 350, tag, tag_color)
+    return img, d
+
+def f_vocab(seg, t, meta):
+    img, d = card_frame("Vocabulaire · Vocabulary", (120, 150, 220))
+    y = block(d, W // 2, 520, seg["term"], 96, NAVY, 880, maxlines=2)
+    y = block(d, W // 2, y + 20, seg["meaning"], 56, (120, 150, 220), 880, maxlines=2)
+    if seg["example"]:
+        fr, en = seg["example"]
+        d.line((200, y + 60, W - 200, y + 60), fill=(225, 220, 240), width=4)
+        y = block(d, W // 2, y + 100, fr, 46, NAVY, 860, maxlines=3)
+        if en: block(d, W // 2, y + 10, en, 36, MUTED, 860, bold=False, maxlines=3)
+    return img
+
+def f_grammar(seg, t, meta):
+    img, d = card_frame("Grammaire · Grammar", (92, 168, 120))
+    y = block(d, W // 2, 520, seg["pattern"], 84, NAVY, 880, maxlines=2)
+    y = block(d, W // 2, y + 20, seg["meaning"], 50, (92, 168, 120), 880, maxlines=2)
+    d.line((200, y + 50, W - 200, y + 50), fill=(225, 240, 228), width=4); y += 90
+    for fr, en in seg["examples"][:2]:
+        y = block(d, W // 2, y, fr, 46, NAVY, 860, maxlines=2)
+        if en: y = block(d, W // 2, y + 4, en, 34, MUTED, 860, bold=False, maxlines=2)
+        y += 40
+    return img
+
+def f_quiz(seg, t, meta):
+    img, d = card_frame("Quiz", (240, 150, 100)); q = seg["quiz"]
+    y = block(d, W // 2, 480, q.question, 54, NAVY, 880, maxlines=4) + 30
+    for L, txt in sorted(q.options.items()):
+        win = seg["reveal"] and L == q.answer
+        col = (150, 205, 165) if win else ((244, 240, 250) if not seg["reveal"] else (250, 246, 252))
+        d.rounded_rectangle((100, y, W - 100, y + 120), radius=36, fill=col)
+        d.text((150, y + 60), L, font=font(54), fill=NAVY, anchor="lm")
+        d.text((230, y + 60), txt, font=font(42 if len(txt) < 34 else 34, False), fill=NAVY if not seg["reveal"] or win else (150, 150, 170), anchor="lm")
+        y += 150
+    if seg["reveal"]:
+        block(d, W // 2, y + 20, q.explanation, 38, MUTED, 860, bold=False, maxlines=4)
+    else:
+        frac = max(0.0, min(1.0, (t - seg["t0"] - seg["think_from"]) / max(0.1, seg["t1"] - seg["t0"] - seg["think_from"])))
+        d.rounded_rectangle((140, y + 30, W - 140, y + 54), radius=12, fill=(235, 230, 245))
+        d.rounded_rectangle((140, y + 30, 140 + int((W - 280) * (1 - frac)), y + 54), radius=12, fill=(240, 150, 100))
+    return img
+
+def f_outro(seg, t, meta):
+    img = vgrad(BLUSH, LAVENDER); d = ImageDraw.Draw(img); wordmark(d, 700)
+    block(d, W // 2, 860, "À demain ! See you tomorrow!", 60, NAVY, 880, maxlines=2)
+    d.text((W // 2, SAFE_BOTTOM - 130), "Small steps. Big dreams.", font=font(40, False), fill=NAVY, anchor="ma")
+    return img
+
+DRAW = {"title": f_title, "say": f_say, "vocab": f_vocab, "grammar": f_grammar, "quiz": f_quiz, "outro": f_outro}
+
+# ---- timeline ----
+def envelope(x):
+    n = int(SR / FPS); m = len(x) // n
+    e = np.sqrt(np.mean(x[:m * n].reshape(m, n) ** 2, axis=1)) if m else np.zeros(1)
+    return e
+
+def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz"), max_quiz=1):
+    segs, mix, cues, skipped = [], [], [], 0
+    cnt = [0]
+    def speak(text, voice):
+        cnt[0] += 1; p = os.path.join(tmp, f"a{cnt[0]:03}.wav"); synth(text, voice, p, dummy); return read_wav(p)
+    def place(t0, x): mix.append((t0, x))
+    t = 0.0
+    segs.append(dict(kind="title", t0=0, t1=2.6)); t = 2.6
+    if "story" in sections:
+        cur = script.meta.get("scene", "street").lower()
+        for ev in script.story:
+            if isinstance(ev, SceneChange): cur = ev.place
+            elif isinstance(ev, Direction): skipped += 1
+            elif isinstance(ev, Say):
+                x = speak(ev.fr, CHARS[ev.speaker]["voice"]); dur = len(x) / SR; env = envelope(x); t0 = t
+                def mouth(tt, env=env, t0=t0 + 0.15):
+                    i = int((tt - t0) * FPS); return float(min(1.0, env[i] * 7)) if 0 <= i < len(env) else 0.0
+                segs.append(dict(kind="say", t0=t, t1=t + dur + 0.75, speaker=ev.speaker, fr=ev.fr, en=ev.en, place=cur, mouth=mouth))
+                place(t + 0.15, x); cues.append((t + 0.15, t + 0.15 + dur + 0.25, ev.fr, ev.en)); t += dur + 0.75
+    if "vocab" in sections:
+        for v in script.vocab:
+            x = speak(v.term, CHARS["Camille"]["voice"]); parts = [(0.3, x)]; d = 0.3 + len(x) / SR + 0.5
+            ex = v.examples[0] if v.examples else None
+            if ex:
+                y = speak(ex[0], CHARS["Julien"]["voice"]); parts.append((d, y)); d += len(y) / SR + 0.8
+            for off, a in parts: place(t + off, a)
+            segs.append(dict(kind="vocab", t0=t, t1=t + max(d, 3.2), term=v.term, meaning=v.meaning, example=ex))
+            cues.append((t + 0.3, t + 0.3 + len(x) / SR + 0.2, v.term, v.meaning)); t += max(d, 3.2)
+    if "grammar" in sections:
+        for g in script.grammar:
+            d = 0.6; parts = []
+            for i, (fr, en) in enumerate(g.examples[:2]):
+                a = speak(fr, CHARS["Camille" if i == 0 else "Julien"]["voice"]); parts.append((d, a)); d += len(a) / SR + 0.9
+            for off, a in parts: place(t + off, a)
+            segs.append(dict(kind="grammar", t0=t, t1=t + max(d + 1.2, 6.0), pattern=g.pattern, meaning=g.meaning, examples=g.examples)); t += max(d + 1.2, 6.0)
+    if "quiz" in sections:
+        for q in script.quiz[:max_quiz]:
+            a = speak(q.question, NARRATOR_VOICE); d1 = 0.4 + len(a) / SR + 0.5; place(t + 0.4, a)
+            segs.append(dict(kind="quiz", t0=t, t1=t + d1 + 4.0, quiz=q, reveal=False, think_from=d1)); t += d1 + 4.0
+            b = speak(f"The answer is {q.answer}. {q.explanation}", NARRATOR_VOICE); d2 = 0.3 + len(b) / SR + 1.0; place(t + 0.3, b)
+            segs.append(dict(kind="quiz", t0=t, t1=t + d2, quiz=q, reveal=True, think_from=0)); t += d2
+    segs.append(dict(kind="outro", t0=t, t1=t + 2.4)); t += 2.4
+    return segs, mix, cues, skipped, t
+
+def render(script, outdir, stem, dummy=False, preview=None, sections=("story", "vocab", "grammar", "quiz"), max_quiz=1):
+    os.makedirs(outdir, exist_ok=True)
+    tmp = os.path.join(outdir, ".tmp"); os.makedirs(tmp, exist_ok=True)
+    segs, mix, cues, skipped, total = build(script, tmp, dummy, sections, max_quiz)
+    audio = np.zeros(int(total * SR) + SR, dtype=np.float32)
+    for t0, x in mix:
+        i = int(t0 * SR); audio[i:i + len(x)] += x[:len(audio) - i]
+    wav = os.path.join(tmp, "mix.wav"); write_wav(wav, np.clip(audio, -1, 1))
+    write_srt(os.path.join(outdir, stem + ".srt"), cues)
+    if skipped:
+        print(f"NOTE: {skipped} stage direction(s) parsed but NOT animated yet (acting layer is the next build stage).", file=sys.stderr)
+    last = [None, None]
+    STATIC = ("title", "vocab", "grammar", "outro")
+    def frame(t):
+        for s in segs:
+            if s["t0"] <= t < s["t1"]:
+                if s["kind"] in STATIC or (s["kind"] == "quiz" and s["reveal"]):
+                    if last[0] is not s: last[0] = s; last[1] = DRAW[s["kind"]](s, t, script.meta)
+                    return last[1]
+                return DRAW[s["kind"]](s, t, script.meta)
+        return frame(segs[-1]["t0"])
+    if preview:
+        os.makedirs(preview, exist_ok=True)
+        for i, s in enumerate(segs):
+            frame((s["t0"] + s["t1"]) / 2 + 0.05).save(os.path.join(preview, f"{i:02}-{s['kind']}.png"))
+    mp4 = os.path.join(outdir, stem + ".mp4"); n = int(total * FPS)
+    X264 = (["-c:v", "libx264", "-preset", "ultrafast", "-tune", "zerolatency", "-crf", "20", "-threads", "1"] if os.environ.get("TF_LOWMEM") == "1"
+            else ["-c:v", "libx264", "-preset", "veryfast", "-crf", "21"])
+    logf = open(os.path.join(tmp, "ffmpeg.log"), "w")
+    p = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "warning", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
+                          "-i", wav, *X264, "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k",
+                          "-shortest", "-movflags", "+faststart", mp4], stdin=subprocess.PIPE, stderr=logf)
+    try:
+        for i in range(n):
+            p.stdin.write(frame(i / FPS).tobytes())
+        p.stdin.close()
+    except BrokenPipeError:
+        p.wait(); sys.exit("ERROR: ffmpeg stopped early (rc=%s):\n%s" % (p.returncode, open(os.path.join(tmp, "ffmpeg.log")).read()[-1500:]))
+    if p.wait() != 0: sys.exit("ERROR: ffmpeg failed:\n" + open(os.path.join(tmp, "ffmpeg.log")).read()[-1500:])
+    info = dict(title=script.meta["title"], width=W, height=H, fps=FPS, seconds=round(total, 2), sections=list(sections), directions_not_animated=skipped)
+    json.dump(info, open(os.path.join(outdir, stem + ".json"), "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    return info
