@@ -1,0 +1,70 @@
+name: Make Tiny French reel
+
+on:
+  workflow_dispatch:
+    inputs:
+      script:
+        description: Lesson script (UTF-8 text)
+        required: true
+        type: string
+      sections:
+        description: "Comma-separated sections: story,vocab,grammar,quiz"
+        type: string
+        default: "story,vocab,grammar,quiz"
+      max_quiz:
+        description: Quiz questions
+        type: choice
+        options: ["1", "2", "3"]
+        default: "1"
+      test_mode:
+        description: "yes = tones instead of voices (never for publishing)"
+        type: choice
+        options: ["no", "yes"]
+        default: "no"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: make-reel
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: System packages
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
+      - run: pip install -r requirements.txt
+      - name: Check and render
+        id: render
+        continue-on-error: true
+        env:
+          SCRIPT: ${{ inputs.script }}
+          SECTIONS: ${{ inputs.sections }}
+          MAX_QUIZ: ${{ inputs.max_quiz }}
+          TEST_MODE: ${{ inputs.test_mode }}
+        run: python scripts/ci_render.py render out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reel
+          path: out/
+          retention-days: 14
+      - name: Publish preview to the site
+        if: always()
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "reel-bot"
+          git config user.email "reel-bot@users.noreply.github.com"
+          python scripts/ci_render.py publish out
+      - name: Fail the run if it did not render
+        if: steps.render.outcome == 'failure'
+        run: exit 1

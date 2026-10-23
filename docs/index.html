@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tiny French Studio</title>
+<style>
+:root{--cream:#fbf6ee;--card:#fff;--ink:#2c3a63;--muted:#6b7694;--blue:#8fb4e3;--red:#d85a6a;--line:#e8dfd0}
+@media (prefers-color-scheme:dark){:root{--cream:#1d2236;--card:#262c45;--ink:#f1eadf;--muted:#a7b0cc;--line:#39405e}}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:22px 20px 8px;max-width:980px;margin:0 auto}.brand{font-weight:800;font-size:26px}.brand span{color:var(--red)}.tag{color:var(--muted)}
+main{max-width:980px;margin:0 auto;padding:8px 20px 60px;display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 6px 22px rgba(60,70,110,.08)}
+h2{margin:0 0 10px;font-size:18px}label{font-weight:600}
+textarea,input[type=password]{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--cream);color:var(--ink);font:14px/1.5 ui-monospace,Menlo,Consolas,monospace}textarea{min-height:340px;resize:vertical}
+select,button{font:inherit;border-radius:999px;border:1px solid var(--line);padding:9px 16px;background:var(--card);color:var(--ink)}button{cursor:pointer;font-weight:700}
+button.primary{background:var(--red);border-color:var(--red);color:#fff}button.alt{background:var(--blue);border-color:var(--blue);color:#17224a}button:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}.opts{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted)}.opts label{font-weight:500;display:flex;gap:6px;align-items:center}
+.msg{border-radius:14px;padding:10px 14px;margin-top:10px;white-space:pre-wrap;word-break:break-word}.ok{background:#e4f4ec;color:#1f6a4b}.bad{background:#fde7ea;color:#9b2b3a}.info{background:#e9f0fb;color:#2c4a86}
+@media (prefers-color-scheme:dark){.ok{background:#1f4636;color:#bfe9d3}.bad{background:#4b2630;color:#ffd0d6}.info{background:#26365c;color:#cfe0ff}}
+.small{font-size:14px;color:var(--muted)}pre{white-space:pre-wrap;word-break:break-word;font:13px/1.45 ui-monospace,Menlo,Consolas,monospace;max-height:340px;overflow:auto;background:var(--cream);padding:12px;border-radius:12px;border:1px solid var(--line)}
+.spin{display:inline-block;width:14px;height:14px;border:3px solid var(--blue);border-top-color:transparent;border-radius:50%;animation:s 1s linear infinite;vertical-align:-2px;margin-right:8px}@keyframes s{to{transform:rotate(360deg)}}
+.result{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:18px}@media(max-width:700px){.result{grid-template-columns:1fr}}
+video{width:100%;max-width:340px;border-radius:18px;background:#000;aspect-ratio:9/16}.files{display:grid;gap:8px;align-content:start}.file{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:14px;padding:8px 12px}.file a{font-weight:700;color:var(--ink)}
+.cover{max-width:140px;border-radius:12px;border:1px solid var(--line)}[hidden]{display:none!important}a{color:var(--ink)}
+</style></head><body>
+<header><div class="brand">Tiny <span>French</span> Studio 🇫🇷</div><div class="tag">Paste a lesson script → GitHub makes the vertical Reel → it plays right here. Nothing is posted anywhere.</div></header>
+<main>
+<section class="card"><h2>1. Connect (one time)</h2>
+ <p class="small" style="margin-top:0">Create a <a id="tokLink" target="_blank" rel="noopener" href="https://github.com/settings/personal-access-tokens/new">fine-grained token</a> for <b>tiny-french-story only</b> with <b>Actions: Read and write</b> and <b>Contents: Read</b>. It is stored in this browser only and sent to api.github.com and nowhere else.</p>
+ <div class="row"><input id="token" type="password" placeholder="github_pat_…" autocomplete="off" aria-label="GitHub token" style="flex:1;min-width:220px"><button id="saveTok" class="alt" type="button">Save</button><button id="forget" type="button">Forget</button></div><div id="tokOut" class="small"></div></section>
+<section class="card"><h2>2. Your lesson script</h2>
+ <div class="row"><label for="sample">Start from an example:</label><select id="sample"></select><button id="loadSample" type="button">Load example</button></div>
+ <textarea id="script" spellcheck="false" aria-label="Lesson script" placeholder="title: ..."></textarea><div class="small" id="count"></div>
+ <details style="margin-top:10px"><summary><b>Script format &amp; directing commands</b></summary><pre id="help">Loading…</pre></details></section>
+<section class="card"><h2>3. Make the video</h2>
+ <div class="opts" role="group" aria-label="Sections"><span>Include:</span><label><input type="checkbox" class="sec" value="story" checked> Story</label><label><input type="checkbox" class="sec" value="vocab" checked> Vocabulary</label><label><input type="checkbox" class="sec" value="grammar" checked> Grammar</label><label><input type="checkbox" class="sec" value="quiz" checked> Quiz</label></div>
+ <div class="row"><label for="quiz">Quiz questions:</label><select id="quiz"><option>1</option><option>2</option><option>3</option></select><label class="opts" style="margin-left:8px"><input type="checkbox" id="dummy"> Test mode (tones instead of voices — not for publishing)</label></div>
+ <div class="row"><button id="make" class="primary" type="button">Create video</button></div>
+ <div class="small">Always 1080×1920 (9:16). Your script is checked first (errors name the line, usually within a minute); a full render takes a few minutes on GitHub’s servers.</div><div id="progress" aria-live="polite"></div></section>
+<section class="card" id="resultCard" hidden><h2>Your video</h2><div class="result"><video id="player" controls playsinline preload="metadata"></video><div><div class="files" id="files"></div>
+ <div style="margin-top:14px" id="capBox" hidden><b>Instagram caption</b> <button id="copy" type="button" style="margin-left:8px;padding:5px 12px">Copy</button><pre id="cap"></pre></div></div></div></section>
+<section class="card"><h2>Recent renders</h2><div id="recent" class="small">Loading…</div></section>
+</main>
+<script>
+const REPO="sabaghanbarlo-hash/tiny-french-story",WF="make-reel.yml",BRANCH="main",KEY="tf_token",$=id=>document.getElementById(id);let busy=false,timer=null;
+const save=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},load=k=>{try{return localStorage.getItem(k)||""}catch(e){return""}},drop=k=>{try{localStorage.removeItem(k)}catch(e){}};
+const tok=()=>$("token").value.trim();
+const gh=(p,o={})=>fetch("https://api.github.com"+p,{...o,headers:{Accept:"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28",...(tok()?{Authorization:"Bearer "+tok()}:{}),...(o.headers||{})}});
+const msg=(el,cls,text,extra)=>{el.replaceChildren();const d=document.createElement("div");d.className="msg "+cls;d.textContent=text;if(extra)d.append(extra);el.append(d)};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const b64json=s=>JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")),c=>c.charCodeAt(0))));
+const count=()=>{$("count").textContent=$("script").value.length.toLocaleString()+" characters"};
+async function init(){
+ $("token").value=load(KEY);$("tokOut").textContent=tok()?"Token saved in this browser.":"No token yet.";
+ try{window.SAMPLES=await (await fetch("samples.json",{cache:"no-store"})).json();$("sample").replaceChildren(...SAMPLES.map((x,i)=>Object.assign(document.createElement("option"),{value:i,textContent:x.title})));if(SAMPLES.length){$("script").value=SAMPLES[0].script}}catch(e){msg($("progress"),"bad","Could not load the examples.")}
+ count();try{$("help").textContent=await (await fetch(`https://raw.githubusercontent.com/${REPO}/${BRANCH}/DIRECTING.md`)).text()}catch(e){$("help").textContent="Could not load the directing guide."}
+ recent()}
+$("saveTok").onclick=()=>{if(!tok()){$("tokOut").textContent="Paste a token first.";return}save(KEY,tok());$("tokOut").textContent="Saved in this browser."};
+$("forget").onclick=()=>{drop(KEY);$("token").value="";$("tokOut").textContent="Token removed from this browser."};
+$("loadSample").onclick=()=>{const s=window.SAMPLES&&SAMPLES[+$("sample").value];if(!s)return;if($("script").value.trim()&&!confirm("Replace the script in the box with this example?"))return;$("script").value=s.script;count()};
+$("script").oninput=count;
+const setBusy=b=>{busy=b;["make","loadSample"].forEach(i=>$(i).disabled=b)};
+function spin(text,link){const el=$("progress");el.replaceChildren();const d=document.createElement("div");d.className="msg info";const sp=document.createElement("span");sp.className="spin";d.append(sp,text);if(link){const a=document.createElement("a");a.href=link;a.target="_blank";a.rel="noopener";a.textContent=" · view run on GitHub";d.append(a)}el.append(d)}
+async function findRun(t0){for(let i=0;i<25;i++){await sleep(3000);const r=await gh(`/repos/${REPO}/actions/workflows/${WF}/runs?event=workflow_dispatch&per_page=10`);if(!r.ok)continue;const j=await r.json();const run=(j.workflow_runs||[]).find(x=>new Date(x.created_at).getTime()>=t0-20000);if(run)return run}return null}
+async function result(id){for(let i=0;i<8;i++){const r=await gh(`/repos/${REPO}/contents/docs/previews/reel-${id}.json?ref=${BRANCH}`,{cache:"no-store"});if(r.ok){return b64json((await r.json()).content)}await sleep(3000)}return null}
+async function waitSite(url){for(let i=0;i<60;i++){try{const r=await fetch(url+"?t="+Date.now(),{method:"HEAD",cache:"no-store"});if(r.ok)return true}catch(e){}await sleep(5000)}return false}
+$("make").onclick=async()=>{
+ const text=$("script").value,sections=[...document.querySelectorAll(".sec")].filter(c=>c.checked).map(c=>c.value);
+ if(!tok()){msg($("progress"),"bad","Add your GitHub token first (step 1).");return}
+ if(!sections.length){msg($("progress"),"bad","Pick at least one section.");return}
+ if(!/^title:/m.test(text)||!/^\[story\]/m.test(text)){msg($("progress"),"bad","A script needs a “title:” line and a [story] section. Load an example to see the format.");return}
+ if(text.length>60000){msg($("progress"),"bad","That script is too long for one run (limit 60,000 characters).");return}
+ setBusy(true);$("resultCard").hidden=true;spin("Sending to GitHub…");const t0=Date.now();
+ try{
+  const d=await gh(`/repos/${REPO}/actions/workflows/${WF}/dispatches`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ref:BRANCH,inputs:{script:text,sections:sections.join(","),max_quiz:$("quiz").value,test_mode:$("dummy").checked?"yes":"no"}})});
+  if(d.status!==204){const why=d.status===401?"GitHub rejected the token (expired or mistyped).":d.status===403?"The token is not allowed to start workflows. It needs Actions: Read and write for tiny-french-story.":d.status===404?"GitHub could not find the “Make Tiny French reel” workflow on the main branch (or the token cannot see the repo). Has the pull request been merged?":d.status===422?"GitHub refused the request (the script may be too large).":"GitHub answered "+d.status+".";msg($("progress"),"bad","✗ "+why);setBusy(false);return}
+  spin("Waiting for GitHub to start the job…");const run=await findRun(t0);
+  if(!run){msg($("progress"),"bad","✗ The job was accepted but I could not find it. Open the Actions tab of the repo to see it.");setBusy(false);return}
+  let r;for(;;){const g=await gh(`/repos/${REPO}/actions/runs/${run.id}`);if(g.ok){r=await g.json();if(r.status==="completed")break;spin(`${r.status==="queued"?"Queued":"Rendering"}… ${Math.round((Date.now()-t0)/1000)} s`,r.html_url)}else if(g.status===401||g.status===403){msg($("progress"),"bad","✗ The token cannot read the run. It needs Actions: Read.");setBusy(false);return}await sleep(4000)}
+  spin("Finished — fetching the result…",r.html_url);const res=await result(run.id);
+  if(r.conclusion==="success"&&res&&res.status==="done"){
+   spin("Rendered. Publishing the preview to this site (about a minute)…",r.html_url);const url=`previews/reel-${run.id}.mp4`;
+   if(await waitSite(url)){msg($("progress"),"ok",`✓ Done in ${Math.round((Date.now()-t0)/1000)} s`+(res.test_mode?" (test mode: tones, not French voices)":""));show(res)}
+   else msg($("progress"),"bad","The video was made but this site has not published it yet. Try “Recent renders” below in a minute, or download it from the run’s Artifacts on GitHub.")}
+  else{const l=document.createElement("a");l.href=r.html_url;l.target="_blank";l.rel="noopener";l.textContent="  Open the run";const e=res&&res.error?res.error:"The job failed before it reported a reason.";
+   const b=document.createElement("div");b.append("✗ "+(res&&res.stage==="check"?"Script problem: ":"The video could not be made: ")+e+(res&&res.hint?"\n\n"+res.hint:""),l);msg($("progress"),"bad","");$("progress").firstChild.replaceChildren(...b.childNodes);
+   if(res&&res.line){const gb=document.createElement("button");gb.type="button";gb.textContent="Go to line "+res.line;gb.style.cssText="margin:8px 0 0 0;padding:4px 12px;display:block";gb.onclick=()=>goLine(res.line);$("progress").firstChild.append(gb)}}
+ }catch(e){msg($("progress"),"bad","✗ Network problem: "+e.message)}
+ setBusy(false)};
+function goLine(n){const ta=$("script"),L=ta.value.split("\n");let s=0;for(let i=0;i<n-1&&i<L.length;i++)s+=L[i].length+1;ta.focus();ta.setSelectionRange(s,s+(L[n-1]||"").length);ta.scrollTop=Math.max(0,(n-3)*(parseFloat(getComputedStyle(ta).lineHeight)||21))}
+function show(res){$("resultCard").hidden=false;const f=res.files||{},v=$("player");v.src="previews/"+f.mp4;v.load();const box=$("files");box.replaceChildren();
+ const label={mp4:"Video (MP4)",srt:"Subtitles (SRT)","caption.txt":"Instagram caption","cover.png":"Cover image"};
+ if(f["cover.png"]){const im=document.createElement("img");im.className="cover";im.alt="Cover";im.src="previews/"+f["cover.png"];box.append(im)}
+ for(const k of Object.keys(f)){const row=document.createElement("div");row.className="file";const a=document.createElement("a");a.href="previews/"+f[k];a.setAttribute("download",f[k]);a.textContent=(label[k]||k)+" — "+f[k];row.append(a);box.append(row)}
+ $("capBox").hidden=!f["caption.txt"];if(f["caption.txt"])fetch("previews/"+f["caption.txt"]).then(r=>r.text()).then(t=>{$("cap").textContent=t});$("resultCard").scrollIntoView({behavior:"smooth",block:"start"})}
+$("copy").onclick=async()=>{try{await navigator.clipboard.writeText($("cap").textContent);$("copy").textContent="Copied ✓"}catch(e){$("copy").textContent="Select & copy"}setTimeout(()=>$("copy").textContent="Copy",1800)};
+async function recent(){const el=$("recent");try{const r=await fetch(`https://api.github.com/repos/${REPO}/contents/docs/previews?ref=${BRANCH}`,{headers:{Accept:"application/vnd.github+json"}});if(!r.ok)throw 0;const names=(await r.json()).map(x=>x.name).filter(n=>n.endsWith(".json")).sort().reverse().slice(0,6);
+ if(!names.length){el.textContent="No renders yet.";return}el.replaceChildren();
+ for(const n of names){let j;try{j=await (await fetch("previews/"+n,{cache:"no-store"})).json()}catch(e){continue}const row=document.createElement("div");row.className="file";row.style.marginBottom="8px";const s=document.createElement("span");s.textContent=(j.status==="done"?"✓ ":"✗ ")+(j.title||"(failed)")+" · "+(j.created_at||"").replace("T"," ").replace("Z"," UTC");row.append(s);
+  if(j.status==="done"){const b=document.createElement("button");b.type="button";b.textContent="Watch";b.style.padding="4px 14px";b.onclick=()=>show(j);row.append(b)}else{const e=document.createElement("span");e.textContent=j.error||"";e.className="small";row.append(e)}el.append(row)}}
+ catch(e){el.textContent="Could not list recent renders."}}
+window.addEventListener("beforeunload",e=>{if(busy){e.preventDefault();e.returnValue=""}});init();
+</script></body></html>

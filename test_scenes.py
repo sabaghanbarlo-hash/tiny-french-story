@@ -45,4 +45,7 @@ class Scenes(unittest.TestCase):
     def test_multiword_scene_names_work_in_header_and_directive(self):
         self.assertEqual(scenes.resolve("Train Station"), "train station"); self.assertEqual(scenes.resolve("gare"), "train station")
         acting.check(parse_script(script_for("train station", ["platform"])))
+    def test_all_readme_scenes_exist(self):
+        need = {"supermarket", "bookstore", "restaurant", "train station", "museum", "eiffel", "airport", "market", "library", "beach", "courtyard", "apartment"}
+        self.assertFalse(need - set(scenes.SCENES), "missing scenes")
 if __name__ == "__main__": unittest.main(verbosity=1)

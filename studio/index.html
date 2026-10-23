@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tiny French Studio</title>
+<style>
+:root{--cream:#fbf6ee;--card:#fff;--ink:#2c3a63;--muted:#6b7694;--blue:#8fb4e3;--pink:#f4b6c8;--red:#d85a6a;--green:#3f8f6b;--line:#e8dfd0}
+@media (prefers-color-scheme:dark){:root{--cream:#1d2236;--card:#262c45;--ink:#f1eadf;--muted:#a7b0cc;--line:#39405e}}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:22px 20px 8px;max-width:980px;margin:0 auto}.brand{font-weight:800;font-size:26px;letter-spacing:.2px}.brand span{color:var(--red)}.tag{color:var(--muted);margin-top:2px}
+main{max-width:980px;margin:0 auto;padding:8px 20px 60px;display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 6px 22px rgba(60,70,110,.08)}
+h2{margin:0 0 10px;font-size:18px}label{font-weight:600}textarea{width:100%;min-height:360px;resize:vertical;border:1px solid var(--line);border-radius:14px;padding:12px;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;background:var(--cream);color:var(--ink)}
+select,button{font:inherit;border-radius:999px;border:1px solid var(--line);padding:9px 16px;background:var(--card);color:var(--ink)}select{max-width:100%}
+button{cursor:pointer;font-weight:700}button.primary{background:var(--red);border-color:var(--red);color:#fff}button.alt{background:var(--blue);border-color:var(--blue);color:#17224a}button:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}.opts{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted)}.opts label{font-weight:500;display:flex;gap:6px;align-items:center}
+.msg{border-radius:14px;padding:10px 14px;margin-top:10px;white-space:pre-wrap;word-break:break-word}.ok{background:#e4f4ec;color:#1f6a4b}.bad{background:#fde7ea;color:#9b2b3a}.info{background:#e9f0fb;color:#2c4a86}
+@media (prefers-color-scheme:dark){.ok{background:#1f4636;color:#bfe9d3}.bad{background:#4b2630;color:#ffd0d6}.info{background:#26365c;color:#cfe0ff}}
+.small{font-size:14px;color:var(--muted)}pre{white-space:pre-wrap;word-break:break-word;font:13px/1.45 ui-monospace,Menlo,Consolas,monospace;max-height:340px;overflow:auto;background:var(--cream);padding:12px;border-radius:12px;border:1px solid var(--line)}
+.spin{display:inline-block;width:14px;height:14px;border:3px solid var(--blue);border-top-color:transparent;border-radius:50%;animation:s 1s linear infinite;vertical-align:-2px;margin-right:8px}@keyframes s{to{transform:rotate(360deg)}}
+.result{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:18px}@media(max-width:700px){.result{grid-template-columns:1fr}}
+video{width:100%;max-width:340px;border-radius:18px;background:#000;aspect-ratio:9/16}.files{display:grid;gap:8px;align-content:start}.file{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:8px 12px}.file a{font-weight:700;color:var(--ink)}
+.cover{max-width:140px;border-radius:12px;border:1px solid var(--line)}[hidden]{display:none!important}
+</style></head><body>
+<header><div class="brand">Tiny <span>French</span> Studio 🇫🇷</div><div class="tag">Paste a lesson script → check it → make a vertical Reel with Camille &amp; Julien.</div></header>
+<main>
+<section class="card"><h2>1. Your lesson script</h2>
+ <div class="row"><label for="sample">Start from an example:</label><select id="sample"></select><button id="loadSample" type="button">Load example</button></div>
+ <textarea id="script" spellcheck="false" aria-label="Lesson script" placeholder="title: ..."></textarea>
+ <div class="row"><button id="check" class="alt" type="button">Check script</button><span class="small" id="count"></span></div>
+ <div id="checkOut" aria-live="polite"></div>
+ <details style="margin-top:10px"><summary><b>Script format &amp; directing commands</b></summary><pre id="help">Loading…</pre></details></section>
+<section class="card"><h2>2. Make the video</h2>
+ <div class="opts" role="group" aria-label="Sections to include"><span>Include:</span><label><input type="checkbox" class="sec" value="story" checked> Story</label><label><input type="checkbox" class="sec" value="vocab" checked> Vocabulary</label><label><input type="checkbox" class="sec" value="grammar" checked> Grammar</label><label><input type="checkbox" class="sec" value="quiz" checked> Quiz</label></div>
+ <div class="row"><label for="quiz">Quiz questions:</label><select id="quiz"><option>1</option><option>2</option><option>3</option></select>
+  <label class="opts" style="margin-left:8px"><input type="checkbox" id="dummy"> Test mode (tones instead of voices — not for publishing)</label></div>
+ <div class="row"><button id="make" class="primary" type="button">Create video</button></div>
+ <div class="small">Output is always 1080×1920 (9:16), 24 fps. Videos are made on this computer and usually take 1–3 minutes. French voices need internet (free edge-tts).</div>
+ <div id="progress" aria-live="polite"></div></section>
+<section class="card" id="resultCard" hidden><h2>3. Your video</h2>
+ <div class="result"><video id="player" controls playsinline preload="metadata"></video><div><div class="files" id="files"></div>
+ <div style="margin-top:14px" id="capBox" hidden><b>Instagram caption</b> <button id="copy" type="button" style="margin-left:8px;padding:5px 12px">Copy</button><pre id="cap"></pre></div></div></div></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);let busy=false,timer=null,lastErrLine=null;
+const api=async(url,body)=>{const r=await fetch(url,body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}return{ok:r.ok,status:r.status,j}};
+const msg=(el,cls,text,extra)=>{el.replaceChildren();const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;if(extra)d.append(extra);el.append(d)};
+const count=()=>{const t=$('script').value;$('count').textContent=t.length.toLocaleString()+' characters'};
+function goToLine(n){const ta=$('script'),lines=ta.value.split('\n');let s=0;for(let i=0;i<n-1&&i<lines.length;i++)s+=lines[i].length+1;ta.focus();ta.setSelectionRange(s,s+(lines[n-1]||'').length);const lh=parseFloat(getComputedStyle(ta).lineHeight)||21;ta.scrollTop=Math.max(0,(n-3)*lh)}
+function showCheck(v,el){if(v.ok){const bits=[`“${v.title}”`,v.episode?`episode ${v.episode}`:null,`${v.story_items} story items`,`${v.vocab} vocab`,`${v.grammar} grammar`,`${v.quiz} quiz`,`scenes: ${v.scenes.join(' → ')}`].filter(Boolean);msg(el,'ok','✓ Script is valid — '+bits.join(' · '))}
+ else{let b=null;if(v.line){b=document.createElement('button');b.type='button';b.textContent='Go to line '+v.line;b.style.cssText='margin-left:10px;padding:4px 12px';b.onclick=()=>goToLine(v.line)}msg(el,'bad','✗ '+v.error,b);lastErrLine=v.line}}
+async function check(){const r=await api('/api/validate',{script:$('script').value});showCheck(r.j,$('checkOut'));return r.j}
+async function init(){
+ try{const r=await api('/api/samples');const s=r.j;$('sample').replaceChildren(...s.map((x,i)=>Object.assign(document.createElement('option'),{value:i,textContent:x.title})));window.SAMPLES=s;if(s.length){$('script').value=s[0].script;$('sample').value=0}count()}catch(e){msg($('checkOut'),'bad','Could not load the examples. Is the studio still running?')}
+ try{$('help').textContent=(await api('/api/directing')).j.text}catch(e){$('help').textContent='Could not load the directing guide.'}}
+$('loadSample').onclick=()=>{const s=window.SAMPLES&&window.SAMPLES[+$('sample').value];if(!s)return;if($('script').value.trim()&&!confirm('Replace the script in the box with this example?'))return;$('script').value=s.script;$('checkOut').replaceChildren();count()};
+$('script').oninput=count;$('check').onclick=check;
+function setBusy(b){busy=b;['make','check','loadSample'].forEach(i=>$(i).disabled=b)}
+async function poll(id){
+ const r=await api('/api/job/'+id);if(!r.ok){clearInterval(timer);setBusy(false);msg($('progress'),'bad','Lost contact with the studio. Is it still running?');return}
+ const j=r.j;if(j.status==='running'){const el=$('progress');el.replaceChildren();const d=document.createElement('div');d.className='msg info';const sp=document.createElement('span');sp.className='spin';d.append(sp,`Making your video… ${Math.round(j.elapsed)} s (usually 1–3 minutes)`);el.append(d);return}
+ clearInterval(timer);setBusy(false);
+ if(j.status==='done'){msg($('progress'),'ok',`✓ Done in ${Math.round(j.elapsed)} s`);showResult(j)}
+ else{const el=$('progress');msg(el,'bad','✗ The video could not be made: '+(j.error||'unknown error')+(j.hint?'\n\n'+j.hint:''));const d=document.createElement('details');d.innerHTML='<summary class="small">Technical details</summary>';const p=document.createElement('pre');p.textContent=j.log||'(no log)';d.append(p);el.append(d)}}
+function showResult(j){$('resultCard').hidden=false;const mp4=j.files.find(f=>f.name.endsWith('.mp4'));const v=$('player');v.src=mp4.url+'?t='+Date.now();v.load();
+ const box=$('files');box.replaceChildren();const label={mp4:'Video (MP4)',srt:'Subtitles (SRT)',txt:'Instagram caption',png:'Cover image'};
+ for(const f of j.files){const row=document.createElement('div');row.className='file';const a=document.createElement('a');a.href=f.url+'?download=1';a.textContent=(label[f.name.split('.').pop()]||'File')+' — '+f.name;const s=document.createElement('span');s.className='small';s.textContent=f.size>1e6?(f.size/1e6).toFixed(1)+' MB':Math.max(1,Math.round(f.size/1e3))+' KB';row.append(a,s);box.append(row)}
+ const cover=j.files.find(f=>f.name.endsWith('.png'));if(cover){const im=document.createElement('img');im.className='cover';im.alt='Cover';im.src=cover.url;box.prepend(im)}
+ const cap=j.files.find(f=>f.name.endsWith('.caption.txt'));$('capBox').hidden=!cap;if(cap)fetch(cap.url).then(r=>r.text()).then(t=>{$('cap').textContent=t});
+ $('resultCard').scrollIntoView({behavior:'smooth',block:'start'})}
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('cap').textContent);$('copy').textContent='Copied ✓'}catch(e){const r=document.createRange();r.selectNodeContents($('cap'));getSelection().removeAllRanges();getSelection().addRange(r);$('copy').textContent='Select & copy'}setTimeout(()=>$('copy').textContent='Copy',1800)};
+$('make').onclick=async()=>{
+ const sections=[...document.querySelectorAll('.sec')].filter(c=>c.checked).map(c=>c.value);if(!sections.length){msg($('progress'),'bad','Pick at least one section to include.');return}
+ setBusy(true);$('resultCard').hidden=true;msg($('progress'),'info','Checking your script…');
+ const v=await check();if(!v.ok){setBusy(false);$('progress').replaceChildren();return}
+ const r=await api('/api/render',{script:$('script').value,sections,max_quiz:+$('quiz').value,dummy_audio:$('dummy').checked});
+ if(r.status!==202){setBusy(false);msg($('progress'),'bad','✗ '+(r.j.error||'Could not start.'));return}
+ poll(r.j.id);timer=setInterval(()=>poll(r.j.id),1500)};
+window.addEventListener('beforeunload',e=>{if(busy){e.preventDefault();e.returnValue=''}});init();
+</script></body></html>
