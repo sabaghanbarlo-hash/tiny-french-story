@@ -1,0 +1,73 @@
+title: Une journée à Paris
+episode: 2
+scene: street
+
+[story]
+@scene street
+> Camille enters left
+& Julien enters right
+> Camille waves
+Camille: Salut, Julien ! | Hi, Julien!
+> Julien waves
+Julien: Salut, Camille ! Ça va ? | Hi, Camille! How are you?
+> Camille looks happy
+Camille: Ça va bien, merci ! | I'm fine, thank you!
+> Julien looks excited
+Julien: J'ai faim. Allons à la boulangerie ! | I'm hungry. Let's go to the bakery!
+@scene bakery
+> Camille enters left
+& Julien enters left
+> Both walk to counter
+> Julien looks at the display
+Julien: Regarde ! Il y a des croissants. | Look! There are croissants.
+> Camille buys a croissant
+Camille: Un croissant, s'il vous plaît. | A croissant, please.
+> Julien buys a macaron
+Julien: Et un macaron, s'il vous plaît. | And a macaron, please.
+> Camille eats the croissant
+& Julien eats the macaron
+Julien: Miam ! C'est délicieux. | Yum! It's delicious.
+@scene cafe
+> Julien enters left
+& Camille enters left
+> Camille walks to table
+& Julien walks to counter
+> Julien buys a coffee
+Julien: Je voudrais un café, s'il vous plaît. | I would like a coffee, please.
+> Julien gives the coffee to Camille
+Camille: Merci ! | Thank you!
+> Camille drinks the coffee
+> Camille looks surprised
+Camille: C'est très bon ! | It's very good!
+@scene park
+> Camille enters left
+& Julien enters left
+> Both walk to bench
+> Julien cheers
+Camille: Quelle belle journée ! | What a beautiful day!
+> Camille waves
+Julien: À demain, Camille ! | See you tomorrow, Camille!
+> Julien exits right
+
+[vocab]
+- la boulangerie — the bakery
+  Example: Allons à la boulangerie !
+- s'il vous plaît — please
+  Example: Un croissant, s'il vous plaît.
+- je voudrais — I would like
+  Example: Je voudrais un café.
+- délicieux — delicious
+  Example: C'est délicieux !
+
+[grammar]
+- Je voudrais + noun — I would like...
+  Example 1: Je voudrais un café.
+  Example 2: Je voudrais un croissant.
+
+[quiz]
+Q: How do you politely ask for a coffee?
+A) Je voudrais un café, s'il vous plaît.
+B) Au revoir, un café.
+C) Bonjour, c'est un café.
+Answer: A
+Explanation: "Je voudrais" means "I would like" and is a polite way to order.

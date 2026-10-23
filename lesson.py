@@ -3,6 +3,7 @@
 import argparse, os, sys
 from tinyfr.parser import parse_script, ScriptError
 from tinyfr.render import render
+from tinyfr import acting
 
 def main():
     ap = argparse.ArgumentParser()
@@ -12,6 +13,10 @@ def main():
     a = ap.parse_args()
     try:
         script = parse_script(open(a.script, encoding="utf-8").read())
+    except ScriptError as e:
+        sys.exit(f"Script error: {e}")
+    try:
+        acting.check(script)
     except ScriptError as e:
         sys.exit(f"Script error: {e}")
     if a.dummy_audio:
