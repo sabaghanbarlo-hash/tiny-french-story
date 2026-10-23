@@ -8,7 +8,7 @@ from . import items as IT
 
 NAMES = ("Camille", "Julien")
 HOME = {"Camille": 300, "Julien": 780}
-SPEED, RUN = 380.0, 720.0
+SPEED, RUN = 500.0, 820.0
 MIN_GAP = 190
 EXPRS = {"neutral": "neutral", "happy": "happy", "glad": "happy", "smiling": "happy", "sad": "sad", "confused": "confused", "puzzled": "confused",
          "surprised": "surprised", "shocked": "surprised", "embarrassed": "embarrassed", "worried": "worried", "nervous": "worried", "excited": "excited",
@@ -140,7 +140,7 @@ class Stage:
                 side, _, spot = op.arg.partition(" to ")
                 if c["on"]: raise ScriptError(f"line {ln}: {n} is already on stage; use 'walks to' instead of 'enters'")
                 x0 = -240 if side == "left" else W + 240
-                k = enter_delay.get(side, 0); enter_delay[side] = k + 1; s += 0.55 * k
+                k = enter_delay.get(side, 0); enter_delay[side] = k + 1; s += 0.4 * k
                 tgt = self.sep(n, self.resolve(n, spot, ln) if spot else HOME[n], x0)
                 c["x"] = x0; c["on"] = True; self.pos[n].append((s, s, x0, x0, 0))
                 cursor[n] = self._move(n, s, tgt, False, ln)
