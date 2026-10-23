@@ -32,5 +32,8 @@ class Meta(unittest.TestCase):
     def test_cover(self):
         from tinyfr.thumb import make_cover
         from PIL import Image
-        make_cover(parse_script(L3), "/tmp/cover_test.png"); self.assertEqual(Image.open("/tmp/cover_test.png").size, (W, H))
+        import os, tempfile
+        with tempfile.TemporaryDirectory() as td:
+            out = os.path.join(td, "cover_test.png"); make_cover(parse_script(L3), out)
+            with Image.open(out) as im: self.assertEqual(im.size, (W, H))
 if __name__ == "__main__": unittest.main(verbosity=1)

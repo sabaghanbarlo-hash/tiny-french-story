@@ -1,10 +1,11 @@
 """Camille and Julien: one rigged drawing each (fixed proportions, outfit, hair). Poses only change limbs, face and held item."""
 import math
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageChops
 from .config import CHARS
 from . import items as IT
 
-SW, SH, CX, FY = 580, 800, 290, 740
+SW, SH, CX, FY = 840, 1000, 420, 920
+HEAD_K = 1.22   # chibi head scale about the neck
 
 def _arm(d, sx, sy, hx, hy, col, skin, side, w=46):
     ex, ey = sx + (hx - sx) * 0.5 + side * 16, sy + (hy - sy) * 0.5 + 6
@@ -16,7 +17,7 @@ def _brow(d, x, y, tilt, col, w=8, ln=22):
     d.line((x - ln, y + tilt, x + ln, y - tilt), fill=col, width=w)
 
 def _face(d, name, cx, hy, expr, mouth, act, t, fdx):
-    c = CHARS[name]; ink = (58, 40, 36); iris = c["iris"]; hair = c["hair"]
+    c = CHARS[name]; ink = (58, 40, 36); iris = c["iris"]; hair = c.get("brow", c["hair"])
     ex = (cx + fdx - 36, cx + fdx + 36); ey = hy + 6
     blink = (int(t * 1000) % 3300) < 120
     closed = act == "laugh" or blink
@@ -86,9 +87,6 @@ def draw(name, P):
     s = math.sin(ph) * walk
     jacket, skin, trouser, top = c["jacket"], c["skin"], c["trouser"], c["top"]
     fdx = 11
-    if name == "Camille":
-        d.rounded_rectangle((cx - 112, hy - 92, cx + 112, hy + 168), radius=76, fill=c["hair"])
-        d.line((cx - 84, hy - 10, cx - 96, hy + 150), fill=c["hl"], width=8)
     for i, side in enumerate((-1, 1)):
         sw = s * 48 * (1 if side > 0 else -1); lift = max(0, math.sin(ph + (0 if side > 0 else math.pi))) * 22 * walk
         hx, hyp = cx + side * 34, y - 176; fx, fyp = cx + side * 34 + sw, y - 14 - lift
@@ -100,6 +98,11 @@ def draw(name, P):
     if act == "jump": bx, by = sx0 - 70, sy0 - 40
     _arm(d, sx0, sy0, bx, by, jacket, skin, -1)
     d.rounded_rectangle((cx - 108, y - 408 + lean, cx + 108, y - 160), radius=62, fill=jacket)
+    if name == "Julien":   # breton stripes, clipped to the torso
+        m = Image.new("L", (SW, SH), 0); ImageDraw.Draw(m).rounded_rectangle((cx - 108, y - 408 + lean, cx + 108, y - 160), radius=62, fill=255)
+        st = Image.new("RGBA", (SW, SH), (0, 0, 0, 0)); sd = ImageDraw.Draw(st)
+        for yy in range(int(y - 400 + lean), int(y - 160), 46): sd.rectangle((cx - 110, yy, cx + 110, yy + 17), fill=c["top"] + (255,))
+        img.paste(st, (0, 0), ImageChops.multiply(st.getchannel("A"), m))
     d.polygon([(cx - 44, y - 408 + lean), (cx + 44, y - 408 + lean), (cx + 6, y - 300), (cx - 6, y - 300)], fill=top); d.rectangle((cx - 6, y - 300, cx + 6, y - 162), fill=top)
     d.line((cx - 44, y - 408 + lean, cx - 6, y - 300), fill=c["edge"], width=6); d.line((cx + 44, y - 408 + lean, cx + 6, y - 300), fill=c["edge"], width=6)
     d.line((cx - 90, y - 396 + lean, cx + 96, y - 190), fill=c["strap"], width=16)
@@ -107,22 +110,37 @@ def draw(name, P):
         d.rounded_rectangle((cx + 62, y - 250, cx + 160, y - 160), radius=14, fill=c["bag"], outline=c["strap"], width=4); d.polygon([(cx + 112, y - 222), (cx + 120, y - 206), (cx + 138, y - 204), (cx + 124, y - 194), (cx + 128, y - 178), (cx + 112, y - 188), (cx + 96, y - 178), (cx + 100, y - 194), (cx + 86, y - 204), (cx + 104, y - 206)], fill=(255, 214, 120))
     else:
         d.rounded_rectangle((cx + 62, y - 262, cx + 156, y - 170), radius=12, fill=c["bag"], outline=c["strap"], width=4); d.rectangle((cx + 62, y - 262, cx + 156, y - 236), fill=c["strap"])
+    if name == "Julien":   # red neckerchief, under the head
+        d.polygon([(cx - 52, y - 410 + lean), (cx + 52, y - 410 + lean), (cx + 4, y - 322 + lean)], fill=c["scarf"])
+        d.ellipse((cx - 14, y - 346 + lean, cx + 14, y - 318 + lean), fill=c["edge"])
+    body_d = d
+    hd = Image.new("RGBA", (SW, SH), (0, 0, 0, 0)); d = ImageDraw.Draw(hd)
+    if name == "Camille":   # high bun behind the head
+        d.ellipse((cx - 52, hy - 176, cx + 48, hy - 80), fill=c["hair"]); d.arc((cx - 40, hy - 166, cx + 30, hy - 104), 200, 300, fill=c["hl"], width=6)
     d.ellipse((cx - 92, hy - 94, cx + 92, hy + 94), fill=skin)
     if name == "Camille":
-        d.rounded_rectangle((cx - 106, hy - 30, cx - 74, hy + 128), radius=18, fill=c["hair"]); d.rounded_rectangle((cx + 74, hy - 30, cx + 106, hy + 128), radius=18, fill=c["hair"])
+        d.rounded_rectangle((cx - 106, hy - 30, cx - 76, hy + 78), radius=18, fill=c["hair"]); d.rounded_rectangle((cx + 76, hy - 30, cx + 106, hy + 78), radius=18, fill=c["hair"])
         d.pieslice((cx - 104, hy - 118, cx + 104, hy + 70), 180, 360, fill=c["hair"])
         d.polygon([(cx - 100, hy - 6), (cx - 30, hy - 96), (cx + 20, hy - 70), (cx + 60, hy - 100), (cx + 100, hy - 6), (cx + 70, hy - 40), (cx + 20, hy - 30), (cx - 40, hy - 36)], fill=c["hair"])
         d.line((cx - 20, hy - 100, cx - 44, hy - 40), fill=c["hl"], width=7); d.line((cx + 30, hy - 96, cx + 10, hy - 44), fill=c["hl"], width=7)
-        sx, sy = cx - 78, hy - 70
-        d.polygon([(sx, sy - 24), (sx + 8, sy - 6), (sx + 26, sy - 6), (sx + 12, sy + 6), (sx + 18, sy + 24), (sx, sy + 12), (sx - 18, sy + 24), (sx - 12, sy + 6), (sx - 26, sy - 6), (sx - 8, sy - 6)], fill=(255, 214, 120), outline=(214, 160, 60))
+        rx, ry = cx - 2, hy - 104   # ribbon at the base of the bun
+        d.polygon([(rx, ry), (rx - 46, ry - 26), (rx - 46, ry + 24)], fill=c["ribbon"]); d.polygon([(rx, ry), (rx + 46, ry - 26), (rx + 46, ry + 24)], fill=c["ribbon"])
+        d.ellipse((rx - 12, ry - 12, rx + 12, ry + 12), fill=(176, 44, 66))
     else:
         d.pieslice((cx - 104, hy - 124, cx + 104, hy + 60), 180, 360, fill=c["hair"])
         d.polygon([(cx - 100, hy - 14), (cx - 74, hy - 74), (cx - 46, hy - 24), (cx - 18, hy - 84), (cx + 8, hy - 30), (cx + 40, hy - 80), (cx + 62, hy - 26), (cx + 98, hy - 66), (cx + 102, hy - 8), (cx + 60, hy - 40), (cx - 10, hy - 36)], fill=c["hair"])
         d.polygon([(cx + 88, hy - 40), (cx + 112, hy - 70), (cx + 108, hy - 24)], fill=c["hair"])
+        d.polygon([(cx - 70, hy - 104), (cx - 10, hy - 150), (cx + 56, hy - 124), (cx + 14, hy - 96)], fill=c["hair"])   # side-swept wave
+        d.polygon([(cx + 4, hy - 112), (cx + 26, hy - 162), (cx + 38, hy - 108)], fill=c["hair"])                       # cowlick
+        d.line((cx - 50, hy - 104, cx - 6, hy - 136), fill=c["hl"], width=7); d.line((cx - 60, hy - 60, cx - 44, hy - 28), fill=c["hl"], width=6)
     _face(d, name, cx, hy, expr, P["mouth"], act, t, fdx)
+    ax, ay = cx, hy + 92
+    hd = hd.resize((int(SW * HEAD_K), int(SH * HEAD_K)), Image.LANCZOS)
+    img.paste(hd, (int(ax - ax * HEAD_K), int(ay - ay * HEAD_K)), hd)
+    d = body_d
     sx1 = cx + 106; sy1 = y - 384 + lean; item = P["item"]
     hx, hyy = sx1 + 14 + s * 6, sy1 + 178 - s * 22
-    mouth_pt = (cx + fdx + 34, hy + 66)
+    mouth_pt = (cx + int((fdx + 34) * HEAD_K), hy + 92 + int((66 - 92) * HEAD_K))
     if item and act not in ("eat", "drink", "give", "wave", "cheer", "jump"): hx, hyy = sx1 + 70, sy1 + 112
     if act == "wave": hx, hyy = sx1 + 70 + 26 * math.sin(ap * 2 * math.pi * 3), sy1 - 170
     elif act == "cheer": hx, hyy = sx1 + 62, sy1 - 150 + 22 * math.sin(ap * 40)
