@@ -13,6 +13,16 @@ Paste or load a lesson, press **Check script** (errors point to the line), then 
 
 **Try it in the browser without installing anything:** on GitHub press **Code → Codespaces → Create codespace**. The `.devcontainer` setup installs FFmpeg and fonts and starts the studio; open the forwarded port 8765 (the first set-up takes a few minutes). Free personal accounts get a monthly Codespaces allowance (see GitHub's billing page), and the port stays private to your login. By hand: `python studio.py --host 0.0.0.0 --allow-any-host --no-browser`. Use those two flags only on a private forwarded port.
 
+## Hosted studio (GitHub Pages + GitHub Actions)
+Same idea as the other studios: open the page, paste a script, press **Create video**, and the Reel plays in the same page when it is done. Rendering runs on GitHub's servers (free Actions minutes), not on your computer. **Nothing is posted anywhere.**
+
+One-time setup (the repo owner):
+1. Merge to `main` (workflows only run from the default branch).
+2. Repo **Settings → Pages → Deploy from a branch → `main` / `/docs`**. The page is then at `https://<your-user>.github.io/tiny-french-story/`.
+3. Create a [fine-grained token](https://github.com/settings/personal-access-tokens/new) for this repo only with **Actions: Read and write** and **Contents: Read**, and paste it into the page once. It is kept in your browser only.
+
+How it works: the page starts the **Make Tiny French reel** workflow (`.github/workflows/make-reel.yml`) with your script. `scripts/ci_render.py` checks the script (errors name the line), renders it with `lesson.py`, and copies the MP4, SRT, cover and caption into `docs/previews/` (newest 6 kept; older ones are deleted). The page waits for the site to publish them and plays the video. Every run's files are also kept 14 days as a workflow artifact. Preview videos are committed to the repo by a bot, so the repo grows a little with each render.
+
 ## Status
 | Works now (tested) | Not built yet |
 |---|---|
