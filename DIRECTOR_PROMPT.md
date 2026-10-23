@@ -59,6 +59,12 @@ Scenes and their spots (use exactly these names):
 | park | garden, jardin | bench, fountain |
 | classroom | school, class | door, board, desk |
 | metro | metro station, subway, métro | entrance, ticket machine, platform |
+| supermarket | supermarché, grocery, grocery store, store | entrance, fruit stand, shelves, checkout |
+| bookstore | librairie, book store, bookshop | entrance, shelves, reading corner, counter |
+| restaurant | resto, dining room | entrance, table, window table, counter |
+| train station | gare, station, railway station, train | entrance, ticket window, departures board, platform |
+| museum | musée, gallery, art museum | entrance, painting, statue, bench |
+| eiffel | eiffel tower, tour eiffel, trocadéro, viewpoint, eiffel viewpoint | steps, viewpoint, bench |
 
 Do not invent other scenes, objects, spots, gestures or characters.
 

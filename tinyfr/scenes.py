@@ -159,6 +159,9 @@ SCENES = {
     "classroom": _make("classroom", classroom, {"door": 110, "board": 540, "desk": 900}, ["school", "class"]),
     "metro": _make("metro", metro, {"entrance": 120, "ticket machine": 560, "platform": 920}, ["metro station", "subway", "métro"]),
 }
+from .scenes_more import EXTRA
+SCENES.update(EXTRA)
+
 ALIAS = {}
 for k, v in SCENES.items():
     ALIAS[k] = k

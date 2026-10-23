@@ -1,0 +1,52 @@
+title: Au supermarché avec Julien
+episode: 4
+scene: supermarket
+cover: Shopping Day
+
+[story]
+@scene supermarket
+> Camille enters left
+& Julien enters left
+> Camille walks to fruit stand
+> Camille looks happy
+Camille: Bonjour, Julien ! On fait les courses ? | Hello, Julien! Shall we do the shopping?
+> Julien walks to shelves
+& Julien looks excited
+Julien: Oui ! Je veux une baguette. | Yes! I want a baguette.
+> Julien picks up the baguette
+> Camille walks to checkout
+Camille: Moi, je veux du jus. | Me, I want some juice.
+> Camille buys the juice
+Julien: Voilà ! C'est tout ? | There you go! Is that all?
+Camille: Oui, c'est tout. Merci ! | Yes, that's all. Thank you!
+@scene eiffel
+> Camille enters left
+& Julien enters left
+> Camille walks to viewpoint
+> Julien walks to bench
+Julien: Regarde ! La tour Eiffel ! | Look! The Eiffel Tower!
+> Camille looks surprised
+Camille: Elle est belle ! | It's beautiful!
+> Julien eats the baguette
+> Camille drinks the juice
+
+[vocab]
+- la baguette — the baguette
+  Example: Je veux une baguette.
+- les courses — the shopping
+  Example: On fait les courses ?
+- la tour Eiffel — the Eiffel Tower
+  Example: Regarde la tour Eiffel !
+
+[grammar]
+- Je veux... — I want...
+  Example 1: Je veux une baguette.
+  Example 2: Je veux du jus.
+
+[quiz]
+Q: What does "je veux" mean?
+A) I have
+B) I want
+C) I see
+Answer: B
+Explanation: "Je veux" means "I want."
