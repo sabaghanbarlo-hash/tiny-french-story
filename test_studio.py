@@ -48,6 +48,13 @@ class Studio(unittest.TestCase):
         self.assertEqual(self.call("/nope")[0], 404); self.assertEqual(self.call("/api/job/doesnotexist")[0], 404)
     def test_foreign_host_header_is_refused(self):
         self.assertEqual(self.call("/", headers={"Host": "evil.example.com"})[0], 403)
+    def test_allow_any_host_flag_is_opt_in(self):
+        srv = studio.make_server(port=0, allow_any_host=True); threading.Thread(target=srv.serve_forever, daemon=True).start()
+        try:
+            req = urllib.request.Request(f"http://127.0.0.1:{srv.server_address[1]}/", headers={"Host": "abc-8765.app.github.dev"})
+            with urllib.request.urlopen(req) as r: self.assertEqual(r.status, 200)
+        finally: srv.shutdown(); srv.server_close()
+        self.assertEqual(self.call("/", headers={"Host": "abc-8765.app.github.dev"})[0], 403, "default server must still refuse foreign hosts")
     def test_file_path_traversal_blocked(self):
         for p in ("/files/000000000000/../../studio.py", "/files/000000000000/..%2Fstudio.py", "/files/../studio.py"): self.assertEqual(self.call(p)[0], 404, p)
     def test_render_argument_validation(self):

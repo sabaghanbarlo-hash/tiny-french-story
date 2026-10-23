@@ -11,6 +11,8 @@ python studio.py                  # opens http://127.0.0.1:8765
 ```
 Paste or load a lesson, press **Check script** (errors point to the line), then **Create video**. You get an in-page preview and downloads for the MP4, SRT subtitles, cover image and Instagram caption. It runs the same `lesson.py` pipeline on **your own computer**, one video at a time. It cannot run on GitHub Pages, which has no Python or FFmpeg. The page only answers on `127.0.0.1`.
 
+**Try it in the browser without installing anything:** on GitHub press **Code → Codespaces → Create codespace**. The `.devcontainer` setup installs FFmpeg and fonts and starts the studio; open the forwarded port 8765 (the first set-up takes a few minutes). Free personal accounts get a monthly Codespaces allowance (see GitHub's billing page), and the port stays private to your login. By hand: `python studio.py --host 0.0.0.0 --allow-any-host --no-browser`. Use those two flags only on a private forwarded port.
+
 ## Status
 | Works now (tested) | Not built yet |
 |---|---|

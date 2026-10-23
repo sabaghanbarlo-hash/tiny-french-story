@@ -1,0 +1,8 @@
+{
+  "name": "Tiny French Studio",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core && pip install -r requirements.txt",
+  "postStartCommand": "nohup python studio.py --host 0.0.0.0 --allow-any-host --no-browser > /tmp/studio.log 2>&1 &",
+  "forwardPorts": [8765],
+  "portsAttributes": { "8765": { "label": "Tiny French Studio", "onAutoForward": "openBrowser" } }
+}

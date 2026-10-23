@@ -155,7 +155,9 @@ def make_server(host="127.0.0.1", port=8765, allow_any_host=False):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0]); ap.add_argument("--port", type=int, default=8765); ap.add_argument("--no-browser", action="store_true")
-    a = ap.parse_args(); srv = make_server(port=a.port); url = f"http://127.0.0.1:{srv.server_address[1]}"
+    ap.add_argument("--host", default="127.0.0.1", help="address to listen on (default: this computer only)")
+    ap.add_argument("--allow-any-host", action="store_true", help="accept any Host header; only for private forwarded ports such as GitHub Codespaces")
+    a = ap.parse_args(); srv = make_server(a.host, a.port, a.allow_any_host); shown = "127.0.0.1" if a.host == "0.0.0.0" else a.host; url = f"http://{shown}:{srv.server_address[1]}"
     print(f"Tiny French Studio running at {url}   (Ctrl+C to stop)\nVideos are made on this computer; files are kept in {WORK} until you close the studio.")
     if not a.no_browser:
         import webbrowser; threading.Timer(0.6, lambda: webbrowser.open(url)).start()
