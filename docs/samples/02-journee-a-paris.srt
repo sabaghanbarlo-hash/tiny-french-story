@@ -1,0 +1,85 @@
+1
+00:00:05,730 --> 00:00:08,308
+Salut, Julien !
+Hi, Julien!
+
+2
+00:00:10,508 --> 00:00:14,574
+Salut, Camille ! Ça va ?
+Hi, Camille! How are you?
+
+3
+00:00:15,624 --> 00:00:18,514
+Ça va bien, merci !
+I'm fine, thank you!
+
+4
+00:00:19,564 --> 00:00:23,606
+J'ai faim. Allons à la boulangerie !
+I'm hungry. Let's go to the bakery!
+
+5
+00:00:28,126 --> 00:00:32,240
+Regarde ! Il y a des croissants.
+Look! There are croissants.
+
+6
+00:00:33,840 --> 00:00:36,874
+Un croissant, s'il vous plaît.
+A croissant, please.
+
+7
+00:00:38,474 --> 00:00:41,676
+Et un macaron, s'il vous plaît.
+And a macaron, please.
+
+8
+00:00:45,176 --> 00:00:48,930
+Miam ! C'est délicieux.
+Yum! It's delicious.
+
+9
+00:00:53,250 --> 00:00:56,788
+Je voudrais un café, s'il vous plaît.
+I would like a coffee, please.
+
+10
+00:00:59,388 --> 00:01:01,510
+Merci !
+Thank you!
+
+11
+00:01:04,760 --> 00:01:06,882
+C'est très bon !
+It's very good!
+
+12
+00:01:12,642 --> 00:01:14,980
+Quelle belle journée !
+What a beautiful day!
+
+13
+00:01:17,180 --> 00:01:19,878
+À demain, Camille !
+See you tomorrow, Camille!
+
+14
+00:01:22,468 --> 00:01:24,732
+la boulangerie
+the bakery
+
+15
+00:01:28,364 --> 00:01:30,484
+s'il vous plaît
+please
+
+16
+00:01:34,716 --> 00:01:36,764
+je voudrais
+I would like
+
+17
+00:01:40,396 --> 00:01:42,468
+délicieux
+delicious
+
