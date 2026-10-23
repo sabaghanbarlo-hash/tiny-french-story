@@ -4,6 +4,8 @@ import argparse, os, sys
 from tinyfr.parser import parse_script, ScriptError
 from tinyfr.render import render
 from tinyfr import acting
+from tinyfr.meta import write_caption
+from tinyfr.thumb import make_cover
 
 def main():
     ap = argparse.ArgumentParser()
@@ -23,6 +25,7 @@ def main():
         print("WARNING: --dummy-audio is for tests only; the video will not have French speech.", file=sys.stderr)
     stem = os.path.splitext(os.path.basename(a.script))[0]
     info = render(script, a.out, stem, a.dummy_audio, a.preview, tuple(a.sections.split(",")), a.max_quiz)
+    write_caption(script, os.path.join(a.out, stem + ".caption.txt")); make_cover(script, os.path.join(a.out, stem + ".cover.png"))
     print(info)
 
 if __name__ == "__main__":
