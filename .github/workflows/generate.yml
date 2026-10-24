@@ -10,6 +10,9 @@ on:
       post:
         description: "Post to Instagram right after rendering? (true/false)"
         default: "false"
+      format:
+        description: "small = two friends chatting at a table | story = animated story"
+        default: "story"
 
 permissions:
   contents: read
@@ -24,11 +27,13 @@ jobs:
     timeout-minutes: 40
     env:
       STORY: ${{ inputs.story }}
+      FORMAT: ${{ inputs.format }}
     steps:
       - uses: actions/checkout@v4
       - name: Check inputs
         run: |
           [[ "$STORY" =~ ^lessons/[A-Za-z0-9._/-]+\.txt$ ]] && [[ "$STORY" != *..* ]] || { echo "::error::Bad script path"; exit 1; }
+          case "$FORMAT" in small|story) ;; *) echo "::error::Bad format"; exit 1;; esac
           [ -f "$STORY" ] || { echo "::error::Script file not found: $STORY"; exit 1; }
       - uses: actions/setup-python@v5
         with:
@@ -37,7 +42,8 @@ jobs:
       - name: Install Python packages
         run: pip install -r requirements.txt
       - name: Check the script
-        run: python validate_script.py "$STORY"
+        run: |
+          if [ "$FORMAT" = "small" ]; then python small.py --check "$STORY"; else python validate_script.py "$STORY"; fi
       - name: Install FFmpeg and fonts
         run: |
           if ! command -v ffmpeg >/dev/null; then
@@ -49,7 +55,7 @@ jobs:
       - name: Render video
         run: |
           mkdir -p site/videos
-          python lesson.py "$STORY" -o site/videos
+          if [ "$FORMAT" = "small" ]; then python small.py "$STORY" -o site/videos; else python lesson.py "$STORY" -o site/videos; fi
           rm -rf site/videos/.tmp
           export STEM="$(basename "${STORY%.txt}")"
           CAP="${STORY%.txt}.caption"

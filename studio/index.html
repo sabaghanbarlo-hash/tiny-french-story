@@ -34,17 +34,20 @@ details summary{cursor:pointer;font-weight:600}
 .ok{color:var(--ok)}.err{color:var(--err)}
 video{width:100%;max-width:360px;border-radius:16px;display:block;margin:12px auto 0;background:#000}
 a{color:var(--pink)}
+.seg{display:flex;gap:10px;margin:0 0 10px}.seg button{flex:1;background:transparent;color:var(--pink);border:2px solid var(--pink)}.seg button.on{background:var(--pink);color:#0f1a2e}.modehint{margin:0 0 14px;color:var(--soft);font-size:14px}
 </style>
 </head>
 <body>
 <main>
 <h1>Tiny <span>French</span> · Video Studio</h1>
 <p class="sub">Paste a script, press the button, get a Reel.</p>
+<div class="seg"><button id="mSmall" type="button">Small</button><button id="mStory" type="button">Story</button></div>
+<p class="modehint" id="modeHint"></p>
 
 <div class="card">
 <label for="script">Script</label>
 <textarea id="script" spellcheck="false"></textarea>
-<p class="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Camille: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Camille walks to counter</code>. Characters: Camille, Julien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
+<p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Camille: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Camille walks to counter</code>. Characters: Camille, Julien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
 <label for="caption" style="margin-top:14px">Instagram caption <span style="font-weight:400;color:var(--soft)">(optional – auto-written if empty)</span></label>
 <textarea id="caption" class="small" placeholder="Leave empty for an automatic caption with today's words and hashtags"></textarea>
 <div class="check"><input type="checkbox" id="post" checked><label for="post" style="margin:0">Post to Instagram when the video is ready</label></div>
@@ -122,8 +125,33 @@ Explanation: "Il n'y a plus de" means "there is no more" - the shop has run out.
 `;
 const get=k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}};
 const set=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}};
-$("script").value=get("tfs_script")||SAMPLE;
-$("script").addEventListener("input",()=>set("tfs_script",$("script").value));
+const SAMPLE_STORY=SAMPLE;
+const SAMPLE_SMALL=`title: Meeting for the First Time
+episode: 1
+scene: cafe
+
+Adrien: Bonjour ! | Hello!
+Marinette: Bonjour ! Je m'appelle Marinette. | Hello! My name is Marinette.
+Adrien: Enchanté ! Je m'appelle Adrien. | Nice to meet you! My name is Adrien.
+Marinette: Enchantée ! Tu veux un café ? | Nice to meet you! Do you want a coffee?
+Adrien: Oui, un café, s'il te plaît. | Yes, a coffee, please.
+Marinette: Voilà ! | Here you go!
+Adrien: Merci beaucoup ! | Thank you very much!
+
+vocab: bonjour | hello
+vocab: je m'appelle | my name is
+vocab: enchanté / enchantée | nice to meet you
+vocab: s'il te plaît | please
+vocab: merci beaucoup | thank you very much
+`;
+const HINTS={small:'Two friends, Adrien and Marinette, sit in a place and chat. One line per speaker: <code>Adrien: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store. Errors show the exact line.',story:"Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Camille: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Camille walks to counter</code>. Characters: Camille, Julien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
+const MODEHINT={small:"Small: two friends sitting and chatting, like Tiny Japanese.",story:"Story: animated scenes with characters walking and acting."};
+let MODE=get("tfs_mode")==="story"?"story":"small";
+const KEY=m=>"tfs_script_"+m;
+function applyMode(m,save){if(save)set(KEY(MODE),$("script").value);MODE=m;set("tfs_mode",m);$("mSmall").classList.toggle("on",m==="small");$("mStory").classList.toggle("on",m==="story");$("script").value=get(KEY(m))||(m==="small"?SAMPLE_SMALL:SAMPLE_STORY);$("hint").innerHTML=HINTS[m];$("modeHint").textContent=MODEHINT[m]}
+$("mSmall").onclick=()=>applyMode("small",true);$("mStory").onclick=()=>applyMode("story",true);
+$("script").addEventListener("input",()=>set(KEY(MODE),$("script").value));
+applyMode(MODE,false);
 $("token").value=get("tjv_token");
 if(!get("tjv_token"))$("setup").open=true;
 $("saveTok").onclick=()=>{set("tjv_token",$("token").value.trim());say("Token saved in this browser.","ok")};
@@ -136,6 +164,11 @@ function hdr(){return{Authorization:"Bearer "+get("tjv_token"),Accept:"applicati
 async function gh(path,opt={}){const r=await fetch(API+path,{...opt,headers:hdr()});if(!r.ok){let m="";try{m=(await r.json()).message}catch(e){}throw new Error(`GitHub ${r.status}: ${m||r.statusText}`)}return r.status===204?null:r.json()}
 function slug(t){return (t||"story").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40)||"story"}
 function check(text){
+  if(MODE==="small"){
+    if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
+    if(!/^(Adrien|Marinette)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (see the sample).");
+    if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for Small).");
+    return}
   if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
   if(!/^\[story\]\s*$/im.test(text))throw new Error("Add a [story] section (see the sample).");
   if(text.length>20000)throw new Error("The script is too long (limit 20,000 characters).")}
@@ -156,7 +189,7 @@ $("run").onclick=async()=>{
     if(cap)await gh(`/contents/${base}.caption`,{method:"PUT",body:JSON.stringify({message:"Add caption",content:b64(cap+"\n"),branch:BRANCH})});
     const t0=Date.now()-5000;
     say("Starting the video job…");
-    await gh(`/actions/workflows/${WF}/dispatches`,{method:"POST",body:JSON.stringify({ref:BRANCH,inputs:{story:base+".txt",post:String(post)}})});
+    await gh(`/actions/workflows/${WF}/dispatches`,{method:"POST",body:JSON.stringify({ref:BRANCH,inputs:{story:base+".txt",post:String(post),format:MODE}})});
     let run=null;
     for(let i=0;i<30&&!run;i++){await sleep(3000);
       const r=await gh(`/actions/workflows/${WF}/runs?event=workflow_dispatch&per_page=5`);
