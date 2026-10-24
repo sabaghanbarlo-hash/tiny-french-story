@@ -1,0 +1,9 @@
+name = "tiny-french-studio"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+GH_OWNER = "sabaghanbarlo-hash"
+GH_REPO = "tiny-french-story"
+GH_REF = "main"
+# Secrets (set in Cloudflare, never in this file): GH_TOKEN, STUDIO_PASSWORD
