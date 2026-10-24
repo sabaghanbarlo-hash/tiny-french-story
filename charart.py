@@ -48,6 +48,8 @@ def extract(ref_path, out_dir):
     img = cv2.imread(ref_path)
     if img is None:
         raise FileNotFoundError(f"Cannot read the reference picture: {ref_path}")
+    if img.shape[:2] != (1448, 1086):
+        raise ValueError(f"The reference picture must be the original 1086x1448 image (this one is {img.shape[1]}x{img.shape[0]}).")
     rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     os.makedirs(out_dir, exist_ok=True)
     meta = {}

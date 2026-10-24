@@ -47,7 +47,7 @@ jobs:
       - name: Prepare character art from the reference picture (if it is in the repo)
         if: inputs.format == 'small'
         run: |
-          if [ -f assets/reference/characters.png ] && [ ! -f assets/sprites/meta.json ]; then
+          if ls assets/reference/*.png assets/reference/*.jpg assets/reference/*.jpeg >/dev/null 2>&1 && [ ! -f assets/sprites/meta.json ]; then
             pip install opencv-python-headless
             python extract_sprites.py
           fi
