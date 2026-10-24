@@ -1,0 +1,17 @@
+title: Meeting for the First Time
+episode: 1
+scene: cafe
+
+Adrien: Bonjour ! | Hello!
+Marinette: Bonjour ! Je m'appelle Marinette. | Hello! My name is Marinette.
+Adrien: Enchanté ! Je m'appelle Adrien. | Nice to meet you! My name is Adrien.
+Marinette: Enchantée ! Tu veux un café ? | Nice to meet you! Do you want a coffee?
+Adrien: Oui, un café, s'il te plaît. | Yes, a coffee, please.
+Marinette: Voilà ! | Here you go!
+Adrien: Merci beaucoup ! | Thank you very much!
+
+vocab: bonjour | hello
+vocab: je m'appelle | my name is
+vocab: enchanté / enchantée | nice to meet you
+vocab: s'il te plaît | please
+vocab: merci beaucoup | thank you very much
