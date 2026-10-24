@@ -18,10 +18,12 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from sprites import sprite, CHARS  # noqa: E402
+from charart import ref_sprite  # noqa: E402
 
 W, H, FPS, SR = 1080, 1920, 30, 24000
 CHAR_Y, TABLE_TOP, CARD_Y = 300, 885, 1040
 BRAND = (122, 150, 204)
+SCALE, BASE_Y, CENTER_X = 1.22, 905, {"Adrien": 285, "Marinette": 800}   # picture-art sprites: scale, bottom edge (behind the counter), centres
 MAX_CHARS = 8000
 SCENES = {
     "cafe": dict(top=(255, 244, 230), bot=(248, 228, 208), floor=(214, 170, 122), table=(224, 176, 126), edge=(190, 142, 98)),
@@ -309,9 +311,16 @@ def build(text, rate, dummy, tmp):
             sp = cur is not None and talk[cur]["speaker"] == nm
             bob = 5 * abs(math.sin(tt * 7)) if sp and mouth[i] else 2 * math.sin(tt * 2 + (0 if nm == "Adrien" else 1.7))
             blink = ((i + (0 if nm == "Adrien" else 41)) % 97) < 4
-            s = sprite(nm, int(mouth[i]) if sp else 0, blink)
-            fr.paste(s, (c["x"], int(CHAR_Y - bob)), s)
-            p = pills[(nm, int(sp))]; fr.paste(p, (c["x"] + s.width // 2 - p.width // 2, 322), p)
+            md = int(mouth[i]) if sp else 0
+            s = ref_sprite(nm, md, blink, SCALE)
+            if s is not None:                                   # cut out from the reference picture
+                x, y = CENTER_X[nm] - s.width // 2, int(BASE_Y - s.height - bob)
+                fr.paste(s, (x, y), s)
+                p = pills[(nm, int(sp))]; fr.paste(p, (CENTER_X[nm] - p.width // 2, y - 24), p)
+            else:                                               # drawn fallback until the picture is added to the repo
+                s = sprite(nm, md, blink)
+                fr.paste(s, (c["x"], int(CHAR_Y - bob)), s)
+                p = pills[(nm, int(sp))]; fr.paste(p, (c["x"] + s.width // 2 - p.width // 2, 322), p)
         fr.paste(fg, (0, TABLE_TOP - 55), fg)
         card, t0 = None, 0
         if tt >= vstart and vcards:
