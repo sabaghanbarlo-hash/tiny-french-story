@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#12151f">
+<title>Tiny French · Video Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#12151f;--card:#1e1822;--field:#120e16;--pink:#8fb4f5;--ink:#f4eaed;--soft:#a99aa1;--line:#3a2f3a;--ok:#6cc58c;--err:#ff7a70}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.5rem;margin:0 0 4px}h1 span{color:var(--pink)}
+p.sub{margin:0 0 20px;color:var(--soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 8px 28px rgba(0,0,0,.35)}
+label{display:block;font-weight:600;margin:0 0 6px}
+textarea,input[type=password],input[type=text]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--field);color:var(--ink)}
+textarea::placeholder,input::placeholder{color:#7a6c74}
+textarea:focus,input:focus{outline:2px solid var(--pink);outline-offset:1px}
+textarea{min-height:300px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.55}
+textarea.small{min-height:90px}
+code{background:var(--field);padding:1px 6px;border-radius:6px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.check{display:flex;gap:8px;align-items:center;font-weight:600;margin:12px 0}
+.check input{accent-color:var(--pink);width:18px;height:18px}
+button{border:0;border-radius:999px;background:var(--pink);color:#0f1a2e;font:inherit;font-weight:700;padding:14px 28px;cursor:pointer;width:100%;font-size:1.05rem}
+button:hover{filter:brightness(1.08)}
+button:disabled{opacity:.55;cursor:wait}
+button.ghost{background:transparent;color:var(--pink);border:1px solid var(--pink);width:auto;padding:8px 16px;font-size:.9rem}
+details summary{cursor:pointer;font-weight:600}
+.hint{color:var(--soft);font-size:.88rem;margin:8px 0 0}
+#status{white-space:pre-wrap;font-size:.95rem}
+.ok{color:var(--ok)}.err{color:var(--err)}
+video{width:100%;max-width:360px;border-radius:16px;display:block;margin:12px auto 0;background:#000}
+a{color:var(--pink)}
+</style>
+</head>
+<body>
+<main>
+<h1>Tiny <span>French</span> · Video Studio</h1>
+<p class="sub">Paste a script, press the button, get a Reel.</p>
+
+<div class="card">
+<label for="script">Script</label>
+<textarea id="script" spellcheck="false"></textarea>
+<p class="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Camille: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Camille walks to counter</code>. Characters: Camille, Julien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
+<label for="caption" style="margin-top:14px">Instagram caption <span style="font-weight:400;color:var(--soft)">(optional – auto-written if empty)</span></label>
+<textarea id="caption" class="small" placeholder="Leave empty for an automatic caption with today's words and hashtags"></textarea>
+<div class="check"><input type="checkbox" id="post" checked><label for="post" style="margin:0">Post to Instagram when the video is ready</label></div>
+<button id="run">Make video</button>
+</div>
+
+<div class="card"><div id="status">Ready.</div><div id="result"></div></div>
+
+<div class="card">
+<details id="setup">
+<summary>One-time setup: GitHub access token</summary>
+<p class="hint">Create a fine-grained token at GitHub → Settings → Developer settings → Fine-grained tokens. Limit it to the repository <b>tiny-french-story</b> with <b>Contents: read/write</b> and <b>Actions: read/write</b>. It is saved only in this browser. If you already saved a token for Tiny Japanese on this device and it covers tiny-french-story, it is already filled in.</p>
+<label for="token" style="margin-top:10px">Token</label>
+<input id="token" type="password" autocomplete="off" placeholder="github_pat_…">
+<div class="row" style="margin-top:10px"><button class="ghost" id="saveTok" type="button">Save token</button><button class="ghost" id="clearTok" type="button">Forget token</button></div>
+</details>
+</div>
+</main>
+
+<script>
+const OWNER="sabaghanbarlo-hash", REPO="tiny-french-story", BRANCH="main", WF="generate.yml";
+const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
+const $=id=>document.getElementById(id);
+const SAMPLE=`title: Un croissant pour Julien
+episode: 3
+scene: bakery
+cover: Croissant Time
+
+[story]
+@scene bakery
+> Camille enters left
+& Julien enters left
+> Camille walks to counter
+Camille: Bonjour ! Un croissant, s'il vous plaît. | Hello! A croissant, please.
+> Camille buys a croissant
+> Julien looks at the display
+Julien: Moi aussi ! Un croissant, s'il vous plaît. | Me too! A croissant, please.
+> Julien walks to display
+& Julien looks confused
+Julien: Oh non ! Il n'y a plus de croissants. | Oh no! There are no more croissants.
+> Camille looks worried
+Camille: Ça va, Julien ? | Are you OK, Julien?
+Julien: J'ai faim ! | I'm hungry!
+> Camille gives the croissant to Julien
+Camille: Tiens ! Un croissant pour toi. | Here you go! A croissant for you.
+> Julien looks happy
+Julien: Merci beaucoup, Camille ! | Thank you very much, Camille!
+> Julien eats the croissant
+Julien: Mmm, il est délicieux ! | Mmm, it's delicious!
+> Camille cheers
+Camille: De rien ! À demain ! | You're welcome! See you tomorrow!
+
+[vocab]
+- s'il vous plaît — please
+  Example: Un croissant, s'il vous plaît.
+- merci beaucoup — thank you very much
+  Example: Merci beaucoup, Camille !
+- tiens — here you go
+  Example: Tiens ! Un croissant pour toi.
+- délicieux — delicious
+  Example: Il est délicieux !
+
+[grammar]
+- Il n'y a plus de + noun — There is no more...
+  Example 1: Il n'y a plus de croissants.
+  Example 2: Il n'y a plus de café.
+
+[quiz]
+Q: What does "Il n'y a plus de croissants" mean?
+A) There are no more croissants.
+B) There are many croissants.
+C) I want a croissant.
+Answer: A
+Explanation: "Il n'y a plus de" means "there is no more" - the shop has run out.
+`;
+const get=k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}};
+const set=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}};
+$("script").value=get("tfs_script")||SAMPLE;
+$("script").addEventListener("input",()=>set("tfs_script",$("script").value));
+$("token").value=get("tjv_token");
+if(!get("tjv_token"))$("setup").open=true;
+$("saveTok").onclick=()=>{set("tjv_token",$("token").value.trim());say("Token saved in this browser.","ok")};
+$("clearTok").onclick=()=>{set("tjv_token","");$("token").value="";say("Token removed.")};
+
+function say(t,cls){const s=$("status");s.textContent=t;s.className=cls||""}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const b64=s=>{const b=new TextEncoder().encode(s);let o="";b.forEach(c=>o+=String.fromCharCode(c));return btoa(o)};
+function hdr(){return{Authorization:"Bearer "+get("tjv_token"),Accept:"application/vnd.github+json","Content-Type":"application/json"}}
+async function gh(path,opt={}){const r=await fetch(API+path,{...opt,headers:hdr()});if(!r.ok){let m="";try{m=(await r.json()).message}catch(e){}throw new Error(`GitHub ${r.status}: ${m||r.statusText}`)}return r.status===204?null:r.json()}
+function slug(t){return (t||"story").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40)||"story"}
+function check(text){
+  if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
+  if(!/^\[story\]\s*$/im.test(text))throw new Error("Add a [story] section (see the sample).");
+  if(text.length>20000)throw new Error("The script is too long (limit 20,000 characters).")}
+
+$("run").onclick=async()=>{
+  const btn=$("run");$("result").innerHTML="";
+  try{
+    if(!get("tjv_token")){$("setup").open=true;throw new Error("Add your GitHub token first (setup box below).")}
+    const text=$("script").value.trim();check(text);
+    btn.disabled=true;
+    const title=(text.match(/^title\s*:\s*(.+)$/im)||[])[1]||"story";
+    const stamp=new Date().toISOString().slice(0,16).replace(/[-:T]/g,"");
+    const base=`lessons/web/${stamp}-${slug(title)}`;
+    const post=$("post").checked;
+    say("Saving script…");
+    await gh(`/contents/${base}.txt`,{method:"PUT",body:JSON.stringify({message:"Add story: "+title,content:b64(text+"\n"),branch:BRANCH})});
+    const cap=$("caption").value.trim();
+    if(cap)await gh(`/contents/${base}.caption`,{method:"PUT",body:JSON.stringify({message:"Add caption",content:b64(cap+"\n"),branch:BRANCH})});
+    const t0=Date.now()-5000;
+    say("Starting the video job…");
+    await gh(`/actions/workflows/${WF}/dispatches`,{method:"POST",body:JSON.stringify({ref:BRANCH,inputs:{story:base+".txt",post:String(post)}})});
+    let run=null;
+    for(let i=0;i<30&&!run;i++){await sleep(3000);
+      const r=await gh(`/actions/workflows/${WF}/runs?event=workflow_dispatch&per_page=5`);
+      run=(r.workflow_runs||[]).find(x=>new Date(x.created_at).getTime()>=t0)}
+    if(!run)throw new Error("The job didn't start. Check the Actions tab on GitHub.");
+    const started=Date.now();
+    for(;;){await sleep(8000);
+      run=await gh(`/actions/runs/${run.id}`);
+      const mins=Math.floor((Date.now()-started)/60000);
+      say(`Rendering… (${run.status.replace("_"," ")}, ${mins} min)  This takes a few minutes.`);
+      if(run.status==="completed")break}
+    if(run.conclusion!=="success"){
+      let why="";try{const j=await gh(`/actions/runs/${run.id}/jobs`);const bad=j.jobs.find(x=>x.conclusion==="failure");if(bad){const st=(bad.steps.find(s=>s.conclusion==="failure")||{}).name||bad.name;why=` Failed step: "${st}".`;try{const an=await gh(`/check-runs/${bad.id}/annotations`);const m=an.filter(x=>x.annotation_level==="failure").map(x=>x.message).join("\n");if(m)why="\n"+m}catch(e){}}}catch(e){}
+      throw new Error("The job didn't finish."+why+"\n"+run.html_url)}
+    const url=`${location.origin}${location.pathname.replace(/[^/]*$/,"")}videos/${base.split("/").pop()}.mp4`;
+    say(post?"Done – video made and posted to Instagram.":"Done – video is ready.","ok");
+    $("result").innerHTML=`<video controls playsinline poster="${url.replace(/\.mp4$/,".jpg")}" src="${url}"></video><p style="text-align:center;margin:8px 0 0"><a href="${url.replace(/\.mp4$/,".jpg")}" download>Download cover (JPG)</a></p><p style="text-align:center"><a href="${url}" download>Download MP4</a> · <a href="${url.replace(/\.mp4$/,".srt")}" download>Subtitles</a> · <a href="${run.html_url}" target="_blank" rel="noopener">View job</a></p>`;
+  }catch(e){say(String(e.message||e),"err")}
+  finally{btn.disabled=false}
+};
+</script>
+</body>
+</html>

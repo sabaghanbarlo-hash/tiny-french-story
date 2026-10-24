@@ -1,18 +1,15 @@
 name: Generate lesson video
-run-name: Lesson ${{ inputs.job }}
+run-name: Lesson ${{ inputs.story }}
 
 on:
   workflow_dispatch:
     inputs:
-      job:
-        description: "Job id (8-32 hex characters, made by the studio page)"
+      story:
+        description: "Script file in the repo, e.g. lessons/web/202610241200-my-lesson.txt"
         required: true
-      script:
-        description: "The lesson script text"
-        required: true
-      mode:
-        description: "check = validate only | render = make the video | post = make the video and post it to Instagram"
-        default: "render"
+      post:
+        description: "Post to Instagram right after rendering? (true/false)"
+        default: "false"
 
 permissions:
   contents: read
@@ -26,27 +23,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     env:
-      JOB: ${{ inputs.job }}
-      MODE: ${{ inputs.mode }}
-      SCRIPT: ${{ inputs.script }}
+      STORY: ${{ inputs.story }}
     steps:
       - uses: actions/checkout@v4
       - name: Check inputs
         run: |
-          [[ "$JOB" =~ ^[a-f0-9]{8,32}$ ]] || { echo "::error::Bad job id"; exit 1; }
-          case "$MODE" in check|render|post) ;; *) echo "::error::Bad mode"; exit 1;; esac
+          [[ "$STORY" =~ ^lessons/[A-Za-z0-9._/-]+\.txt$ ]] && [[ "$STORY" != *..* ]] || { echo "::error::Bad script path"; exit 1; }
+          [ -f "$STORY" ] || { echo "::error::Script file not found: $STORY"; exit 1; }
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
       - name: Install Python packages
         run: pip install -r requirements.txt
-      - name: Save the script
-        run: printf '%s\n' "$SCRIPT" > "lesson-$JOB.txt"
       - name: Check the script
-        run: python validate_script.py "lesson-$JOB.txt"
+        run: python validate_script.py "$STORY"
       - name: Install FFmpeg and fonts
-        if: inputs.mode != 'check'
         run: |
           if ! command -v ffmpeg >/dev/null; then
             sudo apt-get update -y -o Acquire::Retries=3 || true
@@ -55,38 +47,36 @@ jobs:
           sudo apt-get install -y --no-install-recommends fonts-dejavu-core fonts-liberation || true
           ffmpeg -version | head -1
       - name: Render video
-        if: inputs.mode != 'check'
         run: |
           mkdir -p site/videos
-          python lesson.py "lesson-$JOB.txt" -o site/videos
+          python lesson.py "$STORY" -o site/videos
           rm -rf site/videos/.tmp
+          export STEM="$(basename "${STORY%.txt}")"
+          CAP="${STORY%.txt}.caption"
+          if [ -s "$CAP" ]; then cp "$CAP" "site/videos/$STEM.caption.txt"; fi
           python - <<'PY'
           import os
           from PIL import Image
-          j = os.environ["JOB"]
-          Image.open(f"site/videos/lesson-{j}.cover.png").convert("RGB").save(f"site/videos/lesson-{j}.jpg", quality=92)
+          s = os.environ["STEM"]
+          Image.open(f"site/videos/{s}.cover.png").convert("RGB").save(f"site/videos/{s}.jpg", quality=92)
           PY
           ls -la site/videos
-          { echo "### Lesson $JOB"; echo; echo '```'; cat "site/videos/lesson-$JOB.caption.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
-      - name: Prepare site
-        if: inputs.mode != 'check'
-        run: echo '<!doctype html><meta charset="utf-8"><title>Tiny French videos</title><p>Tiny French videos.' > site/index.html
+          { echo "### $STEM"; echo; echo '```'; cat "site/videos/$STEM.caption.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Prepare site (studio page)
+        run: cp studio/index.html site/index.html
       - name: Keep all files as a download
-        if: inputs.mode != 'check'
         uses: actions/upload-artifact@v4
         with:
-          name: lesson-${{ inputs.job }}
+          name: videos
           path: site/videos
           retention-days: 14
       - name: Upload site
-        if: inputs.mode != 'check'
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
   deploy:
     needs: render
-    if: inputs.mode != 'check'
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -100,15 +90,15 @@ jobs:
 
   instagram:
     needs: deploy
-    if: inputs.mode == 'post'
+    if: inputs.post == 'true'
     runs-on: ubuntu-latest
     env:
-      JOB: ${{ inputs.job }}
+      STORY: ${{ inputs.story }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: lesson-${{ inputs.job }}
+          name: videos
           path: out
       - name: Publish Reel to Instagram
         env:
@@ -116,6 +106,7 @@ jobs:
           IG_ACCOUNT: ${{ vars.IG_ACCOUNT }}
           PAGES_BASE: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
         run: |
+          STEM="$(basename "${STORY%.txt}")"
           if [ -z "$COMPOSIO_API_KEY" ]; then echo "::error::Add the COMPOSIO_API_KEY repository secret to enable Instagram posting."; exit 1; fi
-          python -u publish.py "out/lesson-$JOB.caption.txt" "lesson-$JOB" | tee publish.log
+          python -u publish.py "out/$STEM.caption.txt" "$STEM" | tee publish.log
           grep -q "^PUBLISHED on Instagram" publish.log
