@@ -44,13 +44,6 @@ jobs:
       - name: Check the script
         run: |
           if [ "$FORMAT" = "small" ]; then python small.py --check "$STORY"; else python validate_script.py "$STORY"; fi
-      - name: Prepare character art from the reference picture (if it is in the repo)
-        if: inputs.format == 'small'
-        run: |
-          if ls assets/reference/*.png assets/reference/*.jpg assets/reference/*.jpeg >/dev/null 2>&1 && [ ! -f assets/sprites/meta.json ]; then
-            pip install opencv-python-headless
-            python extract_sprites.py
-          fi
       - name: Install FFmpeg and fonts
         run: |
           if ! command -v ffmpeg >/dev/null; then

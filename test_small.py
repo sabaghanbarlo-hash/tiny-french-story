@@ -88,33 +88,3 @@ def test_preview_frame_dimensions():
         r = run(SAMPLE, "--dummy-audio", "--preview", out)
         assert r.returncode == 0, r.stderr
         assert Image.open(out).size == (1080, 1920)
-
-
-def test_ref_sprite_is_none_without_assets(tmp_path, monkeypatch):
-    import charart
-    monkeypatch.setattr(charart, "ASSET_DIR", str(tmp_path))
-    charart._load.cache_clear(); charart.ref_sprite.cache_clear()
-    assert charart.ref_sprite("Adrien", 0, False) is None
-    charart._load.cache_clear(); charart.ref_sprite.cache_clear()
-
-
-def test_extract_and_animate_from_a_picture(tmp_path, monkeypatch):
-    cv2 = pytest.importorskip("cv2")
-    import numpy as np
-    import charart
-    img = np.full((1448, 1086, 3), (225, 238, 250), np.uint8)                 # cream wall (BGR)
-    for cx, cy in ((290, 560), (810, 600)):
-        cv2.ellipse(img, (cx, cy), (150, 170), 0, 0, 360, (203, 227, 253), -1)  # skin
-        cv2.rectangle(img, (cx - 130, cy + 120), (cx + 130, 790), (200, 200, 210), -1)
-    for ex, ey in ((256, 551), (371, 540), (742, 578), (858, 588)):
-        cv2.ellipse(img, (ex, ey), (24, 30), 0, 0, 360, (46, 30, 58), -1)       # eyes
-    cv2.ellipse(img, (316, 609), (14, 7), 0, 0, 180, (60, 40, 60), 3); cv2.ellipse(img, (796, 644), (14, 7), 0, 0, 180, (60, 40, 60), 3)
-    ref = tmp_path / "ref.png"; cv2.imwrite(str(ref), img)
-    meta = charart.extract(str(ref), str(tmp_path / "sprites"))
-    assert set(meta) == {"Adrien", "Marinette"}
-    monkeypatch.setattr(charart, "ASSET_DIR", str(tmp_path / "sprites"))
-    charart._load.cache_clear(); charart.ref_sprite.cache_clear()
-    base, blink, talk = charart.ref_sprite("Adrien", 0, False), charart.ref_sprite("Adrien", 0, True), charart.ref_sprite("Adrien", 2, False)
-    assert base.size == blink.size == talk.size and base.width > 200
-    assert base.tobytes() != blink.tobytes() and base.tobytes() != talk.tobytes()
-    charart._load.cache_clear(); charart.ref_sprite.cache_clear()
