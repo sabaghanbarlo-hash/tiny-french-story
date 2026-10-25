@@ -1,12 +1,12 @@
 1
 00:00:05,730 --> 00:00:08,308
-Salut, Julien !
-Hi, Julien!
+Salut, Adrien !
+Hi, Adrien!
 
 2
 00:00:10,508 --> 00:00:14,574
-Salut, Camille ! Ça va ?
-Hi, Camille! How are you?
+Salut, Marinette ! Ça va ?
+Hi, Marinette! How are you?
 
 3
 00:00:15,624 --> 00:00:18,514
@@ -60,8 +60,8 @@ What a beautiful day!
 
 13
 00:01:17,180 --> 00:01:19,878
-À demain, Camille !
-See you tomorrow, Camille!
+À demain, Marinette !
+See you tomorrow, Marinette!
 
 14
 00:01:22,468 --> 00:01:24,732

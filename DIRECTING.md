@@ -5,14 +5,14 @@ Generated from the code (python -m tinyfr.docsgen). Everything below is implemen
 ## Script layout
 - header lines: title:, episode:, scene: (first scene), optional cover: (short English cover title)
 - sections in this order, all required: [story], [vocab], [grammar], [quiz]
-- Spoken line: Camille: Bonjour ! | Hello!   (French, a bar, English translation; an optional third field is a pronunciation hint)
-- Speakers: Camille, Julien only.
+- Spoken line: Marinette: Bonjour ! | Hello!   (French, a bar, English translation; an optional third field is a pronunciation hint)
+- Speakers: Marinette, Adrien only.
 - A line starting with > is a direction and starts a new beat. A line starting with & runs at the same time as the previous beat.
-- @scene <place> cuts to a new scene; both characters start at their home spots (Camille left, Julien right) unless the next directions say enters.
+- @scene <place> cuts to a new scene; both characters start at their home spots (Marinette left, Adrien right) unless the next directions say enters.
 - Directions never speak. Characters finish a beat before the next spoken line starts.
 
 ## Directions
-Camille, Julien or Both + one of:
+Marinette, Adrien or Both + one of:
 - enters left|right [to <spot>]
 - exits left|right
 - walks to <spot>
@@ -64,49 +64,49 @@ confused, embarrassed, excited, happy, neutral, sad, shy, surprised, worried (al
 croissant, baguette, macaron, coffee, juice, menu, book, notebook, bag, ticket, phone, map, umbrella, flowers, ice cream
 
 ## Reel facts
-- 1080x1920, 24 fps, French voices: Camille = fr-FR-DeniseNeural, Julien = fr-FR-HenriNeural.
+- 1080x1920, 24 fps, French voices: Marinette = fr-FR-DeniseNeural, Adrien = fr-FR-HenriNeural.
 - The video shows: title card, animated story, vocabulary cards, grammar card, one quiz question with its answer, closing card.
 - Keep spoken lines short: each line is also shown as French over English on screen.
 
 ## Not supported yet (do not use)
-Scenes: supermarket, bookstore, restaurant, train station, museum, Eiffel Tower viewpoint, airport, market, library, beach, school courtyard, apartment. Objects: bicycle, pen. Any character other than Camille and Julien.
+Scenes: supermarket, bookstore, restaurant, train station, museum, Eiffel Tower viewpoint, airport, market, library, beach, school courtyard, apartment. Objects: bicycle, pen. Any character other than Marinette and Adrien.
 
 ## Working example
 ```
-title: Un croissant pour Julien
+title: Un croissant pour Adrien
 episode: 3
 scene: bakery
 cover: Croissant Time
 
 [story]
 @scene bakery
-> Camille enters left
-& Julien enters left
-> Camille walks to counter
-Camille: Bonjour ! Un croissant, s'il vous plaît. | Hello! A croissant, please.
-> Camille buys a croissant
-> Julien looks at the display
-Julien: Moi aussi ! Un croissant, s'il vous plaît. | Me too! A croissant, please.
-> Julien walks to display
-& Julien looks confused
-Julien: Oh non ! Il n'y a plus de croissants. | Oh no! There are no more croissants.
-> Camille looks worried
-Camille: Ça va, Julien ? | Are you OK, Julien?
-Julien: J'ai faim ! | I'm hungry!
-> Camille gives the croissant to Julien
-Camille: Tiens ! Un croissant pour toi. | Here you go! A croissant for you.
-> Julien looks happy
-Julien: Merci beaucoup, Camille ! | Thank you very much, Camille!
-> Julien eats the croissant
-Julien: Mmm, il est délicieux ! | Mmm, it's delicious!
-> Camille cheers
-Camille: De rien ! À demain ! | You're welcome! See you tomorrow!
+> Marinette enters left
+& Adrien enters left
+> Marinette walks to counter
+Marinette: Bonjour ! Un croissant, s'il vous plaît. | Hello! A croissant, please.
+> Marinette buys a croissant
+> Adrien looks at the display
+Adrien: Moi aussi ! Un croissant, s'il vous plaît. | Me too! A croissant, please.
+> Adrien walks to display
+& Adrien looks confused
+Adrien: Oh non ! Il n'y a plus de croissants. | Oh no! There are no more croissants.
+> Marinette looks worried
+Marinette: Ça va, Adrien ? | Are you OK, Adrien?
+Adrien: J'ai faim ! | I'm hungry!
+> Marinette gives the croissant to Adrien
+Marinette: Tiens ! Un croissant pour toi. | Here you go! A croissant for you.
+> Adrien looks happy
+Adrien: Merci beaucoup, Marinette ! | Thank you very much, Marinette!
+> Adrien eats the croissant
+Adrien: Mmm, il est délicieux ! | Mmm, it's delicious!
+> Marinette cheers
+Marinette: De rien ! À demain ! | You're welcome! See you tomorrow!
 
 [vocab]
 - s'il vous plaît — please
   Example: Un croissant, s'il vous plaît.
 - merci beaucoup — thank you very much
-  Example: Merci beaucoup, Camille !
+  Example: Merci beaucoup, Marinette !
 - tiens — here you go
   Example: Tiens ! Un croissant pour toi.
 - délicieux — delicious

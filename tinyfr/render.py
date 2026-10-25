@@ -172,10 +172,10 @@ def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz
         t = tend
     if "vocab" in sections:
         for v in script.vocab:
-            x = speak(v.term, CHARS["Camille"]["voice"]); parts = [(0.3, x)]; d = 0.3 + len(x) / SR + 0.5
+            x = speak(v.term, CHARS["Marinette"]["voice"]); parts = [(0.3, x)]; d = 0.3 + len(x) / SR + 0.5
             ex = v.examples[0] if v.examples else None
             if ex:
-                y = speak(ex[0], CHARS["Julien"]["voice"]); parts.append((d, y)); d += len(y) / SR + 0.8
+                y = speak(ex[0], CHARS["Adrien"]["voice"]); parts.append((d, y)); d += len(y) / SR + 0.8
             for off, a in parts: place(t + off, a)
             segs.append(dict(kind="vocab", t0=t, t1=t + max(d, 3.2), term=v.term, meaning=v.meaning, example=ex))
             cues.append((t + 0.3, t + 0.3 + len(x) / SR + 0.2, v.term, v.meaning)); t += max(d, 3.2)
@@ -183,7 +183,7 @@ def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz
         for g in script.grammar:
             d = 0.6; parts = []
             for i, (fr, en) in enumerate(g.examples[:2]):
-                a = speak(fr, CHARS["Camille" if i == 0 else "Julien"]["voice"]); parts.append((d, a)); d += len(a) / SR + 0.9
+                a = speak(fr, CHARS["Marinette" if i == 0 else "Adrien"]["voice"]); parts.append((d, a)); d += len(a) / SR + 0.9
             for off, a in parts: place(t + off, a)
             segs.append(dict(kind="grammar", t0=t, t1=t + max(d + 1.2, 6.0), pattern=g.pattern, meaning=g.meaning, examples=g.examples)); t += max(d + 1.2, 6.0)
     if "quiz" in sections:

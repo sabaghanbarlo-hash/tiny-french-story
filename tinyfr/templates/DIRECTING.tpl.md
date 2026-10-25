@@ -5,14 +5,14 @@ Generated from the code (python -m tinyfr.docsgen). Everything below is implemen
 ## Script layout
 - header lines: title:, episode:, scene: (first scene), optional cover: (short English cover title)
 - sections in this order, all required: [story], [vocab], [grammar], [quiz]
-- Spoken line: Camille: Bonjour ! | Hello!   (French, a bar, English translation; an optional third field is a pronunciation hint)
+- Spoken line: Marinette: Bonjour ! | Hello!   (French, a bar, English translation; an optional third field is a pronunciation hint)
 - Speakers: @@SPEAKERS@@ only.
 - A line starting with > is a direction and starts a new beat. A line starting with & runs at the same time as the previous beat.
-- @scene <place> cuts to a new scene; both characters start at their home spots (Camille left, Julien right) unless the next directions say enters.
+- @scene <place> cuts to a new scene; both characters start at their home spots (Marinette left, Adrien right) unless the next directions say enters.
 - Directions never speak. Characters finish a beat before the next spoken line starts.
 
 ## Directions
-Camille, Julien or Both + one of:
+Marinette, Adrien or Both + one of:
 @@VERBS@@
 
 Base verbs also work with Both (Both walk to counter). Targets for walks to / enters ... to: a scene spot, left, center, right, home, next to <name>, or a percentage such as 40%.
@@ -32,12 +32,12 @@ Base verbs also work with Both (Both walk to counter). Targets for walks to / en
 @@ITEMS@@
 
 ## Reel facts
-- 1080x1920, 24 fps, French voices: Camille = fr-FR-DeniseNeural, Julien = fr-FR-HenriNeural.
+- 1080x1920, 24 fps, French voices: Marinette = fr-FR-DeniseNeural, Adrien = fr-FR-HenriNeural.
 - The video shows: title card, animated story, vocabulary cards, grammar card, one quiz question with its answer, closing card.
 - Keep spoken lines short: each line is also shown as French over English on screen.
 
 ## Not supported yet (do not use)
-Scenes: supermarket, bookstore, restaurant, train station, museum, Eiffel Tower viewpoint, airport, market, library, beach, school courtyard, apartment. Objects: bicycle, pen. Any character other than Camille and Julien.
+Scenes: supermarket, bookstore, restaurant, train station, museum, Eiffel Tower viewpoint, airport, market, library, beach, school courtyard, apartment. Objects: bicycle, pen. Any character other than Marinette and Adrien.
 
 ## Working example
 @@EXAMPLE@@

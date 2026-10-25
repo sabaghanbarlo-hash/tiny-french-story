@@ -6,8 +6,8 @@ from .parser import ScriptError, Say, Direction, SceneChange
 from . import scenes as SC
 from . import items as IT
 
-NAMES = ("Camille", "Julien")
-HOME = {"Camille": 300, "Julien": 780}
+NAMES = ("Marinette", "Adrien")
+HOME = {"Marinette": 300, "Adrien": 780}
 SPEED, RUN = 500.0, 820.0
 MIN_GAP = 190
 EXPRS = {"neutral": "neutral", "happy": "happy", "glad": "happy", "smiling": "happy", "sad": "sad", "confused": "confused", "puzzled": "confused",
@@ -33,8 +33,8 @@ def parse_dir(text, ln=0):
     t = re.sub(r"\s+", " ", text.strip().rstrip(".!").lower())
     m = re.match(r"^wait (?:for )?(\d+(?:\.\d+)?)(?: seconds?| s)?$", t)
     if m: return [Op("", "wait", m.group(1), ln)]
-    m = re.match(r"^(camille|julien|both)\s+(.+)$", t)
-    if not m: raise ScriptError(f"line {ln}: a direction must start with Camille, Julien or both (or be 'wait N'): {text!r}")
+    m = re.match(r"^(marinette|adrien|both)\s+(.+)$", t)
+    if not m: raise ScriptError(f"line {ln}: a direction must start with Marinette, Adrien or both (or be 'wait N'): {text!r}")
     ops, rest = [], m.group(2)
     first, _, tail = rest.partition(" ")
     rest = BASE_VERBS.get(first, first) + (" " + tail if tail else "")
@@ -70,7 +70,7 @@ def parse_dir(text, ln=0):
         add("eat" if mm.group(1) == "eats" else "drink", it or ""); return ops
     mm = re.match(r"^(?:drops|finishes|puts away|puts)(?: (.+?))?(?: away)?$", rest)
     if mm: add("drop", (IT.find(mm.group(1)) or "") if mm.group(1) else ""); return ops
-    mm = re.match(r"^gives (.+?) to (camille|julien)$", rest)
+    mm = re.match(r"^gives (.+?) to (marinette|adrien)$", rest)
     if mm:
         what = mm.group(1); it = "" if what in ("it", "that", "them") else IT.find(what)
         if what not in ("it", "that", "them") and not it: raise ScriptError(f"line {ln}: unsupported item {what!r}; supported items: {', '.join(IT.ITEMS)}")
@@ -103,7 +103,7 @@ class Stage:
             return {"left": 150, "right": W - 150, "center": W // 2, "centre": W // 2, "home": HOME[n]}[a]
         m = re.match(r"^(\d{1,3})\s*%$", a)
         if m: return W * int(m.group(1)) / 100
-        m = re.match(r"^next to (camille|julien)$", a)
+        m = re.match(r"^next to (marinette|adrien)$", a)
         if m:
             tgt = self.cur[m.group(1).title()]
             if not tgt["on"]: raise ScriptError(f"line {ln}: {m.group(1).title()} is not on stage to stand next to")
@@ -153,7 +153,7 @@ class Stage:
                 self._need_on(n, ln); self.expr[n].append((s, op.arg)); cursor[n] = s + 0.35
             elif op.verb == "lookat":
                 self._need_on(n, ln); a = op.arg
-                if a in ("camille", "julien"):
+                if a in ("marinette", "adrien"):
                     tg = a.title(); self._need_on(tg, ln); self.face[n].append((s, 1 if self.cur[tg]["x"] >= c["x"] else -1))
                 else:
                     x = self.resolve(n, a, ln); self.face[n].append((s, 1 if x >= c["x"] else -1))
@@ -161,8 +161,8 @@ class Stage:
             elif op.verb == "face":
                 self._need_on(n, ln); a = op.arg
                 if a in ("left", "right"): self.face[n].append((s, -1 if a == "left" else 1))
-                elif a in ("camille", "julien"): self._need_on(a.title(), ln); self.face[n].append((s, 1 if self.cur[a.title()]["x"] >= c["x"] else -1))
-                else: raise ScriptError(f"line {ln}: 'faces' needs Camille, Julien, left or right (got {a!r})")
+                elif a in ("marinette", "adrien"): self._need_on(a.title(), ln); self.face[n].append((s, 1 if self.cur[a.title()]["x"] >= c["x"] else -1))
+                else: raise ScriptError(f"line {ln}: 'faces' needs Marinette, Adrien, left or right (got {a!r})")
                 cursor[n] = s + 0.3
             elif op.verb == "gesture":
                 self._need_on(n, ln); name, dur = GESTURES[op.arg]; cursor[n] = self._act(n, s, name, dur)
@@ -218,13 +218,13 @@ class Stage:
         vis = -230 < x < W + 230; ovis = -230 < ox < W + 230
         fv = self._last(self.face[n], t)[1]
         if fv == "auto":
-            fv = (1 if ox >= x else -1) if ovis and vis and abs(ox - x) > 1 else (1 if n == "Camille" else -1)
+            fv = (1 if ox >= x else -1) if ovis and vis and abs(ox - x) > 1 else (1 if n == "Marinette" else -1)
         expr = self._last(self.expr[n], t)[1]; it = self._last(self.item[n], t)
         act, ap = None, 0.0
         for a0, a1, nm in self.acts[n]:
             if a0 <= t < a1: act, ap = nm, (t - a0) / (a1 - a0)
         lane = 0.0
-        if moving and ovis and not (omoving and n == "Camille"):
+        if moving and ovis and not (omoving and n == "Marinette"):
             lane = -70 * _ss(1 - (abs(x - ox) - 90) / 150)
         return dict(x=x, vis=vis, moving=moving, face=fv, expr=expr, act=act, ap=ap, item=it[1], bites=it[2], lane=lane, walking=1.0 if moving else 0.0, phase=x / 52.0)
 

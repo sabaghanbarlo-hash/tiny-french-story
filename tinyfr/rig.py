@@ -1,4 +1,4 @@
-"""Camille and Julien: one rigged drawing each (fixed proportions, outfit, hair). Poses only change limbs, face and held item."""
+"""Marinette and Adrien: one rigged drawing each (fixed proportions, outfit, hair). Poses only change limbs, face and held item."""
 import math
 from PIL import Image, ImageDraw, ImageChops
 from .config import CHARS
@@ -6,6 +6,31 @@ from . import items as IT
 
 SW, SH, CX, FY = 840, 1000, 420, 920
 HEAD_K = 1.22   # chibi head scale about the neck
+K_HEAD = 0.63   # scale from the face design shared with the Small videos (560-wide canvas)
+
+
+def _bez(p0, p1, p2, n=14):
+    return [((1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t * t * p2[0], (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t * t * p2[1]) for t in [i / n for i in range(n + 1)]]
+
+
+def _lock(root, ctrl, tip, width, n=14):
+    """Pointed hair lock along a curve: thick in the middle, sharp at the tip."""
+    c = _bez(root, ctrl, tip, n); left, right = [], []
+    for i, (x, y) in enumerate(c):
+        a = c[min(i + 1, n)]; b = c[max(i - 1, 0)]
+        dx, dy = a[0] - b[0], a[1] - b[1]; L = math.hypot(dx, dy) or 1
+        nx, ny = -dy / L, dx / L
+        w = 0 if i == n else width * math.sin(math.pi * (0.12 + 0.88 * i / n) ** 0.9) * (1 - 0.15 * i / n) / 2
+        left.append((x + nx * w, y + ny * w)); right.append((x - nx * w, y - ny * w))
+    return left + right[::-1]
+
+
+def _mk(d, cx, hy):
+    T = lambda p: (cx + (p[0] - 280) * K_HEAD, hy + (p[1] - 308) * K_HEAD)
+    poly = lambda pts, col: d.polygon([T(p) for p in pts], fill=col)
+    ell = lambda b, col: d.ellipse((*T((b[0], b[1])), *T((b[2], b[3]))), fill=col)
+    line = lambda pts, col, w: d.line([T(p) for p in pts], fill=col, width=max(2, int(w * K_HEAD * 1.2)), joint="curve")
+    return poly, ell, line
 
 def _arm(d, sx, sy, hx, hy, col, skin, side, w=46):
     ex, ey = sx + (hx - sx) * 0.5 + side * 16, sy + (hy - sy) * 0.5 + 6
@@ -22,8 +47,8 @@ def _face(d, name, cx, hy, expr, mouth, act, t, fdx):
     blink = (int(t * 1000) % 3300) < 120
     closed = act == "laugh" or blink
     blush = expr in ("embarrassed", "shy", "happy", "excited")
-    d.ellipse((cx + fdx - 76, hy + 30, cx + fdx - 42, hy + 50), fill=(250, 160, 168) if blush else (252, 190, 186))
-    d.ellipse((cx + fdx + 42, hy + 30, cx + fdx + 76, hy + 50), fill=(250, 160, 168) if blush else (252, 190, 186))
+    d.ellipse((cx + fdx - 70, hy + 34, cx + fdx - 46, hy + 48), fill=(250, 160, 168) if blush else (252, 190, 186))
+    d.ellipse((cx + fdx + 46, hy + 34, cx + fdx + 70, hy + 48), fill=(250, 160, 168) if blush else (252, 190, 186))
     big = expr in ("surprised", "excited")
     for i, x in enumerate(ex):
         if closed or expr == "embarrassed":
@@ -31,13 +56,14 @@ def _face(d, name, cx, hy, expr, mouth, act, t, fdx):
         elif expr == "happy":
             d.arc((x - 16, ey - 8, x + 16, ey + 18), 200, 340, fill=ink, width=6)
         else:
-            rx, ry = (17, 25) if big else (14, 20)
+            rx, ry = (20, 29) if big else (17, 24)
             oy = 6 if expr in ("sad", "shy") else 0
             d.ellipse((x - rx, ey - ry + oy, x + rx, ey + ry + oy), fill=ink)
             d.ellipse((x - rx + 4, ey - ry + 4 + oy, x + rx - 4, ey + ry - 4 + oy), fill=iris)
             px = x + (6 if expr == "shy" else 0); py = ey + oy + (8 if expr in ("shy", "sad") else 0)
             d.ellipse((px - 6, py - 7, px + 6, py + 7), fill=ink)
-            d.ellipse((x - rx + 8, ey - ry + 8 + oy, x - rx + 17, ey - ry + 17 + oy), fill=(255, 255, 255))
+            d.ellipse((x - rx + 7, ey - ry + 7 + oy, x - rx + 19, ey - ry + 19 + oy), fill=(255, 255, 255))
+            if name == "Marinette": sg = -1 if i == 0 else 1; d.line((x + sg * (rx - 3), ey - 8 + oy, x + sg * (rx + 11), ey - 18 + oy), fill=ink, width=5)
             if expr == "excited": d.ellipse((x + 3, ey + 2 + oy, x + 9, ey + 8 + oy), fill=(255, 255, 255))
     by = ey - 38
     if expr in ("sad", "worried"):
@@ -97,42 +123,53 @@ def draw(name, P):
     if act == "cheer": bx, by = sx0 - 60, sy0 - 150 + 22 * math.sin(ap * 40)
     if act == "jump": bx, by = sx0 - 70, sy0 - 40
     _arm(d, sx0, sy0, bx, by, jacket, skin, -1)
-    d.rounded_rectangle((cx - 108, y - 408 + lean, cx + 108, y - 160), radius=62, fill=jacket)
-    if name == "Julien":   # breton stripes, clipped to the torso
-        m = Image.new("L", (SW, SH), 0); ImageDraw.Draw(m).rounded_rectangle((cx - 108, y - 408 + lean, cx + 108, y - 160), radius=62, fill=255)
-        st = Image.new("RGBA", (SW, SH), (0, 0, 0, 0)); sd = ImageDraw.Draw(st)
-        for yy in range(int(y - 400 + lean), int(y - 160), 46): sd.rectangle((cx - 110, yy, cx + 110, yy + 17), fill=c["top"] + (255,))
-        img.paste(st, (0, 0), ImageChops.multiply(st.getchannel("A"), m))
-    d.polygon([(cx - 44, y - 408 + lean), (cx + 44, y - 408 + lean), (cx + 6, y - 300), (cx - 6, y - 300)], fill=top); d.rectangle((cx - 6, y - 300, cx + 6, y - 162), fill=top)
-    d.line((cx - 44, y - 408 + lean, cx - 6, y - 300), fill=c["edge"], width=6); d.line((cx + 44, y - 408 + lean, cx + 6, y - 300), fill=c["edge"], width=6)
+    d.rounded_rectangle((cx - 108, y - 408 + lean, cx + 108, y - 160), radius=92, fill=jacket, corners=(True, True, False, False))
+    d.rounded_rectangle((cx - 108, y - 300, cx + 108, y - 160), radius=34, fill=jacket, corners=(False, False, True, True))
+    pw = 64 if name == "Adrien" else 54
+    d.polygon([(cx - pw, y - 408 + lean), (cx + pw, y - 408 + lean), (cx + pw - 6, y - 162), (cx - pw + 6, y - 162)], fill=top)
+    if name == "Adrien":   # black tee with rainbow stripes, V neck
+        for k, col in enumerate(((110, 176, 120), (150, 108, 190), (244, 202, 100))):
+            yy = y - 290 + k * 28; d.polygon([(cx - pw + 4, yy), (cx + pw - 4, yy), (cx + pw - 5, yy + 18), (cx - pw + 5, yy + 18)], fill=col)
+        d.polygon([(cx - 34, y - 408 + lean), (cx + 34, y - 408 + lean), (cx, y - 336 + lean)], fill=skin)
+    else:                  # white floral top, scoop neck
+        d.polygon([(cx - 28, y - 408 + lean), (cx + 28, y - 408 + lean), (cx, y - 350 + lean)], fill=skin)
+        for fx, fy in ((cx - 14, y - 282), (cx + 14, y - 258), (cx - 4, y - 226)):
+            d.ellipse((fx - 10, fy - 10, fx + 10, fy + 10), fill=(238, 150, 170)); d.ellipse((fx - 3, fy - 3, fx + 3, fy + 3), fill=(252, 220, 120))
+    d.line((cx - pw, y - 408 + lean, cx - pw + 6, y - 162), fill=c["edge"], width=5); d.line((cx + pw, y - 408 + lean, cx + pw - 6, y - 162), fill=c["edge"], width=5)
     d.line((cx - 90, y - 396 + lean, cx + 96, y - 190), fill=c["strap"], width=16)
-    if name == "Camille":
+    if name == "Marinette":
         d.rounded_rectangle((cx + 62, y - 250, cx + 160, y - 160), radius=14, fill=c["bag"], outline=c["strap"], width=4); d.polygon([(cx + 112, y - 222), (cx + 120, y - 206), (cx + 138, y - 204), (cx + 124, y - 194), (cx + 128, y - 178), (cx + 112, y - 188), (cx + 96, y - 178), (cx + 100, y - 194), (cx + 86, y - 204), (cx + 104, y - 206)], fill=(255, 214, 120))
     else:
         d.rounded_rectangle((cx + 62, y - 262, cx + 156, y - 170), radius=12, fill=c["bag"], outline=c["strap"], width=4); d.rectangle((cx + 62, y - 262, cx + 156, y - 236), fill=c["strap"])
-    if name == "Julien":   # red neckerchief, under the head
-        d.polygon([(cx - 52, y - 410 + lean), (cx + 52, y - 410 + lean), (cx + 4, y - 322 + lean)], fill=c["scarf"])
-        d.ellipse((cx - 14, y - 346 + lean, cx + 14, y - 318 + lean), fill=c["edge"])
     body_d = d
     hd = Image.new("RGBA", (SW, SH), (0, 0, 0, 0)); d = ImageDraw.Draw(hd)
-    if name == "Camille":   # high bun behind the head
-        d.ellipse((cx - 52, hy - 176, cx + 48, hy - 80), fill=c["hair"]); d.arc((cx - 40, hy - 166, cx + 30, hy - 104), 200, 300, fill=c["hl"], width=6)
-    d.ellipse((cx - 92, hy - 94, cx + 92, hy + 94), fill=skin)
-    if name == "Camille":
-        d.rounded_rectangle((cx - 106, hy - 30, cx - 76, hy + 78), radius=18, fill=c["hair"]); d.rounded_rectangle((cx + 76, hy - 30, cx + 106, hy + 78), radius=18, fill=c["hair"])
-        d.pieslice((cx - 104, hy - 118, cx + 104, hy + 70), 180, 360, fill=c["hair"])
-        d.polygon([(cx - 100, hy - 6), (cx - 30, hy - 96), (cx + 20, hy - 70), (cx + 60, hy - 100), (cx + 100, hy - 6), (cx + 70, hy - 40), (cx + 20, hy - 30), (cx - 40, hy - 36)], fill=c["hair"])
-        d.line((cx - 20, hy - 100, cx - 44, hy - 40), fill=c["hl"], width=7); d.line((cx + 30, hy - 96, cx + 10, hy - 44), fill=c["hl"], width=7)
-        rx, ry = cx - 2, hy - 104   # ribbon at the base of the bun
-        d.polygon([(rx, ry), (rx - 46, ry - 26), (rx - 46, ry + 24)], fill=c["ribbon"]); d.polygon([(rx, ry), (rx + 46, ry - 26), (rx + 46, ry + 24)], fill=c["ribbon"])
-        d.ellipse((rx - 12, ry - 12, rx + 12, ry + 12), fill=(176, 44, 66))
-    else:
-        d.pieslice((cx - 104, hy - 124, cx + 104, hy + 60), 180, 360, fill=c["hair"])
-        d.polygon([(cx - 100, hy - 14), (cx - 74, hy - 74), (cx - 46, hy - 24), (cx - 18, hy - 84), (cx + 8, hy - 30), (cx + 40, hy - 80), (cx + 62, hy - 26), (cx + 98, hy - 66), (cx + 102, hy - 8), (cx + 60, hy - 40), (cx - 10, hy - 36)], fill=c["hair"])
-        d.polygon([(cx + 88, hy - 40), (cx + 112, hy - 70), (cx + 108, hy - 24)], fill=c["hair"])
-        d.polygon([(cx - 70, hy - 104), (cx - 10, hy - 150), (cx + 56, hy - 124), (cx + 14, hy - 96)], fill=c["hair"])   # side-swept wave
-        d.polygon([(cx + 4, hy - 112), (cx + 26, hy - 162), (cx + 38, hy - 108)], fill=c["hair"])                       # cowlick
-        d.line((cx - 50, hy - 104, cx - 6, hy - 136), fill=c["hl"], width=7); d.line((cx - 60, hy - 60, cx - 44, hy - 28), fill=c["hl"], width=6)
+    poly, ell, line = _mk(d, cx, hy)
+    if name == "Adrien":   # swept blond hair, a boy's cut
+        g, gd, gl = c["hair"], c["hair_d"], c["hl"]
+        ell((112, 112, 448, 440), g)
+        for pts in (_lock((150, 250), (100, 300), (74, 372), 70), _lock((410, 250), (462, 290), (486, 352), 64), _lock((262, 124), (288, 76), (338, 58), 54)):
+            poly(pts, g)
+        d.ellipse((cx - 92, hy - 94, cx + 92, hy + 94), fill=skin)
+        poly([(118, 262), (124, 190), (196, 126), (330, 116), (432, 184), (442, 262), (430, 226), (300, 214), (180, 226)], g)
+        for root, ctrl, tip, wd in (((400, 150), (420, 215), (392, 262), 66), ((340, 140), (330, 225), (296, 276), 70), ((276, 132), (240, 215), (206, 282), 76),
+                                    ((206, 140), (166, 220), (150, 310), 74), ((140, 190), (118, 240), (124, 300), 50)):
+            poly(_lock(root, ctrl, tip, wd), g)
+        for root, ctrl, tip in (((390, 150), (360, 200), (330, 232)), ((300, 140), (250, 190), (214, 236)), ((236, 132), (196, 180), (168, 232)), ((330, 120), (400, 150), (428, 214))):
+            line(_bez(root, ctrl, tip, 10), gd, 6)
+        for root, ctrl, tip in (((340, 130), (300, 150), (268, 178)), ((240, 126), (212, 146), (196, 176))):
+            line(_bez(root, ctrl, tip, 8), gl, 5)
+    else:                  # navy hair with bangs, two low pigtails with small red ties
+        n, nl = c["hair"], c["hl"]
+        ell((106, 106, 454, 440), n); poly(_lock((130, 250), (112, 360), (140, 470), 80), n); poly(_lock((430, 250), (448, 360), (420, 470), 80), n)
+        d.ellipse((cx - 92, hy - 94, cx + 92, hy + 94), fill=skin)
+        poly([(112, 270), (118, 196), (196, 124), (330, 114), (436, 186), (448, 270), (430, 250), (300, 240), (170, 255)], n)
+        for root, ctrl, tip, wd in (((178, 134), (140, 240), (180, 346), 84), ((262, 126), (220, 210), (222, 300), 84), ((330, 126), (372, 200), (338, 292), 84), ((404, 140), (434, 220), (404, 300), 60)):
+            poly(_lock(root, ctrl, tip, wd), n)
+        ell((80, 470, 206, 650), n); ell((354, 470, 480, 650), n)
+        poly(_lock((160, 440), (150, 470), (136, 520), 54), n); poly(_lock((400, 440), (410, 470), (424, 520), 54), n)
+        ell((146, 456, 170, 486), c["ribbon"]); ell((390, 456, 414, 486), c["ribbon"])
+        for root, ctrl, tip in (((170, 140), (130, 220), (168, 320)), ((260, 130), (222, 180), (232, 250)), ((406, 150), (432, 220), (404, 290))):
+            line(_bez(root, ctrl, tip, 10), nl, 6)
     _face(d, name, cx, hy, expr, P["mouth"], act, t, fdx)
     ax, ay = cx, hy + 92
     hd = hd.resize((int(SW * HEAD_K), int(SH * HEAD_K)), Image.LANCZOS)

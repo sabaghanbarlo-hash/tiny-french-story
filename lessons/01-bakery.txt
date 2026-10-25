@@ -1,24 +1,24 @@
-title: Camille et Julien à la boulangerie
+title: Marinette et Adrien à la boulangerie
 episode: 1
 scene: bakery
 
 [story]
 @scene bakery
-> Camille enters left
-& Julien enters left
-> Camille looks happy
-Camille: Bonjour ! Tu veux un croissant ? | Hello! Do you want a croissant?
-> Julien looks excited
-Julien: Oui, s'il te plaît ! | Yes, please!
-> Camille buys a croissant
-Camille: Voilà ! | Here you go!
-> Camille gives the croissant to Julien
-Julien: Merci beaucoup ! | Thank you very much!
-Camille: De rien ! | You're welcome!
+> Marinette enters left
+& Adrien enters left
+> Marinette looks happy
+Marinette: Bonjour ! Tu veux un croissant ? | Hello! Do you want a croissant?
+> Adrien looks excited
+Adrien: Oui, s'il te plaît ! | Yes, please!
+> Marinette buys a croissant
+Marinette: Voilà ! | Here you go!
+> Marinette gives the croissant to Adrien
+Adrien: Merci beaucoup ! | Thank you very much!
+Marinette: De rien ! | You're welcome!
 
 [vocab]
 - bonjour — hello
-  Example: Bonjour, Camille !
+  Example: Bonjour, Marinette !
 - s'il te plaît — please
   Example: Un croissant, s'il te plaît.
 - merci — thank you

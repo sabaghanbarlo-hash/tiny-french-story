@@ -6,7 +6,7 @@ BASE = open("lessons/01-bakery.txt", encoding="utf-8").read()
 class T(unittest.TestCase):
     def test_full_parse_and_accents(self):
         s = parse_script(BASE)
-        self.assertEqual(s.meta["title"], "Camille et Julien à la boulangerie")
+        self.assertEqual(s.meta["title"], "Marinette et Adrien à la boulangerie")
         says = [e for e in s.story if isinstance(e, Say)]
         self.assertEqual(len(says), 5)
         self.assertEqual(says[0].fr, "Bonjour ! Tu veux un croissant ?")
@@ -25,7 +25,7 @@ class T(unittest.TestCase):
         self.assertEqual(len(s.grammar[0].examples), 2)
         self.assertEqual(s.quiz[0].answer, "B"); self.assertEqual(len(s.quiz[0].options), 3)
     def test_guillemet_wrapper_tolerated(self):
-        t = BASE.replace("> Camille enters left", "\u00ab> Camille enters left").replace("Camille: Voilà ! | Here you go!", "Camille: Voilà ! | Here you go!\u00bb")
+        t = BASE.replace("> Marinette enters left", "\u00ab> Marinette enters left").replace("Marinette: Voilà ! | Here you go!", "Marinette: Voilà ! | Here you go!\u00bb")
         s = parse_script(t)
         self.assertEqual([e for e in s.story if isinstance(e, Say)][2].en, "Here you go!")
     def test_french_quotes_inside_line_kept(self):
@@ -36,11 +36,11 @@ class T(unittest.TestCase):
         with self.assertRaises(ScriptError) as c: parse_script(BASE.replace("[grammar]", "[x]"))
         with self.assertRaises(ScriptError) as c: parse_script(BASE.replace("Hello! Do you want a croissant?", ""))
         self.assertIn("translation", str(c.exception))
-        with self.assertRaises(ScriptError) as c: parse_script(BASE.replace("Julien: Oui", "Marie: Oui"))
+        with self.assertRaises(ScriptError) as c: parse_script(BASE.replace("Adrien: Oui", "Marie: Oui"))
         self.assertIn("unknown speaker", str(c.exception))
-        with self.assertRaises(ScriptError) as c: parse_script(BASE.replace("> Camille looks happy", "Camille looks happy"))
+        with self.assertRaises(ScriptError) as c: parse_script(BASE.replace("> Marinette looks happy", "Marinette looks happy"))
         self.assertIn("directions must start", str(c.exception))
         with self.assertRaises(ScriptError) as c: parse_script(BASE.replace("Answer: B", "Answer: Z"))
-        with self.assertRaises(ScriptError) as c: parse_script(BASE.replace("title: Camille et Julien à la boulangerie", ""))
+        with self.assertRaises(ScriptError) as c: parse_script(BASE.replace("title: Marinette et Adrien à la boulangerie", ""))
         with self.assertRaises(ScriptError) as c: parse_script(BASE.split("[vocab]")[0])
 if __name__ == "__main__": unittest.main(verbosity=2)

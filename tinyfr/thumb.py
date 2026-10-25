@@ -13,7 +13,7 @@ def make_cover(script, path):
     title = script.meta.get("cover") or script.meta["title"]
     block(d, W // 2, 520, title.upper() if len(title) < 22 else title, 84, NAVY, 900, maxlines=3)
     base = dict(face=1, expr="happy", walking=0, phase=0, act=None, ap=0, item=None, bites=0, mouth=0.0, t=0.2)
-    for n, x, face, act, ap in (("Camille", 300, 1, "wave", 0.3), ("Julien", 780, -1, None, 0)):
+    for n, x, face, act, ap in (("Marinette", 300, 1, "wave", 0.3), ("Adrien", 780, -1, None, 0)):
         spr = rig.draw(n, dict(base, face=face, act=act, ap=ap)); sc = 1.2
         spr = spr.resize((int(spr.width * sc), int(spr.height * sc)), Image.BILINEAR)
         img.paste(spr, (int(x - rig.CX * sc), int(1560 - rig.FY * sc)), spr)

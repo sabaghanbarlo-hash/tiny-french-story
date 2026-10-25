@@ -47,7 +47,7 @@ a{color:var(--pink)}
 <div class="card">
 <label for="script">Script</label>
 <textarea id="script" spellcheck="false"></textarea>
-<p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Camille: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Camille walks to counter</code>. Characters: Camille, Julien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
+<p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Marinette, Adrien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
 <label for="caption" style="margin-top:14px">Instagram caption <span style="font-weight:400;color:var(--soft)">(optional – auto-written if empty)</span></label>
 <textarea id="caption" class="small" placeholder="Leave empty for an automatic caption with today's words and hashtags"></textarea>
 <div class="check"><input type="checkbox" id="post" checked><label for="post" style="margin:0">Post to Instagram when the video is ready</label></div>
@@ -71,40 +71,40 @@ a{color:var(--pink)}
 const OWNER="sabaghanbarlo-hash", REPO="tiny-french-story", BRANCH="main", WF="generate.yml";
 const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
 const $=id=>document.getElementById(id);
-const SAMPLE=`title: Un croissant pour Julien
+const SAMPLE=`title: Un croissant pour Adrien
 episode: 3
 scene: bakery
 cover: Croissant Time
 
 [story]
 @scene bakery
-> Camille enters left
-& Julien enters left
-> Camille walks to counter
-Camille: Bonjour ! Un croissant, s'il vous plaît. | Hello! A croissant, please.
-> Camille buys a croissant
-> Julien looks at the display
-Julien: Moi aussi ! Un croissant, s'il vous plaît. | Me too! A croissant, please.
-> Julien walks to display
-& Julien looks confused
-Julien: Oh non ! Il n'y a plus de croissants. | Oh no! There are no more croissants.
-> Camille looks worried
-Camille: Ça va, Julien ? | Are you OK, Julien?
-Julien: J'ai faim ! | I'm hungry!
-> Camille gives the croissant to Julien
-Camille: Tiens ! Un croissant pour toi. | Here you go! A croissant for you.
-> Julien looks happy
-Julien: Merci beaucoup, Camille ! | Thank you very much, Camille!
-> Julien eats the croissant
-Julien: Mmm, il est délicieux ! | Mmm, it's delicious!
-> Camille cheers
-Camille: De rien ! À demain ! | You're welcome! See you tomorrow!
+> Marinette enters left
+& Adrien enters left
+> Marinette walks to counter
+Marinette: Bonjour ! Un croissant, s'il vous plaît. | Hello! A croissant, please.
+> Marinette buys a croissant
+> Adrien looks at the display
+Adrien: Moi aussi ! Un croissant, s'il vous plaît. | Me too! A croissant, please.
+> Adrien walks to display
+& Adrien looks confused
+Adrien: Oh non ! Il n'y a plus de croissants. | Oh no! There are no more croissants.
+> Marinette looks worried
+Marinette: Ça va, Adrien ? | Are you OK, Adrien?
+Adrien: J'ai faim ! | I'm hungry!
+> Marinette gives the croissant to Adrien
+Marinette: Tiens ! Un croissant pour toi. | Here you go! A croissant for you.
+> Adrien looks happy
+Adrien: Merci beaucoup, Marinette ! | Thank you very much, Marinette!
+> Adrien eats the croissant
+Adrien: Mmm, il est délicieux ! | Mmm, it's delicious!
+> Marinette cheers
+Marinette: De rien ! À demain ! | You're welcome! See you tomorrow!
 
 [vocab]
 - s'il vous plaît — please
   Example: Un croissant, s'il vous plaît.
 - merci beaucoup — thank you very much
-  Example: Merci beaucoup, Camille !
+  Example: Merci beaucoup, Marinette !
 - tiens — here you go
   Example: Tiens ! Un croissant pour toi.
 - délicieux — delicious
@@ -144,7 +144,7 @@ vocab: enchanté / enchantée | nice to meet you
 vocab: s'il te plaît | please
 vocab: merci beaucoup | thank you very much
 `;
-const HINTS={small:'Two friends, Adrien and Marinette, sit in a place and chat. One line per speaker: <code>Adrien: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store. Errors show the exact line.',story:"Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Camille: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Camille walks to counter</code>. Characters: Camille, Julien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
+const HINTS={small:'Two friends, Adrien and Marinette, sit in a place and chat. One line per speaker: <code>Adrien: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store. Errors show the exact line.',story:"Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Marinette, Adrien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
 const MODEHINT={small:"Small: two friends sitting and chatting, like Tiny Japanese.",story:"Story: animated scenes with characters walking and acting."};
 let MODE=get("tfs_mode")==="story"?"story":"small";
 const KEY=m=>"tfs_script_"+m;

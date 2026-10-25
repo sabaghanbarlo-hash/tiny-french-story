@@ -8,9 +8,9 @@ L1 = open("lessons/01-bakery.txt", encoding="utf-8").read()
 TAIL = L1[L1.index("[vocab]"):]
 
 def script_for(scene, spots):
-    lines = ["title: Test " + scene, "episode: 1", "scene: " + scene, "", "[story]", "@scene " + scene, "> Camille enters left", "& Julien enters left", "Camille: Bonjour ! | Hello!"]
+    lines = ["title: Test " + scene, "episode: 1", "scene: " + scene, "", "[story]", "@scene " + scene, "> Marinette enters left", "& Adrien enters left", "Marinette: Bonjour ! | Hello!"]
     for i, sp in enumerate(spots):
-        who = "Camille" if i % 2 == 0 else "Julien"
+        who = "Marinette" if i % 2 == 0 else "Adrien"
         lines += [f"> {who} walks to {sp}", f"{who}: Salut ! | Hi!"]
     return "\n".join(lines) + "\n\n" + TAIL
 

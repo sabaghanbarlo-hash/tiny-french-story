@@ -3,7 +3,7 @@ HASHTAGS = ["#learnfrench", "#frenchforbeginners", "#french", "#frenchlanguage",
 LIMIT = 2200
 
 def caption(script):
-    m = script.meta; lines = [f"Learn French with Camille & Julien 🇫🇷 — {m['title']}", ""]
+    m = script.meta; lines = [f"Learn French with Marinette & Adrien 🇫🇷 — {m['title']}", ""]
     lines.append("Today's tiny French:")
     for v in script.vocab[:5]:
         lines.append(f"• {v.term} — {v.meaning}")

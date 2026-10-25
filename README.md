@@ -2,14 +2,14 @@
 
 *French, one tiny story at a time. — Small steps. Big dreams.*
 
-Paste a directed script, get an animated French-learning **Reel** (9:16, 1080x1920) starring two original characters, **Camille** and **Julien**. Instagram auto-posting arrives with the workflow stage.
+Paste a directed script, get an animated French-learning **Reel** (9:16, 1080x1920) starring two original characters, **Marinette** and **Adrien**. Instagram auto-posting arrives with the workflow stage.
 
 ## Status (stage 3 of 5 done)
 | Works now (tested) | Not built yet |
 |---|---|
 | French parser: accents, translations, vocab/grammar/quiz, line-numbered errors | Thumbnail/cover and Instagram caption file |
 | Stage directions acted out: enter/exit, walk/run to named spots, expressions, gestures, hold/buy/pick up/eat/drink/give/put away | Composio Instagram posting, GitHub Actions workflow, studio web page |
-| Camille and Julien rigs (fixed outfit/hair/proportions, 9 expressions, walk cycle, mouth follows the voice) | Director prompt and directing guide (DIRECTING.md) |
+| Marinette and Adrien rigs (fixed outfit/hair/proportions, 9 expressions, walk cycle, mouth follows the voice) | Director prompt and directing guide (DIRECTING.md) |
 | 6 Paris scenes with named spots, 15 objects | 12 more scenes (supermarket, bookstore, restaurant, train station, museum, Eiffel viewpoint, airport, market, library, beach, courtyard, apartment) |
 | French voices (Denise / Henri), hard error if unavailable; UTF-8 SRT | Bicycle object, more gestures |
 | 17 automated tests (parser, directions, collisions, items, no teleporting) | |

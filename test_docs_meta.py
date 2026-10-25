@@ -27,7 +27,7 @@ class Docs(unittest.TestCase):
 class Meta(unittest.TestCase):
     def test_caption(self):
         s = parse_script(L3); c = meta.caption(s)
-        self.assertIn("délicieux — delicious", c); self.assertIn("Un croissant pour Julien", c)
+        self.assertIn("délicieux — delicious", c); self.assertIn("Un croissant pour Adrien", c)
         self.assertLessEqual(len(c), 2200); self.assertLessEqual(c.count("#"), 30)
     def test_cover(self):
         from tinyfr.thumb import make_cover

@@ -32,7 +32,7 @@ def test_missing_english_reports_line_number():
 
 def test_unknown_speaker_reports_line_number():
     with pytest.raises(small.ScriptProblem, match="line 5"):
-        small.parse_story(GOOD.replace("Adrien: Bonjour !", "Camille: Bonjour !", 1))
+        small.parse_story(GOOD.replace("Adrien: Bonjour !", "Sophie: Bonjour !", 1))
 
 
 def test_missing_title_and_no_dialogue_and_too_long():
