@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tiny French · Queue</title>
+<style>
+:root{color-scheme:dark;--bg:#12151f;--card:#1e1822;--pink:#8fb4f5;--ink:#f4eaed;--soft:#a99aa1;--line:#3a2f3a;--ok:#6cc58c;--err:#ff7a70}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px 64px}h1{font-size:1.5rem;margin:0 0 4px}h1 span{color:var(--pink)}
+a{color:var(--pink)}p.sub{margin:0 0 20px;color:var(--soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:16px}
+.item{border-top:1px solid var(--line);padding:12px 0}.item:first-of-type{border-top:0}
+.t{font-weight:700}.m{color:var(--soft);font-size:.9rem}.ok{color:var(--ok)}.err{color:var(--err)}
+button{border:0;border-radius:999px;background:var(--pink);color:#0f1a2e;font:inherit;font-weight:700;padding:8px 16px;margin:8px 8px 0 0;cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+</style></head><body><main>
+<h1>Tiny <span>French</span> · Queue</h1>
+<p class="sub"><a href="index.html">← Back to the studio</a></p>
+<div class="card"><b>Posting plan</b><p class="m" id="plan">Loading…</p></div>
+<div class="card"><b>Waiting to post</b><div id="pending">Loading…</div></div>
+<div class="card"><b>Posted</b><div id="done">Loading…</div></div>
+<div class="card" id="msg" hidden></div>
+</main><script>
+const OWNER="sabaghanbarlo-hash",REPO="tiny-french-story",BRANCH="main";
+const API="https://api.github.com/repos/"+OWNER+"/"+REPO;
+const $=id=>document.getElementById(id);
+const tok=()=>{try{return localStorage.getItem("tjv_token")||""}catch(e){return ""}};
+async function gh(p,o){o=o||{};const r=await fetch(API+p,Object.assign({},o,{headers:Object.assign({Authorization:"Bearer "+tok(),Accept:"application/vnd.github+json"},o.headers||{})}));
+  if(r.status===404)return null;if(!r.ok)throw new Error("GitHub said "+r.status);return r.status===204?null:r.json()}
+const dec=c=>new TextDecoder().decode(Uint8Array.from(atob(c.replace(/\n/g,"")),ch=>ch.charCodeAt(0)));
+const enc=s=>{const b=new TextEncoder().encode(s);let x="";b.forEach(v=>x+=String.fromCharCode(v));return btoa(x)};
+const when=ts=>{const d=new Date(ts);return d.toLocaleString([], {weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})+" your time ("+ts.replace("T"," ").replace(":00Z"," UTC")+")"};
+function say(t,c){const m=$("msg");m.hidden=false;m.className="card "+(c||"");m.textContent=t}
+async function readJson(path){const f=await gh("/contents/"+path+"?ref="+BRANCH);return f?{sha:f.sha,data:JSON.parse(dec(f.content))}:null}
+async function list(dir){const l=await gh("/contents/"+dir+"?ref="+BRANCH);return (l||[]).filter(x=>x.name.endsWith(".json")&&x.name!=="schedule.json")}
+async function load(){
+  if(!tok()){$("plan").textContent="Add your GitHub token on the studio page first (One-time setup).";$("pending").textContent="";$("done").textContent="";return}
+  try{
+    const sc=await readJson("queue/schedule.json");
+    if(sc){const s=sc.data;$("plan").textContent="Up to "+s.max_per_day+" Reels a day at "+s.slots_utc.map(x=>x+" UTC").join(" and ")+". Each new video takes the next free slot. Posts go out within about 15–30 minutes of the slot."}
+    else $("plan").textContent="No schedule file yet."
+    const p=await list("queue"),pend=[];for(const f of p){const r=await readJson("queue/"+f.name);if(r)pend.push(r.data)}
+    pend.sort((a,b)=>a.post_at<b.post_at?-1:1);
+    $("pending").innerHTML=pend.length?"":'<p class="m">Nothing queued. Make a video with “Queue” selected on the studio page.</p>';
+    pend.forEach(e=>{const d=document.createElement("div");d.className="item";
+      d.innerHTML='<div class="t"></div><div class="m"></div>';d.firstChild.textContent=e.title;
+      d.lastChild.innerHTML=(e.status==="failed"?'<span class="err">Failed after '+e.attempts+' tries – remove it or press Post now to retry.</span> ':"")+(e.format||"")+" · posts "+when(e.post_at);
+      const b1=document.createElement("button");b1.textContent="Post now";b1.onclick=()=>postNow(e.stem);
+      const b2=document.createElement("button");b2.textContent="Remove";b2.className="ghost";b2.onclick=()=>removeIt(e.stem);
+      d.append(b1,b2);$("pending").append(d)});
+    const q=await list("queue/done"),dn=[];for(const f of q.slice(-10)){const r=await readJson("queue/done/"+f.name);if(r)dn.push(r.data)}
+    dn.sort((a,b)=>a.posted_at<b.posted_at?1:-1);
+    $("done").innerHTML=dn.length?"":'<p class="m">Nothing posted from the queue yet.</p>';
+    dn.forEach(e=>{const d=document.createElement("div");d.className="item";d.innerHTML='<div class="t"></div><div class="m ok"></div>';d.firstChild.textContent=e.title;d.lastChild.textContent="Posted "+when(e.posted_at)+(e.media_id?" · Instagram id "+e.media_id:"");$("done").append(d)});
+  }catch(e){say(e.message,"err")}
+}
+async function postNow(stem){
+  try{const r=await readJson("queue/"+stem+".json");r.data.post_at=new Date().toISOString().replace(/\.\d+Z$/,"Z");r.data.status="pending";r.data.attempts=0;
+    await gh("/contents/queue/"+stem+".json",{method:"PUT",body:JSON.stringify({message:"Post now: "+stem,content:enc(JSON.stringify(r.data,null,1)+"\n"),sha:r.sha,branch:BRANCH})});
+    await gh("/actions/workflows/post-queue.yml/dispatches",{method:"POST",body:JSON.stringify({ref:BRANCH})});
+    say("Posting started. It takes a few minutes; reload this page afterwards.","ok")}catch(e){say(e.message,"err")}
+}
+async function removeIt(stem){
+  if(!confirm("Remove this video from the queue?"))return;
+  try{const files=[{path:"queue/"+stem+".json"}];const v=await gh("/contents/queue/videos?ref="+BRANCH);
+    (v||[]).filter(x=>x.name.startsWith(stem+".")).forEach(x=>files.push({path:x.path,sha:x.sha}));
+    for(const f of files){let sha=f.sha;if(!sha){const g=await gh("/contents/"+f.path+"?ref="+BRANCH);sha=g&&g.sha}
+      if(sha)await gh("/contents/"+f.path,{method:"DELETE",body:JSON.stringify({message:"Remove from queue: "+stem,sha:sha,branch:BRANCH})})}
+    say("Removed.","ok");load()}catch(e){say(e.message,"err")}
+}
+load();
+</script></body></html>

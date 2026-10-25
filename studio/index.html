@@ -35,12 +35,13 @@ details summary{cursor:pointer;font-weight:600}
 video{width:100%;max-width:360px;border-radius:16px;display:block;margin:12px auto 0;background:#000}
 a{color:var(--pink)}
 .seg{display:flex;gap:10px;margin:0 0 10px}.seg button{flex:1;background:transparent;color:var(--pink);border:2px solid var(--pink)}.seg button.on{background:var(--pink);color:#0f1a2e}.modehint{margin:0 0 14px;color:var(--soft);font-size:14px}
+select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--field);color:var(--ink);margin:0 0 12px}
 </style>
 </head>
 <body>
 <main>
 <h1>Tiny <span>French</span> · Video Studio</h1>
-<p class="sub">Paste a script, press the button, get a Reel.</p>
+<p class="sub">Paste a script, press the button, get a Reel. <a href="queue.html">See the queue →</a></p>
 <div class="seg"><button id="mSmall" type="button">Small</button><button id="mStory" type="button">Story</button></div>
 <p class="modehint" id="modeHint"></p>
 
@@ -50,7 +51,8 @@ a{color:var(--pink)}
 <p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Marinette, Adrien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
 <label for="caption" style="margin-top:14px">Instagram caption <span style="font-weight:400;color:var(--soft)">(optional – auto-written if empty)</span></label>
 <textarea id="caption" class="small" placeholder="Leave empty for an automatic caption with today's words and hashtags"></textarea>
-<div class="check"><input type="checkbox" id="post" checked><label for="post" style="margin:0">Post to Instagram when the video is ready</label></div>
+<label for="postmode" style="margin-top:14px">When to post to Instagram</label>
+<select id="postmode"><option value="queue" selected>Queue: post at the best time for a global audience</option><option value="now">Post right away</option><option value="false">Do not post, just make the video</option></select>
 <button id="run">Make video</button>
 </div>
 
@@ -182,7 +184,7 @@ $("run").onclick=async()=>{
     const title=(text.match(/^title\s*:\s*(.+)$/im)||[])[1]||"story";
     const stamp=new Date().toISOString().slice(0,16).replace(/[-:T]/g,"");
     const base=`lessons/web/${stamp}-${slug(title)}`;
-    const post=$("post").checked;
+    const post=$("postmode").value;
     say("Saving script…");
     await gh(`/contents/${base}.txt`,{method:"PUT",body:JSON.stringify({message:"Add story: "+title,content:b64(text+"\n"),branch:BRANCH})});
     const cap=$("caption").value.trim();
@@ -205,7 +207,7 @@ $("run").onclick=async()=>{
       let why="";try{const j=await gh(`/actions/runs/${run.id}/jobs`);const bad=j.jobs.find(x=>x.conclusion==="failure");if(bad){const st=(bad.steps.find(s=>s.conclusion==="failure")||{}).name||bad.name;why=` Failed step: "${st}".`;try{const an=await gh(`/check-runs/${bad.id}/annotations`);const m=an.filter(x=>x.annotation_level==="failure").map(x=>x.message).join("\n");if(m)why="\n"+m}catch(e){}}}catch(e){}
       throw new Error("The job didn't finish."+why+"\n"+run.html_url)}
     const url=`${location.origin}${location.pathname.replace(/[^/]*$/,"")}videos/${base.split("/").pop()}.mp4`;
-    say(post?"Done – video made and posted to Instagram.":"Done – video is ready.","ok");
+    say(post==="now"?"Done – video made and posted to Instagram.":post==="queue"?"Done – video made and added to the queue. It posts at the best time (see the queue).":"Done – video is ready.","ok");
     $("result").innerHTML=`<video controls playsinline poster="${url.replace(/\.mp4$/,".jpg")}" src="${url}"></video><p style="text-align:center;margin:8px 0 0"><a href="${url.replace(/\.mp4$/,".jpg")}" download>Download cover (JPG)</a></p><p style="text-align:center"><a href="${url}" download>Download MP4</a> · <a href="${url.replace(/\.mp4$/,".srt")}" download>Subtitles</a> · <a href="${run.html_url}" target="_blank" rel="noopener">View job</a></p>`;
   }catch(e){say(String(e.message||e),"err")}
   finally{btn.disabled=false}

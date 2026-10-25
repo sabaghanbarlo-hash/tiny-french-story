@@ -88,6 +88,14 @@ if not r or "error" in r:
     sys.exit(f"Composio initialize failed: {str(r)[:400]}")
 _rpc("notifications/initialized", notify=True)
 
+EXPECT = os.environ.get("IG_EXPECT_USERNAME", "").strip().lstrip("@").lower()
+if EXPECT:
+    me = call("INSTAGRAM_GET_USER_INFO", {"ig_user_id": "me", "fields": "id,username"}).get("data") or {}
+    got = str(me.get("username", "")).lower()
+    if got != EXPECT:
+        sys.exit(f"Safety stop: the connected Instagram account is '{got}', but '{EXPECT}' was expected. Nothing was posted.")
+    print("Instagram account confirmed:", got)
+
 if CHECK:
     info = call("INSTAGRAM_GET_USER_INFO", {"ig_user_id": "me", "fields": "id,username,account_type"})
     print("CHECK OK. Instagram account:", json.dumps(info.get("data"), ensure_ascii=False))
