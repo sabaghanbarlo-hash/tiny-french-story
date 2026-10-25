@@ -1,0 +1,51 @@
+title: Un croissant pour Adrien
+episode: 3
+scene: bakery
+cover: Croissant Time
+
+[story]
+@scene bakery
+> Marinette enters left
+& Adrien enters left
+> Marinette walks to counter
+Marinette: Bonjour ! Un croissant, s'il vous plaît. | Hello! A croissant, please.
+> Marinette buys a croissant
+> Adrien looks at the display
+Adrien: Moi aussi ! Un croissant, s'il vous plaît. | Me too! A croissant, please.
+> Adrien walks to display
+& Adrien looks confused
+Adrien: Oh non ! Il n'y a plus de croissants. | Oh no! There are no more croissants.
+> Marinette looks worried
+Marinette: Ça va, Adrien ? | Are you OK, Adrien?
+Adrien: J'ai faim ! | I'm hungry!
+> Marinette gives the croissant to Adrien
+Marinette: Tiens ! Un croissant pour toi. | Here you go! A croissant for you.
+> Adrien looks happy
+Adrien: Merci beaucoup, Marinette ! | Thank you very much, Marinette!
+> Adrien eats the croissant
+Adrien: Mmm, il est délicieux ! | Mmm, it's delicious!
+> Marinette cheers
+Marinette: De rien ! À demain ! | You're welcome! See you tomorrow!
+
+[vocab]
+- s'il vous plaît — please
+  Example: Un croissant, s'il vous plaît.
+- merci beaucoup — thank you very much
+  Example: Merci beaucoup, Marinette !
+- tiens — here you go
+  Example: Tiens ! Un croissant pour toi.
+- délicieux — delicious
+  Example: Il est délicieux !
+
+[grammar]
+- Il n'y a plus de + noun — There is no more...
+  Example 1: Il n'y a plus de croissants.
+  Example 2: Il n'y a plus de café.
+
+[quiz]
+Q: What does "Il n'y a plus de croissants" mean?
+A) There are no more croissants.
+B) There are many croissants.
+C) I want a croissant.
+Answer: A
+Explanation: "Il n'y a plus de" means "there is no more" - the shop has run out.
