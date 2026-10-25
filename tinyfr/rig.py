@@ -3,34 +3,10 @@ import math
 from PIL import Image, ImageDraw, ImageChops
 from .config import CHARS
 from . import items as IT
+from . import faces
 
 SW, SH, CX, FY = 840, 1000, 420, 920
 HEAD_K = 1.22   # chibi head scale about the neck
-K_HEAD = 0.63   # scale from the face design shared with the Small videos (560-wide canvas)
-
-
-def _bez(p0, p1, p2, n=14):
-    return [((1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t * t * p2[0], (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t * t * p2[1]) for t in [i / n for i in range(n + 1)]]
-
-
-def _lock(root, ctrl, tip, width, n=14):
-    """Pointed hair lock along a curve: thick in the middle, sharp at the tip."""
-    c = _bez(root, ctrl, tip, n); left, right = [], []
-    for i, (x, y) in enumerate(c):
-        a = c[min(i + 1, n)]; b = c[max(i - 1, 0)]
-        dx, dy = a[0] - b[0], a[1] - b[1]; L = math.hypot(dx, dy) or 1
-        nx, ny = -dy / L, dx / L
-        w = 0 if i == n else width * math.sin(math.pi * (0.12 + 0.88 * i / n) ** 0.9) * (1 - 0.15 * i / n) / 2
-        left.append((x + nx * w, y + ny * w)); right.append((x - nx * w, y - ny * w))
-    return left + right[::-1]
-
-
-def _mk(d, cx, hy):
-    T = lambda p: (cx + (p[0] - 280) * K_HEAD, hy + (p[1] - 308) * K_HEAD)
-    poly = lambda pts, col: d.polygon([T(p) for p in pts], fill=col)
-    ell = lambda b, col: d.ellipse((*T((b[0], b[1])), *T((b[2], b[3]))), fill=col)
-    line = lambda pts, col, w: d.line([T(p) for p in pts], fill=col, width=max(2, int(w * K_HEAD * 1.2)), joint="curve")
-    return poly, ell, line
 
 def _arm(d, sx, sy, hx, hy, col, skin, side, w=46):
     ex, ey = sx + (hx - sx) * 0.5 + side * 16, sy + (hy - sy) * 0.5 + 6
@@ -142,38 +118,9 @@ def draw(name, P):
     else:
         d.rounded_rectangle((cx + 62, y - 262, cx + 156, y - 170), radius=12, fill=c["bag"], outline=c["strap"], width=4); d.rectangle((cx + 62, y - 262, cx + 156, y - 236), fill=c["strap"])
     body_d = d
-    hd = Image.new("RGBA", (SW, SH), (0, 0, 0, 0)); d = ImageDraw.Draw(hd)
-    poly, ell, line = _mk(d, cx, hy)
-    if name == "Adrien":   # swept blond hair, a boy's cut
-        g, gd, gl = c["hair"], c["hair_d"], c["hl"]
-        ell((112, 112, 448, 440), g)
-        for pts in (_lock((150, 250), (100, 300), (74, 372), 70), _lock((410, 250), (462, 290), (486, 352), 64), _lock((262, 124), (288, 76), (338, 58), 54)):
-            poly(pts, g)
-        d.ellipse((cx - 92, hy - 94, cx + 92, hy + 94), fill=skin)
-        poly([(118, 262), (124, 190), (196, 126), (330, 116), (432, 184), (442, 262), (430, 226), (300, 214), (180, 226)], g)
-        for root, ctrl, tip, wd in (((400, 150), (420, 215), (392, 262), 66), ((340, 140), (330, 225), (296, 276), 70), ((276, 132), (240, 215), (206, 282), 76),
-                                    ((206, 140), (166, 220), (150, 310), 74), ((140, 190), (118, 240), (124, 300), 50)):
-            poly(_lock(root, ctrl, tip, wd), g)
-        for root, ctrl, tip in (((390, 150), (360, 200), (330, 232)), ((300, 140), (250, 190), (214, 236)), ((236, 132), (196, 180), (168, 232)), ((330, 120), (400, 150), (428, 214))):
-            line(_bez(root, ctrl, tip, 10), gd, 6)
-        for root, ctrl, tip in (((340, 130), (300, 150), (268, 178)), ((240, 126), (212, 146), (196, 176))):
-            line(_bez(root, ctrl, tip, 8), gl, 5)
-    else:                  # navy hair with bangs, two low pigtails with small red ties
-        n, nl = c["hair"], c["hl"]
-        ell((106, 106, 454, 440), n); poly(_lock((130, 250), (112, 360), (140, 470), 80), n); poly(_lock((430, 250), (448, 360), (420, 470), 80), n)
-        d.ellipse((cx - 92, hy - 94, cx + 92, hy + 94), fill=skin)
-        poly([(112, 270), (118, 196), (196, 124), (330, 114), (436, 186), (448, 270), (430, 250), (300, 240), (170, 255)], n)
-        for root, ctrl, tip, wd in (((178, 134), (140, 240), (180, 346), 84), ((262, 126), (220, 210), (222, 300), 84), ((330, 126), (372, 200), (338, 292), 84), ((404, 140), (434, 220), (404, 300), 60)):
-            poly(_lock(root, ctrl, tip, wd), n)
-        ell((80, 470, 206, 650), n); ell((354, 470, 480, 650), n)
-        poly(_lock((160, 440), (150, 470), (136, 520), 54), n); poly(_lock((400, 440), (410, 470), (424, 520), 54), n)
-        ell((146, 456, 170, 486), c["ribbon"]); ell((390, 456, 414, 486), c["ribbon"])
-        for root, ctrl, tip in (((170, 140), (130, 220), (168, 320)), ((260, 130), (222, 180), (232, 250)), ((406, 150), (432, 220), (404, 290))):
-            line(_bez(root, ctrl, tip, 10), nl, 6)
-    _face(d, name, cx, hy, expr, P["mouth"], act, t, fdx)
-    ax, ay = cx, hy + 92
-    hd = hd.resize((int(SW * HEAD_K), int(SH * HEAD_K)), Image.LANCZOS)
-    img.paste(hd, (int(ax - ax * HEAD_K), int(ay - ay * HEAD_K)), hd)
+    blink = (int(t * 1000) % 3300) < 120   # same blink rhythm as before
+    head = faces.head(name, expr, P["mouth"], blink, act == "laugh")
+    img.paste(head, (int(cx - faces.ANCHOR[0]), int(hy - 20 - faces.ANCHOR[1])), head)
     d = body_d
     sx1 = cx + 106; sy1 = y - 384 + lean; item = P["item"]
     hx, hyy = sx1 + 14 + s * 6, sy1 + 178 - s * 22
