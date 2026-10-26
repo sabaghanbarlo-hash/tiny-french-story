@@ -30,16 +30,32 @@ SCENES = {
     "classroom": dict(top=(240, 247, 236), bot=(250, 252, 244), floor=(206, 176, 136), table=(226, 196, 150), edge=(176, 142, 102)),
     "station": dict(top=(196, 224, 246), bot=(236, 246, 252), floor=(156, 156, 170), table=(238, 204, 100), edge=(126, 126, 140)),
     "store": dict(top=(232, 246, 255), bot=(246, 252, 255), floor=(214, 218, 226), table=(124, 198, 172), edge=(86, 152, 130)),
+    "restaurant": dict(top=(252, 232, 214), bot=(246, 214, 190), floor=(150, 98, 72), table=(250, 246, 240), edge=(206, 64, 78)),
+    "market": dict(top=(196, 228, 250), bot=(240, 248, 236), floor=(206, 190, 160), table=(214, 164, 110), edge=(158, 112, 76)),
+    "library": dict(top=(246, 236, 220), bot=(238, 224, 204), floor=(172, 130, 96), table=(196, 146, 104), edge=(132, 92, 66)),
+    "beach": dict(top=(150, 212, 248), bot=(250, 236, 204), floor=(240, 214, 160), table=(246, 200, 120), edge=(206, 160, 100)),
+    "apartment": dict(top=(252, 240, 230), bot=(246, 228, 214), floor=(204, 164, 124), table=(150, 178, 212), edge=(118, 146, 184)),
+    "airport": dict(top=(222, 236, 250), bot=(244, 248, 252), floor=(196, 200, 210), table=(238, 242, 248), edge=(60, 84, 134)),
+    "museum": dict(top=(244, 238, 228), bot=(234, 226, 212), floor=(208, 198, 176), table=(226, 218, 206), edge=(162, 150, 128)),
+    "street": dict(top=(188, 222, 248), bot=(244, 236, 226), floor=(184, 174, 164), table=(210, 164, 112), edge=(152, 112, 82)),
 }
 SCENE_KEYWORDS = {
     "bakery": ["boulangerie", "croissant", "baguette", "pain", "bakery", "bread", "pastry"],
     "park": ["parc", "jardin", "banc", "park", "garden", "bench", "picnic"],
     "classroom": ["classe", "école", "ecole", "cours", "professeur", "classroom", "school", "teacher", "lesson"],
     "station": ["gare", "train", "métro", "metro", "billet", "station", "ticket", "platform"],
-    "store": ["supermarché", "supermarche", "magasin", "marché", "marche", "courses", "store", "market", "shop"],
+    "store": ["supermarché", "supermarche", "magasin", "courses", "supermarket", "store", "shop"],
     "cafe": ["café", "cafe", "thé", "coffee", "tea", "chocolat"],
+    "restaurant": ["restaurant", "menu", "addition", "serveur", "serveuse", "dîner", "diner", "dinner", "lunch", "déjeuner", "bistro", "waiter", "table pour"],
+    "market": ["marché", "marche", "pommes", "fruits", "légumes", "legumes", "fromage", "cheese", "apple", "vegetables", "euros", "combien"],
+    "library": ["bibliothèque", "bibliotheque", "livre", "livres", "lire", "library", "book", "books", "read", "librairie"],
+    "beach": ["plage", "mer", "soleil", "nager", "sable", "beach", "sea", "swim", "sand", "sun", "vacances"],
+    "apartment": ["appartement", "maison", "salon", "cuisine", "chez moi", "canapé", "apartment", "home", "living room", "house", "sofa"],
+    "airport": ["aéroport", "aeroport", "avion", "vol", "valise", "passeport", "airport", "plane", "flight", "suitcase", "passport"],
+    "museum": ["musée", "musee", "tableau", "peinture", "exposition", "museum", "painting", "statue", "louvre"],
+    "street": ["rue", "ville", "boulevard", "direction", "à gauche", "à droite", "tout droit", "street", "city", "turn left", "turn right", "straight"],
 }
-ALIASES = {"supermarket": "store", "market": "store", "shop": "store", "metro": "station", "school": "classroom", "garden": "park"}
+ALIASES = {"supermarket": "store", "shop": "store", "metro": "station", "school": "classroom", "garden": "park", "bistro": "restaurant", "bookstore": "library", "bibliotheque": "library", "house": "apartment", "home": "apartment", "louvre": "museum", "road": "street", "sea": "beach"}
 
 
 class ScriptProblem(Exception):
@@ -109,7 +125,7 @@ def pick_scene(meta, lines):
     text = (meta["title"] + " " + " ".join(l["fr"] + " " + l["en"] for l in lines)).lower()
     best, score = "cafe", 0
     for name, kws in SCENE_KEYWORDS.items():
-        n = sum(text.count(k) for k in kws)
+        n = sum(len(re.findall(r"(?<!\w)" + re.escape(k) + r"(?!\w)", text)) for k in kws)   # whole words only
         if n > score:
             best, score = name, n
     return best
@@ -214,9 +230,99 @@ def make_scene(scene, meta):
         d.rounded_rectangle((100, 240, 980, 640), radius=18, fill=(150, 112, 78)); d.rounded_rectangle((120, 260, 960, 620), radius=10, fill=(52, 98, 80))
         d.text((540, 380), "Bonjour !", font=font(110), fill=(244, 244, 236), anchor="mm"); d.text((540, 520), "a  b  c  d  é", font=font(70), fill=(244, 230, 140), anchor="mm")
     elif scene == "station":
-        d.rounded_rectangle((300, 150, 780, 240), radius=24, fill=(60, 80, 120)); d.text((540, 195), "GARE", font=font(54), fill="white", anchor="mm")
+        d.rounded_rectangle((300, 258, 780, 340), radius=24, fill=(60, 80, 120)); d.text((540, 299), "GARE", font=font(54), fill="white", anchor="mm")
     elif scene == "store":
-        d.rectangle((0, 140, W, 230), fill=(52, 160, 120)); d.text((540, 185), "SUPERMARCHÉ  ·  OUVERT", font=font(48), fill="white", anchor="mm")
+        d.rectangle((0, 256, W, 336), fill=(52, 160, 120)); d.text((540, 296), "SUPERMARCHÉ  ·  OUVERT", font=font(48), fill="white", anchor="mm")
+    elif scene == "restaurant":
+        d.rounded_rectangle((120, 250, 420, 520), radius=14, fill=(120, 80, 58)); d.rounded_rectangle((136, 266, 404, 504), radius=8, fill=(236, 208, 160)); d.ellipse((190, 330, 350, 460), fill=(206, 96, 84))
+        d.rounded_rectangle((640, 270, 960, 560), radius=14, fill=(118, 92, 72)); d.rounded_rectangle((654, 284, 946, 546), radius=8, fill=(52, 60, 62))
+        d.text((800, 350), "Menu du jour", font=font(40), fill=(244, 244, 236), anchor="mm"); d.text((800, 430), "Soupe  ·  Crêpes", font=font(34, False), fill=(244, 230, 150), anchor="mm"); d.text((800, 490), "Café  ·  Thé", font=font(34, False), fill=(244, 230, 150), anchor="mm")
+        for x in (200, 480):
+            d.line([(x, 240), (x, 330)], fill=(90, 70, 60), width=4); d.pieslice((x - 52, 318, x + 52, 400), 180, 360, fill=(250, 196, 96)); d.ellipse((x - 20, 372, x + 20, 410), fill=(255, 244, 190))
+        d.rectangle((0, 560, W, 640), fill=(174, 56, 66))
+        for xx in range(0, W, 70):
+            d.rectangle((xx, 560, xx + 35, 640), fill=(250, 244, 236))
+    elif scene == "market":
+        for bx, bw, bh, col in ((0, 220, 420, (232, 214, 190)), (210, 260, 520, (222, 200, 170)), (560, 240, 460, (236, 220, 196)), (780, 300, 560, (226, 204, 176))):
+            d.rectangle((bx, 780 - bh, bx + bw, 780), fill=col)
+            for wy in range(780 - bh + 50, 740, 110):
+                for wx in range(bx + 30, bx + bw - 40, 80):
+                    d.rectangle((wx, wy, wx + 40, wy + 60), fill=(150, 176, 206))
+        d.rectangle((60, 190, 1020, 215), fill=(120, 88, 66)); d.text((540, 150), "MARCHÉ", font=font(70), fill=(52, 54, 66), anchor="mm")
+        for i, x in enumerate(range(40, 1040, 130)):
+            d.polygon([(x, 250), (x + 130, 250), (x + 130, 330), (x, 330)], fill=(214, 66, 72) if i % 2 == 0 else (250, 246, 240))
+        for cx, col in ((170, (214, 56, 56)), (320, (246, 160, 52)), (470, (130, 190, 84)), (620, (232, 196, 64)), (770, (176, 66, 120)), (920, (214, 56, 56))):
+            d.rounded_rectangle((cx - 70, 620, cx + 70, 720), radius=8, fill=(176, 130, 86))
+            for dx in range(-52, 60, 30):
+                d.ellipse((cx + dx - 18, 590, cx + dx + 18, 626), fill=col)
+    elif scene == "library":
+        cols = [(196, 84, 84), (84, 128, 176), (230, 184, 84), (96, 150, 110), (150, 100, 160), (210, 130, 86), (70, 90, 130)]
+        for sx in (0, 790):
+            d.rectangle((sx, 200, sx + 290, 800), fill=(120, 84, 60))
+            for ry in range(220, 780, 120):
+                d.rectangle((sx + 10, ry + 100, sx + 280, ry + 112), fill=(92, 62, 44))
+                x = sx + 18
+                for k in range(11):
+                    bw = 18 + (k * 7) % 12; bh = 70 + (k * 13) % 26
+                    d.rectangle((x, ry + 100 - bh, x + bw, ry + 100), fill=cols[(k + ry // 120) % len(cols)]); x += bw + 3
+        d.rounded_rectangle((330, 280, 750, 780), radius=200, fill=(120, 84, 60)); d.rounded_rectangle((350, 300, 730, 780), radius=190, fill=(196, 226, 248))
+        d.line([(540, 300), (540, 780)], fill=(120, 84, 60), width=10); d.line([(350, 520), (730, 520)], fill=(120, 84, 60), width=10)
+        d.line([(540, 200), (540, 250)], fill=(90, 70, 60), width=5); d.pieslice((488, 240, 592, 322), 180, 360, fill=(70, 120, 90))
+    elif scene == "beach":
+        d.rectangle((0, 520, W, 800), fill=(70, 160, 214)); d.rectangle((0, 520, W, 560), fill=(118, 196, 232))
+        for y in range(580, 790, 50):
+            for x in range(-40 + (y // 50 % 2) * 60, W, 120):
+                d.arc((x, y, x + 80, y + 22), 200, 340, fill=(206, 236, 250), width=5)
+        d.rectangle((0, 780, W, 885), fill=(244, 222, 170)); d.ellipse((820, 150, 980, 310), fill=(252, 232, 130))
+        d.polygon([(300, 470), (300, 380), (400, 470)], fill=(252, 250, 244)); d.polygon([(290, 480), (410, 480), (380, 505), (310, 505)], fill=(214, 84, 84))
+        for cx, cy in ((150, 260), (640, 230)):
+            d.ellipse((cx - 70, cy - 22, cx + 70, cy + 22), fill=(255, 255, 255)); d.ellipse((cx - 30, cy - 46, cx + 36, cy + 8), fill=(255, 255, 255))
+        d.line([(900, 600), (900, 790)], fill=(120, 88, 66), width=10)
+        for k in range(8):
+            d.pieslice((790, 520, 1010, 700), 180 + k * 22.5, 202.5 + k * 22.5, fill=(214, 66, 72) if k % 2 == 0 else (250, 246, 240))
+    elif scene == "apartment":
+        d.rounded_rectangle((250, 250, 830, 760), radius=20, fill=(210, 190, 170)); d.rectangle((270, 270, 810, 740), fill=(190, 220, 244)); d.rectangle((270, 560, 810, 740), fill=(186, 170, 176))
+        for rx, rw, rh in ((280, 120, 90), (420, 150, 130), (590, 110, 80), (710, 90, 110)):
+            d.polygon([(rx, 640), (rx + rw / 2, 640 - rh), (rx + rw, 640)], fill=(150, 150, 170)); d.rectangle((rx, 640, rx + rw, 740), fill=(166, 160, 176))
+        eiffel(d, 540, 700, 330, (130, 150, 190))
+        d.rectangle((536, 270, 544, 740), fill=(210, 190, 170)); d.rectangle((270, 500, 810, 508), fill=(210, 190, 170))
+        d.polygon([(190, 230), (270, 230), (270, 780), (170, 780)], fill=(238, 150, 164)); d.polygon([(890, 230), (810, 230), (810, 780), (910, 780)], fill=(238, 150, 164))
+        for x, y, w_, h_, col in ((60, 330, 120, 160, (232, 196, 120)), (900, 340, 110, 140, (150, 190, 170))):
+            d.rounded_rectangle((x, y, x + w_, y + h_), radius=6, fill=(120, 84, 60)); d.rectangle((x + 10, y + 10, x + w_ - 10, y + h_ - 10), fill=col)
+        d.rectangle((0, 780, W, 800), fill=(180, 140, 104))
+        d.line([(980, 480), (980, 780)], fill=(90, 80, 74), width=8); d.polygon([(930, 480), (1030, 480), (1010, 410), (950, 410)], fill=(252, 226, 150))
+    elif scene == "airport":
+        d.rectangle((0, 230, W, 780), fill=(196, 222, 246)); d.rectangle((0, 600, W, 780), fill=(150, 156, 166))
+        d.rectangle((0, 690, W, 700), fill=(240, 240, 240))
+        d.ellipse((330, 520, 760, 600), fill=(248, 250, 252)); d.polygon([(700, 540), (800, 470), (810, 480), (740, 570)], fill=(60, 84, 134)); d.polygon([(470, 560), (560, 640), (600, 640), (540, 560)], fill=(208, 214, 224))
+        for x in range(360, 720, 52):
+            d.ellipse((x, 540, x + 18, 556), fill=(120, 150, 190))
+        for x in (0, 270, 540, 810):
+            d.rectangle((x, 230, x + 14, 780), fill=(236, 240, 246))
+        d.rounded_rectangle((250, 120, 830, 230), radius=16, fill=(40, 52, 90))
+        d.text((540, 150), "DÉPARTS", font=font(40), fill=(255, 220, 90), anchor="mm"); d.text((540, 202), "Paris  ·  Lyon  ·  Nice", font=font(30, False), fill=(240, 240, 250), anchor="mm")
+        for x in range(60, 1040, 120):
+            d.rectangle((x, 60, x + 70, 74), fill=(255, 250, 230))
+    elif scene == "museum":
+        fr = ((90, 270, 280, 440, (206, 120, 90), (240, 196, 120)), (400, 250, 330, 480, (96, 140, 180), (236, 226, 190)), (800, 280, 190, 380, (130, 170, 120), (220, 120, 120)))
+        for x, y, w_, h_, c1, c2 in fr:
+            d.rounded_rectangle((x - 16, y - 16, x + w_ + 16, y + h_ + 16), radius=8, fill=(176, 132, 70)); d.rectangle((x, y, x + w_, y + h_), fill=c1)
+            d.ellipse((x + w_ * 0.2, y + h_ * 0.2, x + w_ * 0.8, y + h_ * 0.7), fill=c2); d.polygon([(x, y + h_), (x + w_ * 0.5, y + h_ * 0.55), (x + w_, y + h_)], fill=tuple(int(v * 0.7) for v in c1))
+        d.rectangle((0, 780, W, 800), fill=(176, 160, 132))
+        d.rectangle((60, 700, 200, 780), fill=(212, 204, 190)); d.ellipse((90, 560, 170, 650), fill=(224, 218, 206)); d.rectangle((105, 640, 155, 700), fill=(224, 218, 206))
+        d.line([(900, 740), (900, 790)], fill=(180, 140, 70), width=10); d.line([(1000, 740), (1000, 790)], fill=(180, 140, 70), width=10); d.arc((900, 750, 1000, 800), 0, 180, fill=(170, 50, 60), width=8)
+    elif scene == "street":
+        d.rectangle((0, 780, W, 885), fill=(172, 162, 152))
+        for bx, bw, col in ((0, 380, (238, 226, 204)), (380, 330, (230, 216, 190)), (710, 370, (240, 230, 210))):
+            d.rectangle((bx, 230, bx + bw, 780), fill=col); d.polygon([(bx, 230), (bx + bw, 230), (bx + bw - 30, 170), (bx + 30, 170)], fill=(120, 130, 150))
+            for wy in (300, 480, 640):
+                for wx in range(bx + 40, bx + bw - 70, 110):
+                    d.rectangle((wx, wy, wx + 60, wy + 110), fill=(160, 188, 214)); d.rectangle((wx - 18, wy, wx - 4, wy + 110), fill=(96, 130, 120)); d.rectangle((wx + 64, wy, wx + 78, wy + 110), fill=(96, 130, 120))
+                    d.rectangle((wx - 8, wy + 100, wx + 70, wy + 112), fill=(60, 60, 66))
+        d.line([(540, 400), (540, 790)], fill=(50, 56, 60), width=12); d.ellipse((510, 360, 570, 420), fill=(252, 226, 150)); d.rectangle((520, 330, 560, 360), fill=(50, 56, 60))
+        d.rounded_rectangle((60, 700, 300, 790), radius=14, fill=(206, 84, 90)); d.text((180, 745), "CAFÉ", font=font(46), fill="white", anchor="mm")
+        for x in range(0, W, 90):
+            d.line([(x, 790), (x + 45, 885)], fill=(150, 140, 132), width=3)
     d.rectangle((0, TABLE_TOP, W, H), fill=sc["floor"])
     for y in range(TABLE_TOP + 150, H, 100):
         d.line([(0, y), (W, y)], fill=tuple(int(v * 0.93) for v in sc["floor"]), width=3)
@@ -233,6 +339,19 @@ def make_scene(scene, meta):
         if scene in ("cafe", "bakery"):
             g.rounded_rectangle((x, 6, x + 96, 66), radius=20, fill=(255, 252, 248)); g.ellipse((x + 78, 20, x + 122, 52), outline=(255, 252, 248), width=9)
             g.ellipse((x + 12, 10, x + 84, 24), fill=(226, 210, 196))
+    if scene == "restaurant":
+        for x in (150, 810):
+            g.ellipse((x, 8, x + 130, 52), fill=(255, 255, 255)); g.ellipse((x + 22, 16, x + 108, 44), fill=(238, 232, 224)); g.rectangle((x + 168, 8, x + 176, 56), fill=(240, 246, 250))
+    elif scene == "library":
+        for x, cols_ in ((150, ((196, 84, 84), (84, 128, 176), (230, 184, 84))), (820, ((96, 150, 110), (150, 100, 160), (210, 130, 86)))):
+            for k, c_ in enumerate(cols_):
+                g.rectangle((x + (k % 2) * 6, 56 - 14 * (k + 1), x + 120 - (k % 2) * 6, 56 - 14 * k), fill=c_)
+    elif scene == "market":
+        for x, c_ in ((150, (214, 56, 56)), (840, (246, 160, 52))):
+            for dx in (0, 34, 68):
+                g.ellipse((x + dx, 18, x + dx + 38, 56), fill=c_)
+    elif scene == "airport":
+        g.rectangle((140, 12, 260, 56), fill=(60, 84, 134)); g.rectangle((820, 20, 940, 56), fill=(60, 84, 134))
     return bg, fg
 
 

@@ -1,0 +1,16 @@
+title: At the Airport
+episode: 3
+scene: airport
+
+Adrien: Bonjour ! Votre passeport, s'il vous plaît. | Hello! Your passport, please.
+Marinette: Voilà mon passeport. | Here is my passport.
+Adrien: Vous allez où ? | Where are you going?
+Marinette: Je vais à Paris ! | I'm going to Paris!
+Adrien: Bon voyage ! | Have a good trip!
+Marinette: Merci ! Au revoir ! | Thank you! Goodbye!
+
+vocab: un passeport | a passport
+vocab: je vais à | I'm going to
+vocab: bon voyage | have a good trip
+vocab: voilà | here is / here you go
+vocab: au revoir | goodbye

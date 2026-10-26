@@ -1,0 +1,16 @@
+title: At the Restaurant
+episode: 2
+scene: restaurant
+
+Adrien: Bonjour ! Voici le menu. | Hello! Here is the menu.
+Marinette: Merci ! Je voudrais une soupe, s'il vous plaît. | Thank you! I would like a soup, please.
+Adrien: Et comme boisson ? | And to drink?
+Marinette: Un thé, s'il vous plaît. | A tea, please.
+Adrien: Voilà ! Bon appétit ! | Here you go! Enjoy your meal!
+Marinette: Merci ! L'addition, s'il vous plaît ! | Thank you! The bill, please!
+
+vocab: je voudrais | I would like
+vocab: le menu | the menu
+vocab: bon appétit | enjoy your meal
+vocab: l'addition | the bill
+vocab: un thé | a tea

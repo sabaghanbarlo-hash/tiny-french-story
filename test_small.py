@@ -88,3 +88,21 @@ def test_preview_frame_dimensions():
         r = run(SAMPLE, "--dummy-audio", "--preview", out)
         assert r.returncode == 0, r.stderr
         assert Image.open(out).size == (1080, 1920)
+
+
+def test_all_places_render_and_can_be_chosen():
+    assert len(small.SCENES) >= 14
+    for name in small.SCENES:
+        meta, lines, _ = small.parse_story(GOOD.replace("scene: cafe", "scene: " + name))
+        assert small.pick_scene(meta, lines) == name
+        bg, fg = small.make_scene(name, {"title": "Test", "episode": "1"})
+        assert bg.size == (small.W, small.H) and fg.size[0] == small.W
+
+
+def test_places_are_picked_automatically_from_the_words():
+    cases = (("À l'aéroport : mon passeport, s'il vous plaît", "airport"), ("Au restaurant : l'addition, s'il vous plaît", "restaurant"),
+             ("Au marché : combien coûtent les pommes ?", "market"), ("À la plage : le soleil", "beach"),
+             ("À la bibliothèque : un livre", "library"), ("Au musée : un tableau", "museum"), ("Merci beaucoup, au revoir", "cafe"))
+    for text, want in cases:
+        meta, lines, _ = small.parse_story(f"title: Test\nscene: auto\nAdrien: {text} | x\n")
+        assert small.pick_scene(meta, lines) == want, text
