@@ -1,0 +1,45 @@
+1
+00:00:00,600 --> 00:00:02,472
+Bonjour
+Hello
+
+2
+00:00:02,972 --> 00:00:08,108
+Bonjour ! Je voudrais un croissant, s'il vous plaît.
+Hello! I'd like a croissant, please.
+
+3
+00:00:08,608 --> 00:00:12,352
+Bien sûr ! Autre chose ?
+Of course! Anything else?
+
+4
+00:00:12,852 --> 00:00:16,284
+Oui, une baguette, s'il vous plaît.
+Yes, a baguette, please.
+
+5
+00:00:16,784 --> 00:00:18,656
+Voilà !
+Here you go!
+
+6
+00:00:19,156 --> 00:00:21,028
+C'est combien ?
+How much is it?
+
+7
+00:00:21,528 --> 00:00:23,592
+C'est cinq euros.
+It's five euros.
+
+8
+00:00:24,092 --> 00:00:27,236
+Tenez ! Merci !
+Here you go! Thank you!
+
+9
+00:00:27,736 --> 00:00:30,496
+Merci, bonne journée !
+Thank you, have a nice day!
+
