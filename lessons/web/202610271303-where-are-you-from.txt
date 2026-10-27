@@ -1,0 +1,21 @@
+title: Where Are You From?
+episode: 2
+scene: park
+
+Marinette: Salut, Adrien ! | Hi, Adrien!
+Adrien: Salut, Marinette ! Ça va ? | Hi, Marinette! How are you?
+Marinette: Ça va bien, merci. Et toi ? | I'm good, thank you. And you?
+Adrien: Très bien ! | Very good!
+Marinette: Tu viens d'où ? | Where are you from?
+Adrien: Je viens de Paris. Et toi ? | I'm from Paris. And you?
+Marinette: Je viens de Lyon. | I'm from Lyon.
+Adrien: Ah, c'est super ! | Oh, that's great!
+
+vocab: salut | hi
+vocab: ça va ? | how are you?
+vocab: ça va bien | I'm doing well
+vocab: et toi ? | and you?
+vocab: très bien | very well
+vocab: tu viens d'où ? | where are you from?
+vocab: je viens de | I'm from
+vocab: c'est super | that's great
