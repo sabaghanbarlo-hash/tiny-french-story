@@ -106,3 +106,20 @@ def test_places_are_picked_automatically_from_the_words():
     for text, want in cases:
         meta, lines, _ = small.parse_story(f"title: Test\nscene: auto\nAdrien: {text} | x\n")
         assert small.pick_scene(meta, lines) == want, text
+
+
+def test_small_cover_is_a_designed_cover_not_a_raw_frame():
+    meta, lines, vocab = small.parse_story(GOOD); meta["scene"] = small.pick_scene(meta, lines)
+    cov = small.cover_image(meta)
+    assert cov.size == (1080, 1920) and cov.mode == "RGB"
+    bg, fg = small.make_scene(meta["scene"], meta, header=False)
+    assert cov.tobytes() != bg.convert("RGB").tobytes()
+    # title card sits in the band Instagram keeps when cropping to the profile grid
+    band = cov.crop((100, 1000, 980, 1500)).convert("L")
+    assert sum(1 for v in band.tobytes() if v > 245) > 0.25 * band.width * band.height
+
+
+def test_small_cover_exists_for_every_scene():
+    for sc in small.SCENES:
+        meta = dict(title="Un croissant", episode="2", scene=sc)
+        assert small.cover_image(meta).size == (1080, 1920)

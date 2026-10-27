@@ -23,7 +23,7 @@ class Scenes(unittest.TestCase):
         for k, v in scenes.SCENES.items():
             xs = sorted(v["spots"].values()); self.assertTrue(v["spots"], k)
             for x in xs: self.assertTrue(100 <= x <= W - 100, f"{k}: spot at x={x} too close to the edge")
-            for a, b in zip(xs, xs[1:]): self.assertGreaterEqual(b - a, MIN_GAP, f"{k}: spots closer than MIN_GAP")
+            for a, b in zip(xs, xs[1:]): self.assertGreaterEqual(b - a, 200, f"{k}: props closer than 200px (characters themselves keep MIN_GAP apart, see acting.sep)")
     def test_aliases_unique_and_resolve(self):
         seen = {}
         for k, v in scenes.SCENES.items():

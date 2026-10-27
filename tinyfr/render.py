@@ -75,9 +75,10 @@ def f_story(seg, t, meta):
         if not P["vis"]: continue
         sp = n == seg.get("speaker")
         spr = rig.draw(n, dict(P, mouth=seg["mouth"](t) if sp else 0.0, t=t))
-        sc = 1.0 + P["lane"] * 0.0009
-        if abs(sc - 1.0) > 0.002: spr = spr.resize((int(spr.width * sc), int(spr.height * sc)), Image.BILINEAR)
-        feet = 1190 + P["lane"] * 0.55
+        sc = SC.scale_of(seg["place"]) * (1.0 + P["lane"] * 0.0009)
+        spr = spr.resize((int(spr.width * sc), int(spr.height * sc)), Image.BILINEAR)
+        feet = SC.floor_of(seg["place"]) + P["lane"] * 0.55
+        d.ellipse((P["x"] - 150 * sc, feet - 16, P["x"] + 150 * sc, feet + 16), fill=(40, 44, 78, 58))   # contact shadow
         img.paste(spr, (int(P["x"] - rig.CX * sc), int(feet - rig.FY * sc)), spr)
     if seg.get("speaker"):
         d = ImageDraw.Draw(img, "RGBA")

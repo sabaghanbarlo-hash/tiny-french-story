@@ -18,6 +18,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from sprites import sprite, CHARS  # noqa: E402
+from tinyfr.cover import compose as compose_cover  # noqa: E402
 
 W, H, FPS, SR = 1080, 1920, 30, 24000
 CHAR_Y, TABLE_TOP, CARD_Y = 300, 885, 1040
@@ -196,7 +197,7 @@ def eiffel(d, cx, base, h, col):
     d.polygon([(cx - w * 0.22, base), (cx + w * 0.22, base), (cx, base - h * 0.22)], fill=tuple(min(255, c + 30) for c in col))
 
 
-def make_scene(scene, meta):
+def make_scene(scene, meta, header=True):
     sc = SCENES[scene]
     bg = vgrad(W, H, sc["top"], sc["bot"]); d = ImageDraw.Draw(bg)
     if scene in ("cafe", "bakery", "classroom", "station", "store"):
@@ -326,13 +327,14 @@ def make_scene(scene, meta):
     d.rectangle((0, TABLE_TOP, W, H), fill=sc["floor"])
     for y in range(TABLE_TOP + 150, H, 100):
         d.line([(0, y), (W, y)], fill=tuple(int(v * 0.93) for v in sc["floor"]), width=3)
-    ep = f"Ep.{meta['episode']}  ·  " if meta.get("episode") else ""
-    d.rounded_rectangle((60, 78, 1020, 232), radius=62, fill=(250, 247, 242, 245))
-    d.text((112, 106), "TINY FRENCH", font=font(30), fill=BRAND)
-    size = 54
-    while size > 28 and font(size).getlength(ep + meta["title"]) > 860:
-        size -= 2
-    d.text((112, 152), ep + meta["title"], font=font(size), fill=(52, 54, 66))
+    if header:
+        ep = f"Ep.{meta['episode']}  ·  " if meta.get("episode") else ""
+        d.rounded_rectangle((60, 78, 1020, 232), radius=62, fill=(250, 247, 242, 245))
+        d.text((112, 106), "TINY FRENCH", font=font(30), fill=BRAND)
+        size = 54
+        while size > 28 and font(size).getlength(ep + meta["title"]) > 860:
+            size -= 2
+        d.text((112, 152), ep + meta["title"], font=font(size), fill=(52, 54, 66))
     fg = Image.new("RGBA", (W, 175), (0, 0, 0, 0)); g = ImageDraw.Draw(fg)
     g.rectangle((0, 55, W, 125), fill=sc["table"]); g.rectangle((0, 125, W, 175), fill=sc["edge"])
     for x in (170, 830):
@@ -353,6 +355,15 @@ def make_scene(scene, meta):
     elif scene == "airport":
         g.rectangle((140, 12, 260, 56), fill=(60, 84, 134)); g.rectangle((820, 20, 940, 56), fill=(60, 84, 134))
     return bg, fg
+
+
+def cover_image(meta):
+    """Professional cover: the scene with both friends smiling at the table, plus a title card in Instagram's safe band."""
+    bg, fg = make_scene(meta["scene"], meta, header=False); fr = bg.copy()
+    for nm, c in CHARS.items():
+        s = sprite(nm, 1, False); fr.paste(s, (c["x"], CHAR_Y), s)
+    fr.paste(fg, (0, TABLE_TOP - 55), fg)
+    return compose_cover(fr, meta["title"], meta.get("episode"), cy=1250)
 
 
 def card_image(tag, tag_color, parts, min_h=380):
@@ -490,7 +501,7 @@ def main():
         p.stdin.close()
         if p.wait() != 0:
             sys.exit("::error::FFmpeg failed while encoding the video.")
-        l = lines[min(1, len(lines) - 1)]; frame(int((l["start"] + 0.6) * FPS)).save(os.path.join(a.out, stem + ".cover.png"))
+        cover_image(meta).save(os.path.join(a.out, stem + ".cover.png"))
     with open(os.path.join(a.out, stem + ".srt"), "w", encoding="utf-8") as f:
         for i, l in enumerate(lines, 1):
             f.write(f"{i}\n{srt_time(l['start'])} --> {srt_time(l['end'])}\n{l['fr']}\n{l['en']}\n\n")

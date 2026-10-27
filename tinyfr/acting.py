@@ -1,15 +1,19 @@
 """Stage directions -> timeline. The vocabulary here IS the supported list (see DIRECTING.md); anything else is a ScriptError."""
 import bisect, math, re
 from dataclasses import dataclass
-from .config import W
+from .config import W, CHAR_SCALE, BODY_W
 from .parser import ScriptError, Say, Direction, SceneChange
 from . import scenes as SC
 from . import items as IT
 
 NAMES = ("Marinette", "Adrien")
 HOME = {"Marinette": 300, "Adrien": 780}
-SPEED, RUN = 500.0, 820.0
-MIN_GAP = 190
+SPEED, RUN = 400.0, 650.0
+# Minimum distance between the two characters' centres: one body width plus ~105px of air (~300px at CHAR_SCALE 0.62).
+# The old 190px put their faces and shoulders on top of each other.
+MIN_GAP = round(BODY_W * CHAR_SCALE) + 105
+STAND_NEXT = MIN_GAP + 20       # "next to <name>"
+GIVE_REACH = MIN_GAP + 60       # farther than this and the giver steps over first
 EXPRS = {"neutral": "neutral", "happy": "happy", "glad": "happy", "smiling": "happy", "sad": "sad", "confused": "confused", "puzzled": "confused",
          "surprised": "surprised", "shocked": "surprised", "embarrassed": "embarrassed", "worried": "worried", "nervous": "worried", "excited": "excited",
          "thrilled": "excited", "shy": "shy"}
@@ -108,7 +112,7 @@ class Stage:
             tgt = self.cur[m.group(1).title()]
             if not tgt["on"]: raise ScriptError(f"line {ln}: {m.group(1).title()} is not on stage to stand next to")
             side = 1 if self.cur[n]["x"] >= tgt["x"] else -1
-            return min(W - 130, max(130, tgt["x"] + side * 200))
+            return min(W - 130, max(130, tgt["x"] + side * STAND_NEXT))
         sp = self.spots()
         if a in sp: return sp[a]
         raise ScriptError(f"line {ln}: unknown place {arg!r} in the {self.scene}. Spots here: {', '.join(sp)}; or left, center, right, home, next to <name>, 40%")
@@ -196,8 +200,8 @@ class Stage:
                 if not c["item"]: raise ScriptError(f"line {ln}: {n} is not holding anything to give")
                 if it and it != c["item"]: raise ScriptError(f"line {ln}: {n} is holding {c['item']}, not {it}")
                 if r["item"]: raise ScriptError(f"line {ln}: {tg} is already holding {r['item']}; they need to put it away first")
-                if abs(r["x"] - c["x"]) > 250:
-                    side = 1 if c["x"] >= r["x"] else -1; s = self._move(n, s, min(W - 130, max(130, r["x"] + side * 210)), False, ln)
+                if abs(r["x"] - c["x"]) > GIVE_REACH:
+                    side = 1 if c["x"] >= r["x"] else -1; s = self._move(n, s, min(W - 130, max(130, r["x"] + side * (MIN_GAP + 10))), False, ln)
                 self.face[n].append((s, 1 if r["x"] >= c["x"] else -1))
                 thing = c["item"]; self._act(n, s, "give", 1.4); self._setitem(n, s + 0.7, None); self._setitem(tg, s + 0.7, thing)
                 cursor[n] = s + 1.4; cursor[tg] = max(cursor[tg], s + 1.4)
@@ -225,8 +229,8 @@ class Stage:
             if a0 <= t < a1: act, ap = nm, (t - a0) / (a1 - a0)
         lane = 0.0
         if moving and ovis and not (omoving and n == "Marinette"):
-            lane = -70 * _ss(1 - (abs(x - ox) - 90) / 150)
-        return dict(x=x, vis=vis, moving=moving, face=fv, expr=expr, act=act, ap=ap, item=it[1], bites=it[2], lane=lane, walking=1.0 if moving else 0.0, phase=x / 52.0)
+            lane = -70 * _ss(1 - (abs(x - ox) - 0.45 * MIN_GAP) / (0.9 * MIN_GAP))
+        return dict(x=x, vis=vis, moving=moving, face=fv, expr=expr, act=act, ap=ap, item=it[1], bites=it[2], lane=lane, walking=1.0 if moving else 0.0, phase=x / (52.0 * SC.scale_of(self.scene)))
 
 def starts_off(story, idx):
     """Characters whose first direction (before the next spoken line / scene) is 'enters' begin off stage."""
@@ -243,7 +247,7 @@ def starts_off(story, idx):
 def play(script, say_seconds, t0=2.6):
     """Run the story through a Stage. say_seconds(ev) -> seconds a line takes. Returns (stage, timeline items, end time)."""
     story = script.story
-    scene = SC.resolve(script.meta.get("scene", "street"))
+    scene = SC.scene_for(script)
     if not scene: raise ScriptError(f"unknown scene {script.meta.get('scene')!r}; scenes: {', '.join(SC.SCENES)}")
     stage = Stage(scene, starts_off(story, 0)); t = t0; out = []; i = 0
     while i < len(story):
