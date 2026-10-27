@@ -1,0 +1,22 @@
+title: Making a New Friend
+episode: 4
+scene: school
+
+Adrien: Salut ! Tu t'appelles comment ? | Hi! What's your name?
+Marinette: Je m'appelle Marinette. Et toi ? | My name is Marinette. And you?
+Adrien: Moi, c'est Adrien. | I'm Adrien.
+Marinette: Tu as quel âge ? | How old are you?
+Adrien: J'ai dix-huit ans. Et toi ? | I'm eighteen. And you?
+Marinette: J'ai dix-sept ans. | I'm seventeen.
+Adrien: Tu aimes la musique ? | Do you like music?
+Marinette: Oui, j'adore la musique ! | Yes, I love music!
+Adrien: Moi aussi ! | Me too!
+
+vocab: tu t'appelles comment ? | what's your name?
+vocab: moi, c'est... | I'm...
+vocab: tu as quel âge ? | how old are you?
+vocab: j'ai ... ans | I'm ... years old
+vocab: tu aimes...? | do you like...?
+vocab: la musique | music
+vocab: j'adore | I love
+vocab: moi aussi | me too
