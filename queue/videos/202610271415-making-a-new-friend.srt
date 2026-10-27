@@ -1,0 +1,45 @@
+1
+00:00:00,600 --> 00:00:04,200
+Salut ! Tu t'appelles comment ?
+Hi! What's your name?
+
+2
+00:00:04,700 --> 00:00:08,900
+Je m'appelle Marinette. Et toi ?
+My name is Marinette. And you?
+
+3
+00:00:09,400 --> 00:00:11,824
+Moi, c'est Adrien.
+I'm Adrien.
+
+4
+00:00:12,324 --> 00:00:14,436
+Tu as quel âge ?
+How old are you?
+
+5
+00:00:14,936 --> 00:00:18,536
+J'ai dix-huit ans. Et toi ?
+I'm eighteen. And you?
+
+6
+00:00:19,036 --> 00:00:21,172
+J'ai dix-sept ans.
+I'm seventeen.
+
+7
+00:00:21,672 --> 00:00:23,832
+Tu aimes la musique ?
+Do you like music?
+
+8
+00:00:24,332 --> 00:00:27,188
+Oui, j'adore la musique !
+Yes, I love music!
+
+9
+00:00:27,688 --> 00:00:29,560
+Moi aussi !
+Me too!
+
