@@ -1,0 +1,22 @@
+title: Ordering at a Bakery
+episode: 3
+scene: bakery
+
+Marinette: Bonjour | Hello
+Adrien: Bonjour ! Je voudrais un croissant, s'il vous plaît. | Hello! I'd like a croissant, please.
+Marinette: Bien sûr ! Autre chose ? | Of course! Anything else?
+Adrien: Oui, une baguette, s'il vous plaît. | Yes, a baguette, please.
+Marinette: Voilà ! | Here you go!
+Adrien: C'est combien ? | How much is it?
+Marinette: C'est cinq euros. | It's five euros.
+Adrien: Tenez ! Merci ! | Here you go! Thank you!
+Marinette: Merci, bonne journée ! | Thank you, have a nice day!
+
+vocab: je voudrais | I would like
+vocab: un croissant | a croissant
+vocab: une baguette | a baguette
+vocab: bien sûr | of course
+vocab: autre chose ? | anything else?
+vocab: c'est combien ? | how much is it?
+vocab: tenez | here you go
+vocab: bonne journée | have a nice day
