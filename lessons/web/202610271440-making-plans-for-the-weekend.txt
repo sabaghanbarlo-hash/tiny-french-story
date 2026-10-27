@@ -1,0 +1,23 @@
+title: Making Plans for the Weekend
+episode: 5
+scene: classroom
+
+Marinette: Tu fais quoi ce week-end ? | What are you doing this weekend?
+Adrien: Je ne sais pas encore. Et toi ? | I don't know yet. And you?
+Marinette: Je veux aller au cinéma. | I want to go to the cinema.
+Adrien: Bonne idée ! | Good idea!
+Marinette: Tu veux venir avec moi ? | Do you want to come with me?
+Adrien: Oui, avec plaisir ! | Yes, I'd love to!
+Marinette: On se retrouve samedi ? | Shall we meet on Saturday?
+Adrien: D'accord ! À samedi ! | Okay! See you Saturday!
+Marinette: À samedi ! | See you Saturday!
+
+vocab: ce week-end | this weekend
+vocab: je ne sais pas | I don't know
+vocab: encore | yet / still
+vocab: je veux | I want
+vocab: aller au cinéma | to go to the cinema
+vocab: bonne idée | good idea
+vocab: avec plaisir | with pleasure
+vocab: on se retrouve...? | shall we meet...?
+vocab: à samedi | see you Saturday
