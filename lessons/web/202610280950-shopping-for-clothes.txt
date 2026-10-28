@@ -1,0 +1,24 @@
+title: Shopping for Clothes
+episode: 8
+scene: store
+
+Marinette: Regarde cette robe ! | Look at this dress!
+Adrien: Elle est très jolie ! | It's very pretty!
+Marinette: Je peux l'essayer ? | Can I try it on?
+Adrien: Bien sûr ! | Of course!
+Marinette: Excusez-moi, combien coûte cette robe ? | Excuse me, how much is this dress?
+Adrien: Elle coûte trente euros. | It costs thirty euros.
+Marinette: C'est un peu cher. | It's a little expensive.
+Adrien: Et cette jupe ? Elle est moins chère. | What about this skirt? It's cheaper.
+Marinette: Bonne idée ! Je la prends ! | Good idea! I'll take it!
+
+vocab: regarde | look
+vocab: cette robe | this dress
+vocab: joli / jolie | pretty
+vocab: essayer | to try on
+vocab: combien coûte...? | how much does... cost?
+vocab: trente euros | thirty euros
+vocab: un peu cher / chère | a little expensive
+vocab: une jupe | a skirt
+vocab: moins cher / chère | cheaper
+vocab: je la prends | I'll take it
