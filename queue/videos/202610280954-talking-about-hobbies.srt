@@ -1,0 +1,45 @@
+1
+00:00:00,600 --> 00:00:02,880
+Qu'est-ce que tu aimes faire ?
+What do you like to do?
+
+2
+00:00:03,380 --> 00:00:05,924
+J'aime beaucoup dessiner.
+I really like drawing.
+
+3
+00:00:06,424 --> 00:00:10,384
+C'est génial ! Tu aimes le sport ?
+That's awesome! Do you like sports?
+
+4
+00:00:10,884 --> 00:00:13,956
+Oui, j'aime jouer au tennis.
+Yes, I like playing tennis.
+
+5
+00:00:14,456 --> 00:00:17,960
+Moi, j'adore écouter de la musique.
+I love listening to music.
+
+6
+00:00:18,460 --> 00:00:20,764
+Quel genre de musique ?
+What kind of music?
+
+7
+00:00:21,264 --> 00:00:23,808
+J'aime la pop et le rock.
+I like pop and rock.
+
+8
+00:00:24,308 --> 00:00:26,996
+On a beaucoup de choses en commun !
+We have a lot in common!
+
+9
+00:00:27,496 --> 00:00:32,008
+Oui ! On devrait faire quelque chose ensemble !
+Yes! We should do something together!
+
