@@ -1,0 +1,25 @@
+title: Asking for Directions
+episode: 7
+scene: street
+
+Adrien: Excusez-moi, madame ! | Excuse me, ma'am!
+Marinette: Oui ? Je peux vous aider ? | Yes? Can I help you?
+Adrien: Où est la gare, s'il vous plaît ? | Where is the train station, please?
+Marinette: Allez tout droit. | Go straight ahead.
+Adrien: Et ensuite ? | And then?
+Marinette: Tournez à gauche. | Turn left.
+Adrien: C'est loin d'ici ? | Is it far from here?
+Marinette: Non, c'est tout près ! | No, it's very close!
+Adrien: Merci pour votre aide ! | Thank you for your help!
+Marinette: Je vous en prie ! | You're welcome!
+
+vocab: excusez-moi | excuse me
+vocab: je peux vous aider ? | can I help you?
+vocab: où est...? | where is...?
+vocab: la gare | the train station
+vocab: tout droit | straight ahead
+vocab: ensuite | next / then
+vocab: à gauche | to the left
+vocab: c'est loin ? | is it far?
+vocab: tout près | very close
+vocab: votre aide | your help
