@@ -1,0 +1,24 @@
+title: Talking About Hobbies
+episode: 9
+scene: park
+
+Adrien: Qu'est-ce que tu aimes faire ? | What do you like to do?
+Marinette: J'aime beaucoup dessiner. | I really like drawing.
+Adrien: C'est génial ! Tu aimes le sport ? | That's awesome! Do you like sports?
+Marinette: Oui, j'aime jouer au tennis. | Yes, I like playing tennis.
+Adrien: Moi, j'adore écouter de la musique. | I love listening to music.
+Marinette: Quel genre de musique ? | What kind of music?
+Adrien: J'aime la pop et le rock. | I like pop and rock.
+Marinette: On a beaucoup de choses en commun ! | We have a lot in common!
+Adrien: Oui ! On devrait faire quelque chose ensemble ! | Yes! We should do something together!
+
+vocab: qu'est-ce que tu aimes faire ? | what do you like to do?
+vocab: dessiner | to draw
+vocab: génial | awesome
+vocab: le sport | sports
+vocab: jouer au tennis | to play tennis
+vocab: écouter de la musique | to listen to music
+vocab: quel genre de...? | what kind of...?
+vocab: la pop | pop music
+vocab: en commun | in common
+vocab: ensemble | together
