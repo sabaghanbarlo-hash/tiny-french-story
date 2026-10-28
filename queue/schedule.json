@@ -1,11 +1,10 @@
 {
  "slots_utc": [
-  "14:00",
-  "01:00"
+  "14:00"
  ],
- "max_per_day": 2,
+ "max_per_day": 1,
  "min_gap_hours": 8,
  "lead_minutes": 30,
  "max_attempts": 3,
- "notes": "UTC times. 14:00 UTC = US morning (10am ET / 7am PT), Europe afternoon, India evening. 01:00 UTC = US evening (9pm ET / 6pm PT), India/Asia morning, Australia midday. Tune after a few weeks using Instagram Insights (Followers > Most active times)."
+ "notes": "One Reel a day at 14:00 UTC (10am ET / 7am PT, Europe afternoon, India evening). Change slots_utc / max_per_day to post more often. Tune after a few weeks using Instagram Insights (Followers > Most active times)."
 }
