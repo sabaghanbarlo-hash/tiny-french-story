@@ -1,0 +1,50 @@
+1
+00:00:00,600 --> 00:00:03,408
+Excusez-moi, madame !
+Excuse me, ma'am!
+
+2
+00:00:03,908 --> 00:00:07,508
+Oui ? Je peux vous aider ?
+Yes? Can I help you?
+
+3
+00:00:08,008 --> 00:00:10,864
+Où est la gare, s'il vous plaît ?
+Where is the train station, please?
+
+4
+00:00:11,364 --> 00:00:13,404
+Allez tout droit.
+Go straight ahead.
+
+5
+00:00:13,904 --> 00:00:15,800
+Et ensuite ?
+And then?
+
+6
+00:00:16,300 --> 00:00:18,532
+Tournez à gauche.
+Turn left.
+
+7
+00:00:19,032 --> 00:00:21,072
+C'est loin d'ici ?
+Is it far from here?
+
+8
+00:00:21,572 --> 00:00:24,020
+Non, c'est tout près !
+No, it's very close!
+
+9
+00:00:24,520 --> 00:00:26,944
+Merci pour votre aide !
+Thank you for your help!
+
+10
+00:00:27,444 --> 00:00:29,484
+Je vous en prie !
+You're welcome!
+
