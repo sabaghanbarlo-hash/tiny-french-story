@@ -1,0 +1,65 @@
+1
+00:00:06,170 --> 00:00:10,956
+Bonjour ! Un croissant, s'il vous plaît.
+Hello! A croissant, please.
+
+2
+00:00:13,156 --> 00:00:17,894
+Moi aussi ! Un croissant, s'il vous plaît.
+Me too! A croissant, please.
+
+3
+00:00:19,184 --> 00:00:23,154
+Oh non ! Il n'y a plus de croissants.
+Oh no! There are no more croissants.
+
+4
+00:00:24,204 --> 00:00:26,926
+Ça va, Adrien ?
+Are you OK, Adrien?
+
+5
+00:00:27,426 --> 00:00:29,548
+J'ai faim !
+I'm hungry!
+
+6
+00:00:31,848 --> 00:00:35,866
+Tiens ! Un croissant pour toi.
+Here you go! A croissant for you.
+
+7
+00:00:36,916 --> 00:00:40,142
+Merci beaucoup, Marinette !
+Thank you very much, Marinette!
+
+8
+00:00:43,642 --> 00:00:46,724
+Mmm, il est délicieux !
+Mmm, it's delicious!
+
+9
+00:00:49,024 --> 00:00:52,562
+De rien ! À demain !
+You're welcome! See you tomorrow!
+
+10
+00:00:53,212 --> 00:00:55,332
+s'il vous plaît
+please
+
+11
+00:00:59,564 --> 00:01:01,780
+merci beaucoup
+thank you very much
+
+12
+00:01:06,156 --> 00:01:08,228
+tiens
+here you go
+
+13
+00:01:13,300 --> 00:01:15,372
+délicieux
+delicious
+
