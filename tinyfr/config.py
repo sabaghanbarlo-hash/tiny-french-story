@@ -3,6 +3,10 @@ import os
 W, H, FPS, SR = 1080, 1920, 24, 24000
 # Instagram overlays the top ~220px and bottom ~380px of a Reel: keep text inside this band.
 SAFE_TOP, SAFE_BOTTOM = 220, H - 380
+# Characters are drawn 840x1000 (body ~315px wide). At 1.0 they tower over the scene props and fill the screen,
+# so every story scene draws them at CHAR_SCALE (per-scene overrides: scenes.SCENE_TUNING).
+CHAR_SCALE = 0.62
+BODY_W = 315
 NAVY = (38, 48, 74); LAVENDER = (185, 167, 245); BLUSH = (246, 182, 205)
 SKY = (169, 208, 245); CREAM = (255, 245, 232); GREEN = (184, 214, 193)
 MUTED = (96, 104, 130)

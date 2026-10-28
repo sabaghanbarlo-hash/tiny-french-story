@@ -3,7 +3,7 @@
 Generated from the code (python -m tinyfr.docsgen). Everything below is implemented and tested; anything else is rejected with a line-numbered error before rendering starts.
 
 ## Script layout
-- header lines: title:, episode:, scene: (first scene), optional cover: (short English cover title)
+- header lines: title:, episode:, scene: (first scene, or `auto` to pick the place from the story), optional cover: (short English cover title)
 - sections in this order, all required: [story], [vocab], [grammar], [quiz]
 - Spoken line: Marinette: Bonjour ! | Hello!   (French, a bar, English translation; an optional third field is a pronunciation hint)
 - Speakers: Marinette, Adrien only.

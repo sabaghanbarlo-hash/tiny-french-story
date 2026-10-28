@@ -17,7 +17,7 @@ Write ONE complete script, ready to paste into the Tiny French Studio. Do not as
 - Keep the characters in character, and keep the story physically active: they walk, react, hold things and interact, not just stand and talk.
 
 ## Format rules
-- Header: title: (a French title is fine), episode:, scene: (the first scene), optional cover: (2-4 word English cover title).
+- Header: title: (a French title is fine), episode:, scene: (the first scene, or auto to let the engine choose from the story), optional cover: (2-4 word English cover title). Vary the places from episode to episode; do not reuse the same scene for every story.
 - Sections in order: [story], [vocab], [grammar], [quiz].
 - A line starting with > starts an action beat; a line starting with & happens at the same time as the previous beat. Every direction starts with Marinette, Adrien or Both. Put spoken lines after the action beat finishes; a character never speaks while walking.
 - @scene <place> changes location. Start every scene with an enters direction for whoever should walk in.

@@ -1,6 +1,6 @@
 """Paris scene library. Each scene: a drawing function, walkable named spots (x in pixels), and aliases.
 Only scenes registered in SCENES exist; the director prompt must list exactly these."""
-import math, random
+import math, random, re, zlib
 from PIL import Image, ImageDraw
 from .config import *
 from .fonts import font
@@ -169,6 +169,43 @@ for k, v in SCENES.items():
 
 def resolve(name):
     return ALIAS.get(name.strip().lower())
+
+# Per-scene tuning, e.g. {"bakery": dict(scale=0.7, floor=1200)}: scale = character size, floor = y of the feet.
+SCENE_TUNING = {}
+def scale_of(name): return SCENE_TUNING.get(name, {}).get("scale", CHAR_SCALE)
+def floor_of(name): return SCENE_TUNING.get(name, {}).get("floor", FLOOR)
+
+# `scene: auto` picks the place from the story text; with no clue it falls back to a stable, title-based choice,
+# so different lessons land in different places instead of always starting in the same one.
+KEYWORDS = {
+    "bakery": ["boulangerie", "croissant", "baguette", "pain", "pain au chocolat", "bakery", "bread", "pastry", "macaron"],
+    "cafe": ["café", "cafe", "thé", "coffee", "tea", "chocolat chaud", "terrasse"],
+    "restaurant": ["restaurant", "menu", "addition", "serveur", "serveuse", "dîner", "déjeuner", "dinner", "lunch", "waiter"],
+    "supermarket": ["supermarché", "supermarche", "courses", "caisse", "supermarket", "groceries", "checkout", "fruits", "légumes"],
+    "bookstore": ["librairie", "livre", "livres", "lire", "bookstore", "book", "books", "read", "bibliothèque", "library"],
+    "classroom": ["classe", "école", "ecole", "cours", "professeur", "classroom", "school", "teacher", "student"],
+    "metro": ["métro", "metro", "ticket", "billet", "subway", "quai", "platform"],
+    "train station": ["gare", "train", "voyage", "station", "railway", "départ"],
+    "museum": ["musée", "musee", "tableau", "peinture", "statue", "museum", "painting", "louvre", "exposition"],
+    "eiffel": ["tour eiffel", "eiffel", "trocadéro", "tower"],
+    "park": ["parc", "jardin", "banc", "park", "garden", "bench", "picnic", "fontaine", "fountain", "promenade"],
+    "street": ["rue", "ville", "boulevard", "street", "city", "à gauche", "à droite", "tout droit", "turn left", "turn right", "directions"],
+}
+
+def scene_for(script):
+    """Scene name for the script's header (`scene:`), or None if unknown. Handles `scene: auto`."""
+    raw = (script.meta.get("scene") or "auto").strip()
+    if raw.lower() != "auto": return resolve(raw)
+    for ev in script.story:                      # the first @scene wins, so the cover matches the opening shot
+        if hasattr(ev, "place"): return resolve(ev.place)
+    text = " ".join([script.meta.get("title", "")] + [f"{e.fr} {e.en}" for e in script.story if hasattr(e, "fr")]).lower()
+    best, top = None, 0
+    for name, kws in KEYWORDS.items():
+        n = sum(len(re.findall(r"(?<!\w)" + re.escape(k) + r"(?!\w)", text)) for k in kws)
+        if n > top: best, top = name, n
+    if best: return best
+    key = (script.meta.get("title", "") + "|" + str(script.meta.get("episode", ""))).encode("utf-8")
+    return list(SCENES)[zlib.crc32(key) % len(SCENES)]
 
 _cache = {}
 def background(name):
