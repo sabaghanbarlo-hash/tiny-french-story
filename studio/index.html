@@ -15,7 +15,7 @@ h1{font-size:1.5rem;margin:0 0 4px}h1 span{color:var(--pink)}
 p.sub{margin:0 0 20px;color:var(--soft)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 8px 28px rgba(0,0,0,.35)}
 label{display:block;font-weight:600;margin:0 0 6px}
-textarea,input[type=password],input[type=text]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--field);color:var(--ink)}
+textarea,input[type=password],input[type=text],input[type=datetime-local]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--field);color:var(--ink)}
 textarea::placeholder,input::placeholder{color:#7a6c74}
 textarea:focus,input:focus{outline:2px solid var(--pink);outline-offset:1px}
 textarea{min-height:300px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.55}
@@ -52,7 +52,8 @@ select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;f
 <label for="caption" style="margin-top:14px">Instagram caption <span style="font-weight:400;color:var(--soft)">(optional – auto-written if empty)</span></label>
 <textarea id="caption" class="small" placeholder="Leave empty for an automatic caption with today's words and hashtags"></textarea>
 <label for="postmode" style="margin-top:14px">When to post to Instagram</label>
-<select id="postmode"><option value="queue" selected>Queue: post at the best time for a global audience</option><option value="now">Post right away</option><option value="false">Do not post, just make the video</option></select>
+<select id="postmode"><option value="queue" selected>Queue: post at the best time for a global audience</option><option value="at">Queue: post at a time I choose</option><option value="now">Post right away</option><option value="false">Do not post, just make the video</option></select>
+<div id="atBox" hidden style="margin:0 0 12px"><label for="postat">Post on</label><input id="postat" type="datetime-local"><p class="hint" id="atHint"></p></div>
 <button id="run">Make video</button>
 </div>
 
@@ -161,6 +162,15 @@ $("clearTok").onclick=()=>{set("tjv_token","");$("token").value="";say("Token re
 
 function say(t,cls){const s=$("status");s.textContent=t;s.className=cls||""}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const localInput=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
+const TZ=(()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||"your device time"}catch(e){return "your device time"}})();
+const niceTime=d=>d.toLocaleString([],{weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
+function atChanged(){
+  const on=$("postmode").value==="at";$("atBox").hidden=!on;
+  if(on&&!$("postat").value){const d=new Date(Date.now()+3600e3);d.setMinutes(0,0,0);$("postat").value=localInput(d)}
+  $("atHint").textContent="Time zone: "+TZ+" (this device). The Reel goes out within about 15–30 minutes after the time you pick.";
+}
+$("postmode").addEventListener("change",atChanged);
 const b64=s=>{const b=new TextEncoder().encode(s);let o="";b.forEach(c=>o+=String.fromCharCode(c));return btoa(o)};
 function hdr(){return{Authorization:"Bearer "+get("tjv_token"),Accept:"application/vnd.github+json","Content-Type":"application/json"}}
 async function gh(path,opt={}){const r=await fetch(API+path,{...opt,headers:hdr()});if(!r.ok){let m="";try{m=(await r.json()).message}catch(e){}throw new Error(`GitHub ${r.status}: ${m||r.statusText}`)}return r.status===204?null:r.json()}
@@ -184,14 +194,20 @@ $("run").onclick=async()=>{
     const title=(text.match(/^title\s*:\s*(.+)$/im)||[])[1]||"story";
     const stamp=new Date().toISOString().slice(0,16).replace(/[-:T]/g,"");
     const base=`lessons/web/${stamp}-${slug(title)}`;
-    const post=$("postmode").value;
+    let post=$("postmode").value,postAt="";
+    if(post==="at"){
+      const t=new Date($("postat").value);
+      if(!$("postat").value||isNaN(t))throw new Error("Pick the date and time you want it to post.");
+      if(t.getTime()<Date.now()+5*60000)throw new Error("Pick a time at least a few minutes from now.");
+      postAt=t.toISOString().replace(/\.\d+Z$/,"Z");post="queue";
+    }
     say("Saving script…");
     await gh(`/contents/${base}.txt`,{method:"PUT",body:JSON.stringify({message:"Add story: "+title,content:b64(text+"\n"),branch:BRANCH})});
     const cap=$("caption").value.trim();
     if(cap)await gh(`/contents/${base}.caption`,{method:"PUT",body:JSON.stringify({message:"Add caption",content:b64(cap+"\n"),branch:BRANCH})});
     const t0=Date.now()-5000;
     say("Starting the video job…");
-    await gh(`/actions/workflows/${WF}/dispatches`,{method:"POST",body:JSON.stringify({ref:BRANCH,inputs:{story:base+".txt",post:String(post),format:MODE}})});
+    await gh(`/actions/workflows/${WF}/dispatches`,{method:"POST",body:JSON.stringify({ref:BRANCH,inputs:Object.assign({story:base+".txt",post:String(post),format:MODE},postAt?{post_at:postAt}:{})})});
     let run=null;
     for(let i=0;i<30&&!run;i++){await sleep(3000);
       const r=await gh(`/actions/workflows/${WF}/runs?event=workflow_dispatch&per_page=5`);
@@ -207,7 +223,7 @@ $("run").onclick=async()=>{
       let why="";try{const j=await gh(`/actions/runs/${run.id}/jobs`);const bad=j.jobs.find(x=>x.conclusion==="failure");if(bad){const st=(bad.steps.find(s=>s.conclusion==="failure")||{}).name||bad.name;why=` Failed step: "${st}".`;try{const an=await gh(`/check-runs/${bad.id}/annotations`);const m=an.filter(x=>x.annotation_level==="failure").map(x=>x.message).join("\n");if(m)why="\n"+m}catch(e){}}}catch(e){}
       throw new Error("The job didn't finish."+why+"\n"+run.html_url)}
     const url=`${location.origin}${location.pathname.replace(/[^/]*$/,"")}videos/${base.split("/").pop()}.mp4`;
-    say(post==="now"?"Done – video made and posted to Instagram.":post==="queue"?"Done – video made and added to the queue. It posts at the best time (see the queue).":"Done – video is ready.","ok");
+    say(post==="now"?"Done – video made and posted to Instagram.":postAt?"Done – video made. It will post on "+niceTime(new Date(postAt))+" ("+TZ+"). You can change the time in the queue.":post==="queue"?"Done – video made and added to the queue. It posts at the best time (see the queue).":"Done – video is ready.","ok");
     $("result").innerHTML=`<video controls playsinline poster="${url.replace(/\.mp4$/,".jpg")}" src="${url}"></video><p style="text-align:center;margin:8px 0 0"><a href="${url.replace(/\.mp4$/,".jpg")}" download>Download cover (JPG)</a></p><p style="text-align:center"><a href="${url}" download>Download MP4</a> · <a href="${url.replace(/\.mp4$/,".srt")}" download>Subtitles</a> · <a href="${run.html_url}" target="_blank" rel="noopener">View job</a></p>`;
   }catch(e){say(String(e.message||e),"err")}
   finally{btn.disabled=false}

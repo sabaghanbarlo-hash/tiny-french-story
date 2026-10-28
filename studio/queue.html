@@ -11,6 +11,8 @@ a{color:var(--pink)}p.sub{margin:0 0 20px;color:var(--soft)}
 .t{font-weight:700}.m{color:var(--soft);font-size:.9rem}.ok{color:var(--ok)}.err{color:var(--err)}
 button{border:0;border-radius:999px;background:var(--pink);color:#0f1a2e;font:inherit;font-weight:700;padding:8px 16px;margin:8px 8px 0 0;cursor:pointer}
 button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+input[type=datetime-local]{background:#120e16;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:7px 10px;font:inherit;margin:8px 8px 0 0;max-width:100%}
+.when{display:flex;flex-wrap:wrap;align-items:center}
 </style></head><body><main>
 <h1>Tiny <span>French</span> · Queue</h1>
 <p class="sub"><a href="index.html">← Back to the studio</a></p>
@@ -28,6 +30,7 @@ async function gh(p,o){o=o||{};const r=await fetch(API+p,Object.assign({},o,{hea
 const dec=c=>new TextDecoder().decode(Uint8Array.from(atob(c.replace(/\n/g,"")),ch=>ch.charCodeAt(0)));
 const enc=s=>{const b=new TextEncoder().encode(s);let x="";b.forEach(v=>x+=String.fromCharCode(v));return btoa(x)};
 const when=ts=>{const d=new Date(ts);return d.toLocaleString([], {weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})+" your time ("+ts.replace("T"," ").replace(":00Z"," UTC")+")"};
+const localInput=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
 function say(t,c){const m=$("msg");m.hidden=false;m.className="card "+(c||"");m.textContent=t}
 async function readJson(path){const f=await gh("/contents/"+path+"?ref="+BRANCH);return f?{sha:f.sha,data:JSON.parse(dec(f.content))}:null}
 async function list(dir){const l=await gh("/contents/"+dir+"?ref="+BRANCH);return (l||[]).filter(x=>x.name.endsWith(".json")&&x.name!=="schedule.json")}
@@ -35,17 +38,20 @@ async function load(){
   if(!tok()){$("plan").textContent="Add your GitHub token on the studio page first (One-time setup).";$("pending").textContent="";$("done").textContent="";return}
   try{
     const sc=await readJson("queue/schedule.json");
-    if(sc){const s=sc.data;$("plan").textContent="Up to "+s.max_per_day+" Reels a day at "+s.slots_utc.map(x=>x+" UTC").join(" and ")+". Each new video takes the next free slot. Posts go out within about 15–30 minutes of the slot."}
+    if(sc){const s=sc.data;$("plan").textContent="Up to "+s.max_per_day+" Reels a day at "+s.slots_utc.map(x=>x+" UTC").join(" and ")+". Each new video takes the next free slot, or the exact time you chose. You can change the time of any waiting Reel below. Posts go out within about 15–30 minutes of the time."}
     else $("plan").textContent="No schedule file yet."
     const p=await list("queue"),pend=[];for(const f of p){const r=await readJson("queue/"+f.name);if(r)pend.push(r.data)}
     pend.sort((a,b)=>a.post_at<b.post_at?-1:1);
     $("pending").innerHTML=pend.length?"":'<p class="m">Nothing queued. Make a video with “Queue” selected on the studio page.</p>';
     pend.forEach(e=>{const d=document.createElement("div");d.className="item";
       d.innerHTML='<div class="t"></div><div class="m"></div>';d.firstChild.textContent=e.title;
-      d.lastChild.innerHTML=(e.status==="failed"?'<span class="err">Failed after '+e.attempts+' tries – remove it or press Post now to retry.</span> ':"")+(e.format||"")+" · posts "+when(e.post_at);
+      d.lastChild.innerHTML=(e.status==="failed"?'<span class="err">Failed after '+e.attempts+' tries – remove it or press Post now to retry.</span> ':"")+(e.format||"")+" · posts "+when(e.post_at)+(e.scheduled_by==="you"?" · time you chose":"");
       const b1=document.createElement("button");b1.textContent="Post now";b1.onclick=()=>postNow(e.stem);
       const b2=document.createElement("button");b2.textContent="Remove";b2.className="ghost";b2.onclick=()=>removeIt(e.stem);
-      d.append(b1,b2);$("pending").append(d)});
+      const row=document.createElement("div");row.className="when";
+      const inp=document.createElement("input");inp.type="datetime-local";inp.value=localInput(new Date(e.post_at));
+      const b3=document.createElement("button");b3.textContent="Change time";b3.className="ghost";b3.onclick=()=>setTime(e.stem,inp.value);
+      row.append(inp,b3);d.append(row,b1,b2);$("pending").append(d)});
     const q=await list("queue/done"),dn=[];for(const f of q.slice(-10)){const r=await readJson("queue/done/"+f.name);if(r)dn.push(r.data)}
     dn.sort((a,b)=>a.posted_at<b.posted_at?1:-1);
     $("done").innerHTML=dn.length?"":'<p class="m">Nothing posted from the queue yet.</p>';
@@ -57,6 +63,14 @@ async function postNow(stem){
     await gh("/contents/queue/"+stem+".json",{method:"PUT",body:JSON.stringify({message:"Post now: "+stem,content:enc(JSON.stringify(r.data,null,1)+"\n"),sha:r.sha,branch:BRANCH})});
     await gh("/actions/workflows/post-queue.yml/dispatches",{method:"POST",body:JSON.stringify({ref:BRANCH})});
     say("Posting started. It takes a few minutes; reload this page afterwards.","ok")}catch(e){say(e.message,"err")}
+}
+async function setTime(stem,val){
+  try{const t=new Date(val);if(!val||isNaN(t))throw new Error("Pick a date and time first.");
+    if(t.getTime()<Date.now()&&!confirm("That time has already passed. The Reel will post at the next check (within about 15 minutes). Continue?"))return;
+    const r=await readJson("queue/"+stem+".json");if(!r)throw new Error("That Reel is no longer in the queue.");
+    r.data.post_at=t.toISOString().replace(/\.\d+Z$/,"Z");r.data.status="pending";r.data.attempts=0;r.data.scheduled_by="you";
+    await gh("/contents/queue/"+stem+".json",{method:"PUT",body:JSON.stringify({message:"Change post time: "+stem,content:enc(JSON.stringify(r.data,null,1)+"\n"),sha:r.sha,branch:BRANCH})});
+    say("Time changed to "+t.toLocaleString([],{weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})+" (your time).","ok");load()}catch(e){say(e.message,"err")}
 }
 async function removeIt(stem){
   if(!confirm("Remove this video from the queue?"))return;

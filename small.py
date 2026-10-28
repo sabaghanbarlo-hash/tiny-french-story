@@ -8,6 +8,7 @@ Script format:
     title: Meeting for the First Time
     episode: 1
     scene: cafe            (cafe, bakery, park, classroom, station, store - or leave out for auto)
+    cover: Meet Adrien      (optional: a shorter title for the thumbnail; default is the title)
     Adrien: Bonjour ! | Hello!
     Marinette: Salut ! | Hi! | sa-LU          <- optional 3rd part: pronunciation hint
     vocab: bonjour | hello
@@ -93,7 +94,7 @@ def parse_story(text):
         s = raw.strip()
         if not s or s.startswith("#"):
             continue
-        m = re.match(r"^(title|scene|episode)\s*:\s*(.+)$", s, re.I)
+        m = re.match(r"^(title|scene|episode|cover)\s*:\s*(.+)$", s, re.I)
         if m:
             meta[m[1].lower()] = m[2].strip(); continue
         m = re.match(r"^vocab\s*:\s*(.+)$", s, re.I)
@@ -326,13 +327,14 @@ def make_scene(scene, meta):
     d.rectangle((0, TABLE_TOP, W, H), fill=sc["floor"])
     for y in range(TABLE_TOP + 150, H, 100):
         d.line([(0, y), (W, y)], fill=tuple(int(v * 0.93) for v in sc["floor"]), width=3)
-    ep = f"Ep.{meta['episode']}  ·  " if meta.get("episode") else ""
-    d.rounded_rectangle((60, 78, 1020, 232), radius=62, fill=(250, 247, 242, 245))
-    d.text((112, 106), "TINY FRENCH", font=font(30), fill=BRAND)
-    size = 54
-    while size > 28 and font(size).getlength(ep + meta["title"]) > 860:
-        size -= 2
-    d.text((112, 152), ep + meta["title"], font=font(size), fill=(52, 54, 66))
+    if not meta.get("_cover"):   # the cover draws its own title, so it skips this header bar
+        ep = f"Ep.{meta['episode']}  ·  " if meta.get("episode") else ""
+        d.rounded_rectangle((60, 78, 1020, 232), radius=62, fill=(250, 247, 242, 245))
+        d.text((112, 106), "TINY FRENCH", font=font(30), fill=BRAND)
+        size = 54
+        while size > 28 and font(size).getlength(ep + meta["title"]) > 860:
+            size -= 2
+        d.text((112, 152), ep + meta["title"], font=font(size), fill=(52, 54, 66))
     fg = Image.new("RGBA", (W, 175), (0, 0, 0, 0)); g = ImageDraw.Draw(fg)
     g.rectangle((0, 55, W, 125), fill=sc["table"]); g.rectangle((0, 125, W, 175), fill=sc["edge"])
     for x in (170, 830):
@@ -387,6 +389,91 @@ def vocab_card(vocab, active):
         fc, sc = ((46, 48, 60), (116, 120, 134)) if i == active else ((150, 152, 164), (176, 178, 188))
         parts.append((v["fr"], font(50), fc, 64)); parts.append((v["en"] + (f'   ({v["pron"]})' if v["pron"] else ""), font(31, False), sc, 58))
     return card_image("Today's tiny words", BRAND, parts, min_h=420)
+
+
+# ---------- cover (thumbnail) ----------
+COVER_INK, COVER_SOFT = (46, 48, 60), (116, 120, 134)
+
+
+def cover_title(text, maxw=860):
+    """Biggest bold size (up to 112 px) that fits the title on 2 lines; falls back to 3 lines at 60 px."""
+    for size in range(112, 63, -8):
+        f = font(size); ls = wrap(text, f, maxw)
+        if len(ls) <= 2 and all(f.getlength(x) <= maxw for x in ls):
+            return f, ls, size
+    f = font(60); ls = wrap(text, f, maxw)
+    if len(ls) > 3:
+        ls = ls[:3]; ls[-1] = ls[-1].rstrip(" .,;:!?") + "…"
+    return f, ls, 60
+
+
+def cover_chips(words, maxw=860, size=34):
+    """Rounded 'word' chips, centred, at most two rows."""
+    f = font(size); pad, gap, h = 28, 14, int(size * 1.9)
+    rows, x = [[]], 0
+    for w in words:
+        tw = int(f.getlength(w)) + 2 * pad
+        if rows[-1] and x + gap + tw > maxw:
+            if len(rows) == 2:
+                break
+            rows.append([]); x = 0
+        x += (gap if rows[-1] else 0) + tw; rows[-1].append((w, tw))
+    im = Image.new("RGBA", (maxw, len(rows) * h + (len(rows) - 1) * gap), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    for r, row in enumerate(rows):
+        x = (maxw - (sum(tw for _, tw in row) + gap * (len(row) - 1))) // 2; y = r * (h + gap)
+        for w, tw in row:
+            d.rounded_rectangle((x, y, x + tw, y + h), radius=h // 2, fill=(230, 237, 252), outline=(196, 210, 240), width=2)
+            d.text((x + tw / 2, y + h / 2), w, font=f, fill=(58, 86, 150), anchor="mm"); x += tw + gap
+    return im
+
+
+def cover_wordmark():
+    f = font(46); label = "Tiny French"; fw = 66
+    w, h = int(f.getlength(label)) + 56 + fw + 18, 84
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((0, 0, w - 1, h - 1), radius=h // 2, fill=(255, 255, 255, 238))
+    for i, col in enumerate(((0, 85, 164), (255, 255, 255), (239, 65, 53))):      # little French flag
+        d.rectangle((30 + i * 20, 22, 49 + i * 20, 62), fill=col)
+    d.rounded_rectangle((30, 22, 89, 62), radius=6, outline=(190, 198, 214), width=2)
+    d.text((30 + fw + 18, h / 2 + 1), label, font=f, fill=COVER_INK, anchor="lm")
+    return im
+
+
+def cover_scene(scene, meta):
+    """Same room as the video, without the header bar (the cover has its own title)."""
+    return make_scene(scene, dict(meta, _cover=True))
+
+
+def make_cover(meta, lines, vocab, bg, fg):
+    """Reel cover / thumbnail (1080x1920): the two friends at the table, brand tag, big title and today's words.
+    Everything that matters sits between y=240 and y=1500, so it survives Instagram's 3:4 profile-grid crop and its Reel buttons."""
+    img = bg.copy().convert("RGBA")
+    for nm, c in CHARS.items():
+        s = sprite(nm, 0, False); img.paste(s, (c["x"], CHAR_Y), s)
+    img.paste(fg, (0, TABLE_TOP - 55), fg)
+    wm = cover_wordmark(); img.paste(wm, ((W - wm.width) // 2, 250), wm)
+
+    title = (meta.get("cover") or meta["title"]).strip()
+    tf, tl, ts = cover_title(title); lh = int(ts * 1.16)
+    chips = cover_chips([v["fr"] for v in vocab[:5]]) if vocab else None
+    body = lh * len(tl) + 34 + 52 + (40 + chips.height if chips else 0)
+    pw, ph, px = 960, body + 150, 60
+    py = 1490 - ph
+    shade = Image.new("L", (W, H), 0); ImageDraw.Draw(shade).rounded_rectangle((px, py + 12, px + pw, py + ph + 12), radius=56, fill=95)
+    shadow = Image.new("RGBA", (W, H), (120, 90, 70, 0)); shadow.putalpha(shade.filter(ImageFilter.GaussianBlur(18)))
+    img = Image.alpha_composite(img, shadow); d = ImageDraw.Draw(img)
+    d.rounded_rectangle((px, py, px + pw, py + ph), radius=56, fill=(250, 248, 243, 250))
+    ep = str(meta.get("episode", "")).strip()
+    tag = pill(f"EPISODE {ep}  ·  LEARN FRENCH" if ep else "LEARN FRENCH", BRAND)
+    img.paste(tag, (px + 44, py - tag.height // 2), tag)
+    y = py + 96
+    for ln in tl:
+        d.text((W / 2, y), ln, font=tf, fill=COVER_INK, anchor="ma"); y += lh
+    d.rounded_rectangle((W / 2 - 60, y + 6, W / 2 + 60, y + 14), radius=4, fill=BRAND); y += 34
+    d.text((W / 2, y), "Learn French with Adrien & Marinette", font=font(36, False), fill=COVER_SOFT, anchor="ma"); y += 52
+    if chips:
+        img.paste(chips, ((W - chips.width) // 2, y + 40), chips)
+    return img.convert("RGB")
 
 
 # ---------- build ----------
@@ -466,6 +553,7 @@ def main():
     ap.add_argument("--rate", default="-10%"); ap.add_argument("--dummy-audio", action="store_true", help="TEST ONLY: tones instead of voices")
     ap.add_argument("--check", action="store_true", help="only check the script")
     ap.add_argument("--preview", help="save one PNG frame and exit"); ap.add_argument("--progress-file")
+    ap.add_argument("--cover", help="save only the cover/thumbnail PNG (no voices, no video) and exit")
     a = ap.parse_args()
     text = open(a.script, encoding="utf-8").read()
     try:
@@ -474,6 +562,9 @@ def main():
         print("::error title=Script problem::" + str(e).replace("\n", "%0A")); sys.exit(1)
     if a.check:
         print(f"Script OK: {meta['title']} ({len(lines)} lines, scene {pick_scene(meta, lines)})"); return
+    if a.cover:
+        meta["scene"] = pick_scene(meta, lines); bg, fg = cover_scene(meta["scene"], meta)
+        make_cover(meta, lines, vocab, bg, fg).save(a.cover); print(f"Wrote {a.cover}"); return
     stem = os.path.splitext(os.path.basename(a.script))[0]; os.makedirs(a.out, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         meta, lines, vocab, audio, n, frame = build(text, a.rate, a.dummy_audio, tmp)
@@ -490,7 +581,12 @@ def main():
         p.stdin.close()
         if p.wait() != 0:
             sys.exit("::error::FFmpeg failed while encoding the video.")
-        l = lines[min(1, len(lines) - 1)]; frame(int((l["start"] + 0.6) * FPS)).save(os.path.join(a.out, stem + ".cover.png"))
+        cover_png = os.path.join(a.out, stem + ".cover.png")
+        try:
+            cbg, cfg = cover_scene(meta["scene"], meta); make_cover(meta, lines, vocab, cbg, cfg).save(cover_png)
+        except Exception as e:   # never lose a finished video over a thumbnail: fall back to a video frame
+            print(f"::warning::Could not draw the cover ({e}); using a video frame instead.")
+            l = lines[min(1, len(lines) - 1)]; frame(int((l["start"] + 0.6) * FPS)).save(cover_png)
     with open(os.path.join(a.out, stem + ".srt"), "w", encoding="utf-8") as f:
         for i, l in enumerate(lines, 1):
             f.write(f"{i}\n{srt_time(l['start'])} --> {srt_time(l['end'])}\n{l['fr']}\n{l['en']}\n\n")

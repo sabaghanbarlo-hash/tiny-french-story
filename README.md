@@ -33,3 +33,17 @@ Characters are drawn front-facing (mirrored left/right), not true side views. A 
 
 ## Instagram setup
 Repo variables `IG_ACCOUNT` and `IG_EXPECT_USERNAME` are set. A `COMPOSIO_API_KEY` repository secret is still needed before anything can post. No credentials are ever committed.
+
+## Choosing when a Reel posts
+Studio page → **When to post to Instagram** → *Queue: post at a time I choose*, then pick the date and time (your device's time zone). Without a chosen time a Reel takes the next best slot from `queue/schedule.json`.
+- Already queued? Open the **queue** page and use **Change time** on any waiting Reel (it also clears a "failed" status so it tries again).
+- From GitHub Actions: run *Generate lesson video* with `post: queue` and `post_at: 2026-10-30T18:30Z` (UTC; `+03:30`-style offsets also work).
+- Your own times ignore the 2-a-day limit, so you can stack posts closer together if you want. A time that has already passed posts at the next check.
+- Posts go out within about 15-30 minutes after the chosen time (GitHub's scheduler is not exact).
+- Command line: `python queue_tool.py add ... --post-at 2026-10-30T18:30Z` or `python queue_tool.py reschedule --stem NAME --post-at "2026-10-31 09:00"`.
+
+## Thumbnails (Small videos)
+Every Small video now gets its own designed cover (`<name>.cover.png`, and the `.jpg` Instagram uses): the two friends at the table, a *Learn French* tag with the episode number, the title in large type, and chips with today's words. Nothing important sits in the top 240 px or bottom 400 px, so it survives Instagram's grid crop and Reel buttons.
+- Want a shorter title on the thumbnail? Add a line `cover: Meet Adrien` to the script (the real title is still used everywhere else).
+- Preview only the cover in a second, no voices or video needed: `python small.py lessons/small/01-meeting-for-the-first-time.txt --cover cover.png`
+- If the cover ever fails to draw, the video is still made and a frame from it is used instead (a warning shows in the job log).
