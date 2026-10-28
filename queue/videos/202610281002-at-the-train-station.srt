@@ -1,0 +1,50 @@
+1
+00:00:00,600 --> 00:00:05,496
+Bonjour ! Un billet pour Lyon, s'il vous plaît.
+Hello! One ticket to Lyon, please.
+
+2
+00:00:05,996 --> 00:00:08,612
+Aller simple ou aller-retour ?
+One-way or round-trip?
+
+3
+00:00:09,112 --> 00:00:12,112
+Aller-retour, s'il vous plaît.
+Round-trip, please.
+
+4
+00:00:12,612 --> 00:00:14,508
+Pour aujourd'hui ?
+For today?
+
+5
+00:00:15,008 --> 00:00:18,752
+Oui. À quelle heure part le train ?
+Yes. What time does the train leave?
+
+6
+00:00:19,252 --> 00:00:21,724
+Il part à quatorze heures.
+It leaves at two p.m.
+
+7
+00:00:22,224 --> 00:00:24,096
+De quel quai ?
+From which platform?
+
+8
+00:00:24,596 --> 00:00:26,924
+Du quai numéro trois.
+From platform number three.
+
+9
+00:00:27,424 --> 00:00:31,432
+Merci ! Je dois me dépêcher !
+Thanks! I have to hurry!
+
+10
+00:00:31,932 --> 00:00:33,972
+Bon voyage !
+Have a good trip!
+
