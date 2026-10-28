@@ -1,0 +1,45 @@
+1
+00:00:00,600 --> 00:00:03,096
+Regarde cette robe !
+Look at this dress!
+
+2
+00:00:03,596 --> 00:00:05,636
+Elle est très jolie !
+It's very pretty!
+
+3
+00:00:06,136 --> 00:00:08,416
+Je peux l'essayer ?
+Can I try it on?
+
+4
+00:00:08,916 --> 00:00:10,812
+Bien sûr !
+Of course!
+
+5
+00:00:11,312 --> 00:00:14,792
+Excusez-moi, combien coûte cette robe ?
+Excuse me, how much is this dress?
+
+6
+00:00:15,292 --> 00:00:17,524
+Elle coûte trente euros.
+It costs thirty euros.
+
+7
+00:00:18,024 --> 00:00:20,304
+C'est un peu cher.
+It's a little expensive.
+
+8
+00:00:20,804 --> 00:00:24,644
+Et cette jupe ? Elle est moins chère.
+What about this skirt? It's cheaper.
+
+9
+00:00:25,144 --> 00:00:28,744
+Bonne idée ! Je la prends !
+Good idea! I'll take it!
+
