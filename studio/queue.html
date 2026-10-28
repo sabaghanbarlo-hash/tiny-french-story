@@ -13,6 +13,9 @@ button{border:0;border-radius:999px;background:var(--pink);color:#0f1a2e;font:in
 button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 input[type=datetime-local]{background:#120e16;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:7px 10px;font:inherit;margin:8px 8px 0 0;max-width:100%}
 .when{display:flex;flex-wrap:wrap;align-items:center}
+.media video{width:100%;max-width:300px;border-radius:14px;background:#000;display:block;margin:10px 0 4px}
+.media a{font-size:.9rem}.media summary{cursor:pointer}
+.cap{white-space:pre-wrap;font:inherit;color:var(--soft);font-size:.9rem;margin:6px 0 0}
 </style></head><body><main>
 <h1>Tiny <span>French</span> · Queue</h1>
 <p class="sub"><a href="index.html">← Back to the studio</a></p>
@@ -25,8 +28,11 @@ const OWNER="sabaghanbarlo-hash",REPO="tiny-french-story",BRANCH="main";
 const API="https://api.github.com/repos/"+OWNER+"/"+REPO;
 const $=id=>document.getElementById(id);
 const tok=()=>{try{return localStorage.getItem("tjv_token")||""}catch(e){return ""}};
-async function gh(p,o){o=o||{};const r=await fetch(API+p,Object.assign({},o,{headers:Object.assign({Authorization:"Bearer "+tok(),Accept:"application/vnd.github+json"},o.headers||{})}));
-  if(r.status===404)return null;if(!r.ok)throw new Error("GitHub said "+r.status);return r.status===204?null:r.json()}
+async function gh(p,o){o=o||{};
+  const mk=auth=>fetch(API+p,Object.assign({},o,{headers:Object.assign({Accept:"application/vnd.github+json"},auth?{Authorization:"Bearer "+tok()}:{},o.headers||{})}));
+  let r=await mk(!!tok());
+  if((r.status===401||r.status===403)&&(!o.method||o.method==="GET"))r=await mk(false);
+  if(r.status===404)return null;if(!r.ok)throw new Error("GitHub said "+r.status+(r.status===403||r.status===401?" – the token saved in this browser can't edit this repo. Make a token with Contents: Read and write for tiny-french-story (setup box on the studio page). Viewing the queue works without a token.":""));return r.status===204?null:r.json()}
 const dec=c=>new TextDecoder().decode(Uint8Array.from(atob(c.replace(/\n/g,"")),ch=>ch.charCodeAt(0)));
 const enc=s=>{const b=new TextEncoder().encode(s);let x="";b.forEach(v=>x+=String.fromCharCode(v));return btoa(x)};
 const when=ts=>{const d=new Date(ts);return d.toLocaleString([], {weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})+" your time ("+ts.replace("T"," ").replace(":00Z"," UTC")+")"};
@@ -35,7 +41,6 @@ function say(t,c){const m=$("msg");m.hidden=false;m.className="card "+(c||"");m.
 async function readJson(path){const f=await gh("/contents/"+path+"?ref="+BRANCH);return f?{sha:f.sha,data:JSON.parse(dec(f.content))}:null}
 async function list(dir){const l=await gh("/contents/"+dir+"?ref="+BRANCH);return (l||[]).filter(x=>x.name.endsWith(".json")&&x.name!=="schedule.json")}
 async function load(){
-  if(!tok()){$("plan").textContent="Add your GitHub token on the studio page first (One-time setup).";$("pending").textContent="";$("done").textContent="";return}
   try{
     const sc=await readJson("queue/schedule.json");
     if(sc){const s=sc.data;$("plan").textContent="Up to "+s.max_per_day+" Reels a day at "+s.slots_utc.map(x=>x+" UTC").join(" and ")+". Each new video takes the next free slot, or the exact time you chose. You can change the time of any waiting Reel below. Posts go out within about 15–30 minutes of the time."}
@@ -51,7 +56,10 @@ async function load(){
       const row=document.createElement("div");row.className="when";
       const inp=document.createElement("input");inp.type="datetime-local";inp.value=localInput(new Date(e.post_at));
       const b3=document.createElement("button");b3.textContent="Change time";b3.className="ghost";b3.onclick=()=>setTime(e.stem,inp.value);
-      row.append(inp,b3);d.append(row,b1,b2);$("pending").append(d)});
+      const base="videos/"+encodeURIComponent(e.stem),med=document.createElement("div");med.className="media";
+      med.innerHTML='<video controls playsinline preload="metadata" poster="'+base+'.jpg" src="'+base+'.mp4"></video><div class="m"><a href="'+base+'.jpg" download>Download cover</a> · <a href="'+base+'.mp4" download>Download video</a> · <a href="'+base+'.srt" download>Subtitles</a></div><details><summary class="m">Instagram caption</summary><pre class="cap">Loading…</pre></details>';
+      fetch(base+".caption.txt").then(r=>r.ok?r.text():Promise.reject()).then(t=>{med.querySelector(".cap").textContent=t}).catch(()=>{med.querySelector(".cap").textContent="(caption not available)"});
+      row.append(inp,b3);d.append(med,row,b1,b2);$("pending").append(d)});
     const q=await list("queue/done"),dn=[];for(const f of q.slice(-10)){const r=await readJson("queue/done/"+f.name);if(r)dn.push(r.data)}
     dn.sort((a,b)=>a.posted_at<b.posted_at?1:-1);
     $("done").innerHTML=dn.length?"":'<p class="m">Nothing posted from the queue yet.</p>';
