@@ -7,9 +7,11 @@ def caption(script):
     lines.append("Today's tiny French:")
     for v in script.vocab[:5]:
         lines.append(f"• {v.term} — {v.meaning}")
-    g = script.grammar[0]; lines += ["", f"Pattern: {g.pattern} — {g.meaning}"]
-    if g.examples: lines.append(f"e.g. {g.examples[0][0]}")
-    lines += ["", "Can you answer the quiz at the end? Tell us in the comments 👇", "Small steps. Big dreams.", "", " ".join(HASHTAGS)]
+    if script.grammar:
+        g = script.grammar[0]; lines += ["", f"Pattern: {g.pattern} — {g.meaning}"]
+        if g.examples: lines.append(f"e.g. {g.examples[0][0]}")
+    if script.quiz: lines += ["", "Can you answer the quiz at the end? Tell us in the comments 👇"]
+    lines += ["Small steps. Big dreams.", "", " ".join(HASHTAGS)]
     text = "\n".join(lines)
     if len(text) > LIMIT: text = text[:LIMIT - 1] + "…"
     return text

@@ -5,6 +5,7 @@ Generated from the code (python -m tinyfr.docsgen). Everything below is implemen
 ## Script layout
 - header lines: title:, episode:, scene: (first scene, or `auto` to pick the place from the story), optional cover: (short English cover title)
 - sections in this order, all required: [story], [vocab], [grammar], [quiz]
+- Shortcut: plain dialogue (the Small-mode format: title:, optional scene:, Name: French | English lines, vocab: lines, no sections) is directed automatically: place chosen from the dialogue, entrances, walking to the scene's spots, reactions, food and drinks. Vocabulary is spoken as French, "means ...", French.
 - Spoken line: Marinette: Bonjour ! | Hello!   (French, a bar, English translation; an optional third field is a pronunciation hint)
 - Speakers: @@SPEAKERS@@ only.
 - A line starting with > is a direction and starts a new beat. A line starting with & runs at the same time as the previous beat.

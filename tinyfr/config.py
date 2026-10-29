@@ -17,6 +17,7 @@ CHARS = {
                    top=(42, 36, 42), edge=(224, 212, 214), trouser=(78, 92, 128), shoe=(255, 255, 255), iris=(108, 56, 70), strap=(120, 84, 56), bag=(168, 120, 80)),
 }
 NARRATOR_VOICE = "en-US-AriaNeural"   # English quiz narration
+EN_VOICE = NARRATOR_VOICE              # English "means ..." in the vocabulary section
 VOICE_RATE = os.environ.get("TF_VOICE_RATE", "-8%")  # slightly slow for beginners
 FONT_CANDIDATES = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",

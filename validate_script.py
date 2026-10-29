@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Check a lesson script with the real parser. Prints GitHub-style errors with line numbers. Exit 1 if invalid."""
 import sys
-from tinyfr.parser import parse_script, ScriptError
+from tinyfr.parser import ScriptError
+from tinyfr.autodirect import parse_any
 from tinyfr import acting
 
 MAX_CHARS = 20000
@@ -14,7 +15,7 @@ def main(path):
     if len(text) > MAX_CHARS:
         return fail(f"The script is too long ({len(text)} characters; limit {MAX_CHARS}).")
     try:
-        script = parse_script(text)
+        script = parse_any(text)
         acting.check(script)
     except ScriptError as e:
         return fail(str(e))

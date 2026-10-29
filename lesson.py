@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """python lesson.py lessons/01-bakery.txt -o output   (vertical 1080x1920 Reel + SRT)"""
 import argparse, os, sys
-from tinyfr.parser import parse_script, ScriptError
+from tinyfr.parser import ScriptError
+from tinyfr.autodirect import parse_any
 from tinyfr.render import render
 from tinyfr import acting
 from tinyfr.meta import write_caption
@@ -14,7 +15,7 @@ def main():
     ap.add_argument("--sections", default="story,vocab,grammar,quiz"); ap.add_argument("--max-quiz", type=int, default=1)
     a = ap.parse_args()
     try:
-        script = parse_script(open(a.script, encoding="utf-8").read())
+        script = parse_any(open(a.script, encoding="utf-8").read())
     except ScriptError as e:
         sys.exit(f"Script error: {e}")
     try:

@@ -167,6 +167,12 @@ for k, v in SCENES.items():
     ALIAS[k] = k
     for a in v["aliases"]: ALIAS[a] = k
 
+# Places Small mode knows that Story mode has no artwork for yet: use the closest Story scene instead of failing.
+for _a, _k in {"airport": "train station", "aéroport": "train station", "market": "supermarket", "marché": "supermarket",
+               "shop": "supermarket", "library": "bookstore", "bibliothèque": "bookstore", "beach": "park", "plage": "park",
+               "apartment": "cafe", "home": "cafe", "house": "cafe", "hotel": "restaurant"}.items():
+    ALIAS.setdefault(_a, _k)
+
 def resolve(name):
     return ALIAS.get(name.strip().lower())
 
@@ -181,14 +187,14 @@ KEYWORDS = {
     "bakery": ["boulangerie", "croissant", "baguette", "pain", "pain au chocolat", "bakery", "bread", "pastry", "macaron"],
     "cafe": ["café", "cafe", "thé", "coffee", "tea", "chocolat chaud", "terrasse"],
     "restaurant": ["restaurant", "menu", "addition", "serveur", "serveuse", "dîner", "déjeuner", "dinner", "lunch", "waiter"],
-    "supermarket": ["supermarché", "supermarche", "courses", "caisse", "supermarket", "groceries", "checkout", "fruits", "légumes"],
+    "supermarket": ["supermarché", "supermarche", "courses", "caisse", "supermarket", "groceries", "checkout", "fruits", "légumes", "marché", "market"],
     "bookstore": ["librairie", "livre", "livres", "lire", "bookstore", "book", "books", "read", "bibliothèque", "library"],
     "classroom": ["classe", "école", "ecole", "cours", "professeur", "classroom", "school", "teacher", "student"],
     "metro": ["métro", "metro", "ticket", "billet", "subway", "quai", "platform"],
-    "train station": ["gare", "train", "voyage", "station", "railway", "départ"],
+    "train station": ["gare", "train", "voyage", "station", "railway", "départ", "aéroport", "airport", "avion", "plane", "flight", "vol", "passeport", "passport", "valise", "suitcase"],
     "museum": ["musée", "musee", "tableau", "peinture", "statue", "museum", "painting", "louvre", "exposition"],
     "eiffel": ["tour eiffel", "eiffel", "trocadéro", "tower"],
-    "park": ["parc", "jardin", "banc", "park", "garden", "bench", "picnic", "fontaine", "fountain", "promenade"],
+    "park": ["parc", "jardin", "banc", "park", "garden", "bench", "picnic", "fontaine", "fountain", "promenade", "plage", "beach", "mer", "sea"],
     "street": ["rue", "ville", "boulevard", "street", "city", "à gauche", "à droite", "tout droit", "turn left", "turn right", "directions"],
 }
 
