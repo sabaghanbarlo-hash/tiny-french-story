@@ -25,9 +25,15 @@ class AutoDirect(unittest.TestCase):
     def test_different_lessons_get_different_places(self):
         seen = {parse_any(plain(f"Lesson {i}", ["Adrien: Ah. | Ah.", "Marinette: Oui. | Yes."])).meta["scene"] for i in range(12)}
         self.assertGreaterEqual(len(seen), 4)
-    def test_small_mode_places_have_a_story_scene(self):
-        for name in ("airport", "beach", "apartment", "market", "library", "store"):
-            self.assertIn(name, SC.ALIAS)
+    def test_small_mode_places_have_their_own_story_scene(self):
+        for name in ("airport", "beach", "apartment", "market", "library"):
+            self.assertEqual(SC.resolve(name), name); self.assertIn(name, SC.SCENES)
+    def test_new_places_are_picked_from_the_dialogue(self):
+        cases = {"airport": "Où est mon passeport ? | Where is my passport?", "beach": "J'aime la plage. | I like the beach.",
+                 "apartment": "Voici mon salon. | Here is my living room.", "market": "Je voudrais du fromage. | I would like some cheese.",
+                 "library": "Je vais à la bibliothèque. | I am going to the library."}
+        for scene, line in cases.items():
+            self.assertEqual(parse_any(plain("Test", ["Adrien: " + line, "Marinette: Oui. | Yes."])).meta["scene"], scene, scene)
     def test_characters_walk_to_real_spots_of_the_scene(self):
         for p in sorted(glob.glob("lessons/small/*.txt")):
             s = parse_any(open(p, encoding="utf-8").read()); spots = SC.SCENES[s.meta["scene"]]["spots"]

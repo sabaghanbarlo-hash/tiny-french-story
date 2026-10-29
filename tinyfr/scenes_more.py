@@ -171,11 +171,120 @@ def eiffel_view(img):
     grad(d, HORIZON + 10, H, (226, 218, 206), (206, 198, 186))
     for k in range(0, 6): d.line((0, HORIZON + 40 + k * 90, W, HORIZON + 40 + k * 90), fill=(196, 188, 176), width=2)
 
+# ---------- more places (airport, beach, apartment, market, library) ----------
+def vgrad(d, x0, y0, x1, y1, top, bot):
+    for y in range(y0, y1): d.line((x0, y, x1, y), fill=lerp(top, bot, (y - y0) / max(1, y1 - y0 - 1)))
+
+def airport(img):
+    d = ImageDraw.Draw(img); grad(d, 0, HORIZON, (232, 240, 248), (246, 248, 250))
+    d.rectangle((0, 230, W, 262), fill=(204, 212, 226))
+    d.rounded_rectangle((50, 330, 520, 700), radius=20, fill=(34, 40, 60)); d.text((285, 378), "DÉPARTS", font=font(44), fill=(255, 214, 90), anchor="mm")
+    for k, (a, b, c) in enumerate((("09:10", "Rome", "12"), ("09:40", "Londres", "08"), ("10:05", "Tokyo", "21"), ("10:30", "Madrid", "04"))):
+        y = 450 + k * 56; d.text((84, y), a, font=font(32), fill=(255, 255, 255), anchor="lm"); d.text((210, y), b, font=font(32), fill=(210, 224, 240), anchor="lm"); d.text((490, y), c, font=font(32), fill=(255, 214, 90), anchor="rm")
+    d.rounded_rectangle((556, 316, 1054, 754), radius=14, fill=(150, 160, 176)); vgrad(d, 570, 330, 1040, 640, (150, 200, 244), (222, 238, 250))
+    d.rectangle((570, 640, 1040, 740), fill=(120, 126, 140))
+    for x in range(580, 1040, 90): d.rectangle((x, 686, x + 46, 694), fill=(250, 250, 250))
+    d.polygon([(930, 520), (985, 430), (1010, 430), (985, 540)], fill=(60, 96, 170)); d.polygon([(780, 545), (730, 610), (800, 610), (860, 552)], fill=(222, 228, 238), outline=(150, 160, 176))
+    d.ellipse((640, 500, 980, 570), fill=(255, 255, 255), outline=(150, 160, 176), width=4); d.rectangle((660, 538, 960, 546), fill=(60, 96, 170))
+    for x in range(700, 930, 34): d.ellipse((x, 514, x + 14, 528), fill=(169, 208, 245))
+    d.rectangle((800, 330, 812, 740), fill=(150, 160, 176))
+    d.rectangle((0, 760, W, HORIZON), fill=(238, 242, 248)); d.rectangle((0, HORIZON - 20, W, HORIZON), fill=(206, 212, 226))
+    counter(d, 60, 560, 960, (60, 96, 170), (236, 240, 246)); sign(d, 310, 840, 300, 62, "CHECK-IN", (60, 96, 170), size=34)
+    d.rounded_rectangle((250, 886, 370, 938), radius=8, fill=(34, 40, 60)); d.rectangle((300, 938, 320, 946), fill=(34, 40, 60))
+    for x in (640, 780, 920):
+        d.rounded_rectangle((x, 990, x + 110, 1044), radius=14, fill=(60, 96, 170)); d.rounded_rectangle((x, 1044, x + 110, 1086), radius=12, fill=(80, 116, 190)); d.rectangle((x + 48, 1086, x + 62, 1130), fill=(60, 66, 84))
+    d.rounded_rectangle((570, 1030, 650, 1130), radius=12, fill=(246, 182, 205)); d.rectangle((598, 1006, 622, 1030), outline=(120, 90, 100), width=5)
+    floor_band(d, (214, 218, 228), (184, 188, 204), edge=(170, 176, 194)); d.rectangle((0, 1260, W, 1290), fill=(250, 214, 90))
+    for x in range(-100, W + 100, 150): d.line((x, HORIZON, x - 90, H), fill=(176, 180, 198), width=3)
+
+def beach(img):
+    d = ImageDraw.Draw(img); grad(d, 0, 880, (150, 200, 244), (255, 236, 240)); clouds(d, [(220, 330, 1.3), (760, 500, 0.9)])
+    d.ellipse((780, 260, 940, 420), fill=(255, 226, 150))
+    vgrad(d, 0, 880, W, 1040, (96, 168, 222), (150, 206, 236))
+    for k, y in enumerate(range(900, 1030, 32)):
+        for x in range(-40 + (k % 2) * 50, W, 100): d.arc((x, y, x + 60, y + 16), 200, 340, fill=(220, 240, 252), width=3)
+    d.polygon([(300, 860), (300, 780), (360, 860)], fill=(255, 255, 255)); d.polygon([(290, 862), (380, 862), (360, 884), (310, 884)], fill=(210, 60, 70)); d.line((300, 862, 300, 772), fill=(120, 100, 90), width=4)
+    vgrad(d, 0, 1010, W, H, (246, 230, 190), (224, 196, 146))
+    for x in range(-20, W, 70): d.ellipse((x, 998, x + 90, 1030), fill=(236, 246, 252))
+    rng = random.Random(9)
+    for _ in range(70): x, y = rng.randint(0, W), rng.randint(1200, 1720); d.ellipse((x, y, x + rng.randint(8, 20), y + 6), fill=(206, 176, 128))
+    tree(d, 90, 1110, 100, trunk=(150, 112, 80), leaf=(110, 176, 120))
+    d.rectangle((372, 840, 388, 1140), fill=(150, 108, 76))
+    for i in range(6): d.pieslice((230, 700, 530, 980), 180 + i * 30, 210 + i * 30, fill=(246, 182, 205) if i % 2 == 0 else (255, 255, 255))
+    d.polygon([(300, 1100), (470, 1100), (510, 1160), (260, 1160)], fill=(246, 182, 205)); d.polygon([(285, 1126), (485, 1126), (498, 1140), (272, 1140)], fill=(255, 255, 255))
+    d.ellipse((620, 1090, 690, 1160), fill=(255, 255, 255), outline=(120, 120, 140)); d.pieslice((620, 1090, 690, 1160), 0, 60, fill=(210, 60, 70)); d.pieslice((620, 1090, 690, 1160), 120, 180, fill=(60, 96, 170)); d.pieslice((620, 1090, 690, 1160), 240, 300, fill=(250, 214, 90))
+    d.rectangle((822, 960, 836, 1130), fill=(150, 108, 76)); d.rectangle((954, 960, 968, 1130), fill=(150, 108, 76)); d.line((836, 1040, 954, 1040), fill=(150, 108, 76), width=6)
+    d.rectangle((800, 800, 990, 960), fill=(255, 255, 255)); d.rectangle((800, 860, 990, 890), fill=(210, 60, 70)); d.rectangle((850, 812, 940, 850), fill=(196, 226, 248)); d.polygon([(780, 800), (895, 730), (1010, 800)], fill=(210, 60, 70))
+
+def apartment(img):
+    d = ImageDraw.Draw(img); grad(d, 0, HORIZON, (252, 242, 232), (246, 228, 216)); d.rectangle((0, 1070, W, HORIZON), fill=(226, 206, 190))
+    d.rounded_rectangle((20, 560, 170, 1130), radius=14, fill=(150, 108, 76)); d.rounded_rectangle((38, 580, 152, 1110), radius=10, outline=(120, 84, 60), width=5); d.ellipse((136, 850, 154, 868), fill=(255, 220, 140))
+    d.rounded_rectangle((690, 330, 1030, 760), radius=30, fill=(150, 108, 76)); d.rounded_rectangle((710, 350, 1010, 740), radius=20, fill=(196, 226, 248)); eiffel_tower(d, 860, 740, 300, (170, 180, 214), (196, 226, 248)); d.line((860, 350, 860, 740), fill=(150, 108, 76), width=8)
+    d.polygon([(690, 330), (760, 330), (740, 760), (690, 760)], fill=(250, 214, 220)); d.polygon([(1030, 330), (960, 330), (980, 760), (1030, 760)], fill=(250, 214, 220))
+    frame_art(d, 250, 420, 200, 260, 7); frame_art(d, 500, 440, 150, 150, 8, frame=(150, 108, 76))
+    d.rounded_rectangle((210, 840, 640, 1010), radius=40, fill=(169, 208, 245)); d.rounded_rectangle((190, 940, 660, 1110), radius=36, fill=(150, 192, 236))
+    d.rounded_rectangle((250, 960, 400, 1070), radius=24, fill=(246, 182, 205)); d.rounded_rectangle((460, 960, 600, 1070), radius=24, fill=(255, 236, 170))
+    d.rounded_rectangle((170, 900, 250, 1110), radius=30, fill=(140, 184, 230)); d.rounded_rectangle((600, 900, 680, 1110), radius=30, fill=(140, 184, 230))
+    for x in (220, 620): d.rectangle((x, 1110, x + 16, 1130), fill=(110, 90, 80))
+    d.rounded_rectangle((700, 1020, 770, 1130), radius=10, fill=(196, 120, 90))
+    for dx, dy, r in ((0, 0, 40), (-34, 18, 30), (34, 18, 30), (0, -40, 30)): d.ellipse((735 + dx - r, 980 + dy - r, 735 + dx + r, 980 + dy + r), fill=(120, 184, 128))
+    counter(d, 800, W, 980, (236, 228, 218), (196, 150, 110))
+    d.ellipse((930, 950, 1030, 990), fill=(255, 255, 255), outline=(200, 204, 214))
+    for x, c in ((950, (210, 60, 70)), (975, (250, 190, 60)), (1000, (120, 184, 128))): d.ellipse((x, 934, x + 28, 962), fill=c)
+    for x in (830, 880): d.rounded_rectangle((x, 930, x + 34, 968), radius=8, fill=(255, 255, 255), outline=(200, 204, 214))
+    floor_band(d, (214, 170, 128), (190, 146, 108), edge=(150, 108, 76))
+    for y in range(HORIZON + 40, H, 90): d.line((0, y, W, y), fill=(176, 134, 98), width=3)
+    d.ellipse((140, 1215, 860, 1330), fill=(246, 200, 214)); d.ellipse((190, 1232, 810, 1313), outline=(255, 255, 255), width=6)
+
+def market(img):
+    d = ImageDraw.Draw(img); grad(d, 0, 700, (169, 208, 245), (255, 236, 240)); clouds(d, [(220, 330, 1.1), (850, 310, 0.9)])
+    for x0, x1, col in ((0, 400, (250, 238, 214)), (400, 720, (246, 214, 206)), (720, 1080, (222, 230, 246))):
+        d.rectangle((x0, 420, x1, HORIZON), fill=col); d.rectangle((x0, 380, x1, 430), fill=(112, 122, 152))
+        for yy in (470, 600): 
+            for xx in range(x0 + 40, x1 - 60, 110): win(d, xx, yy, 56, 90, frame=(150, 130, 120))
+    d.line((0, 540, W, 540), fill=(80, 70, 90), width=3)
+    cols = ((246, 182, 205), (250, 214, 90), (169, 208, 245), (184, 214, 193))
+    for x in range(0, W, 70): d.polygon([(x, 540), (x + 60, 540), (x + 30, 590)], fill=cols[(x // 70) % 4])
+    stalls = ((30, 360, (210, 60, 70), "FRUITS"), (375, 705, (60, 150, 110), "FLEURS"), (720, 1050, (226, 170, 40), "FROMAGE"))
+    for x0, x1, c1, label in stalls:
+        d.rectangle((x0 + 8, 760, x0 + 20, HORIZON), fill=(120, 90, 70)); d.rectangle((x1 - 20, 760, x1 - 8, HORIZON), fill=(120, 90, 70))
+        awning(d, x0, x1, 700, 70, c1, (255, 255, 255), 6); sign(d, (x0 + x1) // 2, 650, 230, 54, label, c1, size=32)
+        counter(d, x0 + 10, x1 - 10, 1010, (176, 130, 92), (196, 150, 110))
+    crate_produce(d, 60, 200, 985, (210, 60, 70), 1); crate_produce(d, 215, 335, 985, (250, 200, 60), 2)
+    rng = random.Random(5)
+    for bx in (405, 475, 545, 615):
+        d.rectangle((bx, 962, bx + 50, 1010), fill=(196, 226, 248))
+        for _ in range(5):
+            fx, fy = bx + rng.randint(4, 34), 925 + rng.randint(0, 24); d.line((fx + 12, fy + 24, bx + 25, 962), fill=(80, 140, 90), width=3)
+            d.ellipse((fx, fy, fx + 26, fy + 26), fill=rng.choice(((246, 182, 205), (250, 214, 90), (255, 255, 255), (185, 167, 245), (210, 60, 70))))
+    for x, y in ((750, 975), (860, 975), (800, 940)): d.ellipse((x, y, x + 110, y + 38), fill=(250, 214, 110), outline=(226, 170, 40), width=3); d.ellipse((x + 10, y - 10, x + 100, y + 14), fill=(255, 232, 150))
+    d.polygon([(930, 1005), (1010, 1005), (1010, 968)], fill=(250, 200, 80), outline=(226, 170, 40))
+    grad(d, HORIZON, H, (214, 210, 222), (190, 186, 202)); d.rectangle((0, HORIZON, W, HORIZON + 14), fill=(170, 166, 184))
+    for _ in range(90): x, y = rng.randint(0, W), rng.randint(HORIZON + 30, 1700); d.ellipse((x, y, x + 22, y + 8), outline=(176, 172, 190))
+
+def library(img):
+    d = ImageDraw.Draw(img); grad(d, 0, HORIZON, (246, 236, 222), (238, 222, 204))
+    pal = ((176, 50, 70), (60, 96, 170), (240, 190, 60), (60, 150, 110), (150, 108, 76), (246, 182, 205))
+    shelf(d, 20, 330, 400, 1120, 6, pal, seed=3); shelf(d, 700, 330, 1060, 1120, 6, pal, seed=5)
+    d.rounded_rectangle((430, 370, 670, 830), radius=100, fill=(150, 108, 76)); d.rounded_rectangle((448, 388, 652, 812), radius=86, fill=(196, 226, 248)); d.line((550, 388, 550, 812), fill=(150, 108, 76), width=8)
+    sign(d, 550, 290, 400, 70, "BIBLIOTHÈQUE", (120, 76, 56), (255, 220, 140), size=38)
+    d.rounded_rectangle((410, 1000, 690, 1032), radius=10, fill=(176, 130, 92)); d.rectangle((430, 1032, 446, 1126), fill=(120, 90, 70)); d.rectangle((654, 1032, 670, 1126), fill=(120, 90, 70))
+    for x, c in ((450, (176, 50, 70)), (500, (60, 96, 170))): d.rectangle((x, 984, x + 46, 1000), fill=c); d.rectangle((x + 4, 968, x + 44, 984), fill=lerp(c, (255, 255, 255), 0.3))
+    d.rectangle((600, 960, 608, 1000), fill=(120, 90, 70)); d.polygon([(572, 960), (636, 960), (618, 928), (590, 928)], fill=(60, 150, 110))
+    counter(d, 740, 1050, 1000, (150, 108, 76), (196, 150, 110)); sign(d, 895, 930, 200, 54, "PRÊTS", (60, 96, 170), size=30)
+    floor_band(d, (206, 170, 130), (184, 148, 112), edge=(150, 118, 90))
+    for x in range(-100, W + 100, 150): d.line((x, HORIZON, x - 90, H), fill=(176, 140, 104), width=3)
+
 EXTRA = {
     "supermarket": _make("supermarket", supermarket, {"entrance": 110, "fruit stand": 400, "shelves": 660, "checkout": 920}, ["supermarché", "grocery", "grocery store", "store"]),
     "bookstore": _make("bookstore", bookstore, {"entrance": 110, "shelves": 400, "reading corner": 720, "counter": 960}, ["librairie", "book store", "bookshop"]),
     "restaurant": _make("restaurant", restaurant, {"entrance": 110, "table": 330, "window table": 640, "counter": 930}, ["resto", "dining room"]),
     "train station": _make("train station", train_station, {"entrance": 110, "ticket window": 340, "departures board": 560, "platform": 900}, ["gare", "station", "railway station", "train"]),
     "museum": _make("museum", museum, {"entrance": 110, "painting": 380, "statue": 690, "bench": 960}, ["musée", "gallery", "art museum"]),
+    "airport": _make("airport", airport, {"entrance": 110, "check-in desk": 330, "departures board": 590, "gate": 900}, ["aéroport", "terminal", "departures"]),
+    "beach": _make("beach", beach, {"palm tree": 120, "umbrella": 400, "shore": 680, "lifeguard tower": 930}, ["plage", "seaside", "coast"]),
+    "apartment": _make("apartment", apartment, {"door": 100, "sofa": 400, "window": 735, "kitchen": 960}, ["appartement", "home", "flat", "living room", "house", "maison", "salon"]),
+    "market": _make("market", market, {"fruit stall": 200, "flower stall": 540, "cheese stall": 880}, ["marché", "street market", "farmers market"]),
+    "library": _make("library", library, {"shelves": 210, "reading table": 550, "desk": 890}, ["bibliothèque", "reading room"]),
     "eiffel": _make("eiffel", eiffel_view, {"steps": 130, "viewpoint": 540, "bench": 930}, ["eiffel tower", "tour eiffel", "trocadéro", "viewpoint", "eiffel viewpoint"]),
 }
