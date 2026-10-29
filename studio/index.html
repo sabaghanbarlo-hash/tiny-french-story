@@ -147,8 +147,8 @@ vocab: enchanté / enchantée | nice to meet you
 vocab: s'il te plaît | please
 vocab: merci beaucoup | thank you very much
 `;
-const HINTS={small:'Two friends, Adrien and Marinette, sit in a place and chat. One line per speaker: <code>Adrien: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store, restaurant, market, library, beach, apartment, airport, museum, street (leave scene out and it picks one from your words). Errors show the exact line.',story:"Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Marinette, Adrien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
-const MODEHINT={small:"Small: two friends sitting and chatting, like Tiny Japanese.",story:"Story: animated scenes with characters walking and acting."};
+const HINTS={small:'Two friends, Adrien and Marinette, sit in a place and chat. One line per speaker: <code>Adrien: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store, restaurant, market, library, beach, apartment, airport, museum, street (leave scene out and it picks one from your words). Errors show the exact line.',story:"Easiest: write the same plain dialogue as Small (<code>title:</code>, optional <code>scene:</code>, <code>Adrien: ...</code> lines, <code>vocab:</code> lines) and Story directs it for you: it picks the place from what they talk about, walks them to the counter/table/bench, and adds reactions. Or hand-direct it: use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Marinette, Adrien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
+const MODEHINT={small:"Small: two friends sitting and chatting, like Tiny Japanese.",story:"Story: animated scenes. Paste plain dialogue and it directs the scene, or hand-direct with a [story] section."};
 let MODE=get("tfs_mode")==="story"?"story":"small";
 const KEY=m=>"tfs_script_"+m;
 function applyMode(m,save){if(save)set(KEY(MODE),$("script").value);MODE=m;set("tfs_mode",m);$("mSmall").classList.toggle("on",m==="small");$("mStory").classList.toggle("on",m==="story");$("script").value=get(KEY(m))||(m==="small"?SAMPLE_SMALL:SAMPLE_STORY);$("hint").innerHTML=HINTS[m];$("modeHint").textContent=MODEHINT[m]}
@@ -182,7 +182,10 @@ function check(text){
     if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for Small).");
     return}
   if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
-  if(!/^\[story\]\s*$/im.test(text))throw new Error("Add a [story] section (see the sample).");
+  if(!/^\[story\]\s*$/im.test(text)){
+    if(!/^(Adrien|Marinette)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (or a [story] section, see the sample).");
+    if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for plain dialogue).");
+    return}
   if(text.length>20000)throw new Error("The script is too long (limit 20,000 characters).")}
 
 $("run").onclick=async()=>{

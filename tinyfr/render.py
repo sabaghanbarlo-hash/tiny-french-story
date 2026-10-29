@@ -53,6 +53,13 @@ def pill(d, cx, y, text, fill, fg=(255, 255, 255), size=34):
     d.rounded_rectangle((cx - w // 2, y, cx + w // 2, y + size + 28), radius=(size + 28) // 2, fill=fill)
     d.text((cx, y + 14), text, font=f, fill=fg, anchor="ma")
 
+def brand_tag(d):
+    """Small 'Tiny French' tag above the artwork. The big wordmark sat at y=230-300, right on top of shop signs
+    (BOULANGERIE starts at y=250), so story scenes use this compact pill in the top margin instead."""
+    f = font(38); w = int(d.textlength("Tiny French", font=f)) + 64
+    d.rounded_rectangle((W // 2 - w // 2, 128, W // 2 + w // 2, 196), radius=34, fill=(255, 255, 255, 248))
+    d.text((W // 2, 162), "Tiny French", font=f, fill=NAVY, anchor="mm")
+
 def wordmark(d, y=SAFE_TOP + 10):
     d.text((W // 2, y), "Tiny French", font=font(56), fill=NAVY, anchor="ma")
     d.polygon([(W // 2 + 210, y + 8), (W // 2 + 220, y + 32), (W // 2 + 246, y + 34), (W // 2 + 226, y + 50), (W // 2 + 234, y + 76),
@@ -67,7 +74,7 @@ def f_title(seg, t, meta):
     return img
 
 def f_story(seg, t, meta):
-    img = SC.background(seg["place"]); stage = seg["stage"]; d = ImageDraw.Draw(img, "RGBA"); wordmark(d)
+    img = SC.background(seg["place"]); stage = seg["stage"]; d = ImageDraw.Draw(img, "RGBA"); brand_tag(d)
     pill(d, W // 2, 330, seg["place"].title(), (255, 255, 255, 190), fg=NAVY, size=30)
     poses = {n: stage.pose(n, t) for n in acting.NAMES}
     for n in sorted(acting.NAMES, key=lambda k: poses[k]["lane"]):
@@ -95,8 +102,9 @@ def card_frame(tag, tag_color):
 
 def f_vocab(seg, t, meta):
     img, d = card_frame("Vocabulaire · Vocabulary", (120, 150, 220))
-    y = block(d, W // 2, 520, seg["term"], 96, NAVY, 880, maxlines=2)
-    y = block(d, W // 2, y + 20, seg["meaning"], 56, (120, 150, 220), 880, maxlines=2)
+    y = block(d, W // 2, 470, seg["term"], 104, NAVY, 880, maxlines=2)
+    y = block(d, W // 2, y + 24, "means", 42, MUTED, 880, bold=False)
+    y = block(d, W // 2, y + 4, seg["meaning"], 78, (74, 112, 200), 880, maxlines=2)
     if seg["example"]:
         fr, en = seg["example"]
         d.line((200, y + 60, W - 200, y + 60), fill=(225, 220, 240), width=4)
@@ -150,8 +158,8 @@ def envelope(x):
 def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz"), max_quiz=1):
     segs, mix, cues, skipped = [], [], [], 0
     cnt = [0]
-    def speak(text, voice):
-        cnt[0] += 1; p = os.path.join(tmp, f"a{cnt[0]:03}.wav"); synth(text, voice, p, dummy); return read_wav(p)
+    def speak(text, voice, rate=None):
+        cnt[0] += 1; p = os.path.join(tmp, f"a{cnt[0]:03}.wav"); synth(text, voice, p, dummy, rate); return read_wav(p)
     def place(t0, x): mix.append((t0, x))
     t = 0.0
     segs.append(dict(kind="title", t0=0, t1=2.6)); t = 2.6
@@ -173,7 +181,10 @@ def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz
         t = tend
     if "vocab" in sections:
         for v in script.vocab:
-            x = speak(v.term, CHARS["Marinette"]["voice"]); parts = [(0.3, x)]; d = 0.3 + len(x) / SR + 0.5
+            # French word -> English "means ..." -> French word again, slowly (the viewer hears AND sees the meaning)
+            x = speak(v.term, CHARS["Marinette"]["voice"]); parts = [(0.3, x)]; d = 0.3 + len(x) / SR + 0.45
+            m = speak("means " + v.meaning, EN_VOICE, "+0%"); parts.append((d, m)); d += len(m) / SR + 0.45
+            x2 = speak(v.term, CHARS["Marinette"]["voice"], "-25%"); parts.append((d, x2)); d += len(x2) / SR + 0.6
             ex = v.examples[0] if v.examples else None
             if ex:
                 y = speak(ex[0], CHARS["Adrien"]["voice"]); parts.append((d, y)); d += len(y) / SR + 0.8

@@ -386,8 +386,11 @@ def line_card(ln):
 def vocab_card(vocab, active):
     parts = []
     for i, v in enumerate(vocab):
-        fc, sc = ((46, 48, 60), (116, 120, 134)) if i == active else ((150, 152, 164), (176, 178, 188))
-        parts.append((v["fr"], font(50), fc, 64)); parts.append((v["en"] + (f'   ({v["pron"]})' if v["pron"] else ""), font(31, False), sc, 58))
+        pron = f'   ({v["pron"]})' if v["pron"] else ""
+        if i == active:   # the word being taught: French big, meaning big and coloured
+            parts.append((v["fr"], font(58), (46, 48, 60), 72)); parts.append(("= " + v["en"] + pron, font(46), BRAND, 66))
+        else:             # the others stay readable but quieter
+            parts.append((v["fr"], font(42), (122, 124, 138), 54)); parts.append((v["en"] + pron, font(34, False), (118, 122, 136), 50))
     return card_image("Today's tiny words", BRAND, parts, min_h=420)
 
 

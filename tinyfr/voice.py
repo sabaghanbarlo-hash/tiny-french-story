@@ -12,7 +12,7 @@ def read_wav(path):
     with wave.open(path, "rb") as w:
         return np.frombuffer(w.readframes(w.getnframes()), dtype="<i2").astype(np.float32) / 32768
 
-def synth(text, voice, out_wav, dummy=False):
+def synth(text, voice, out_wav, dummy=False, rate=None):
     """Write a mono SR-Hz wav of `text`. dummy=True makes a LOUDLY-labelled test tone (never for real renders)."""
     if dummy:
         n = int(max(0.8, len(text) * 0.07) * SR); t = np.arange(n) / SR
@@ -25,7 +25,7 @@ def synth(text, voice, out_wav, dummy=False):
     mp3, last = out_wav + ".mp3", None
     for attempt in range(1, 6):
         try:
-            asyncio.run(edge_tts.Communicate(text, voice, rate=VOICE_RATE).save(mp3))
+            asyncio.run(edge_tts.Communicate(text, voice, rate=rate or VOICE_RATE).save(mp3))
             if os.path.getsize(mp3) < 500:
                 raise RuntimeError("voice service returned empty audio")
             break
