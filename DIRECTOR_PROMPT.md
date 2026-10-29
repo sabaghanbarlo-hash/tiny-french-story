@@ -64,6 +64,11 @@ Scenes and their spots (use exactly these names):
 | restaurant | resto, dining room | entrance, table, window table, counter |
 | train station | gare, station, railway station, train | entrance, ticket window, departures board, platform |
 | museum | musée, gallery, art museum | entrance, painting, statue, bench |
+| airport | aéroport, terminal, departures | entrance, check-in desk, departures board, gate |
+| beach | plage, seaside, coast | palm tree, umbrella, shore, lifeguard tower |
+| apartment | appartement, home, flat, living room, house, maison, salon | door, sofa, window, kitchen |
+| market | marché, street market, farmers market | fruit stall, flower stall, cheese stall |
+| library | bibliothèque, reading room | shelves, reading table, desk |
 | eiffel | eiffel tower, tour eiffel, trocadéro, viewpoint, eiffel viewpoint | steps, viewpoint, bench |
 
 Do not invent other scenes, objects, spots, gestures or characters.
