@@ -36,6 +36,8 @@ video{width:100%;max-width:360px;border-radius:16px;display:block;margin:12px au
 a{color:var(--pink)}
 .seg{display:flex;gap:10px;margin:0 0 10px}.seg button{flex:1;background:transparent;color:var(--pink);border:2px solid var(--pink)}.seg button.on{background:var(--pink);color:#0f1a2e}.modehint{margin:0 0 14px;color:var(--soft);font-size:14px}
 select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--field);color:var(--ink);margin:0 0 12px}
+
+.cast-pick{margin:10px 0 18px}.cast-pick:last-child{margin-bottom:4px}.cast-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.cast-head b{font-size:.98rem}.cast-head span{color:var(--pink);font-weight:700;font-size:.9rem}.cast-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.cast-face{min-width:0;padding:6px 5px 8px;border:2px solid transparent;border-radius:15px;background:var(--field);color:var(--ink);font:inherit;text-align:center;cursor:pointer}.cast-face img{width:100%;aspect-ratio:1.12/1;object-fit:cover;border-radius:10px;display:block;margin:0 auto 6px}.cast-face b{display:block;font-size:.83rem}.cast-face small{display:block;color:var(--soft);font-size:.68rem}.cast-face:hover{filter:brightness(1.08);border-color:var(--line)}.cast-face[aria-pressed=true]{border-color:var(--pink);background:#292b3b;box-shadow:0 0 0 1px var(--pink)}.cast-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}@media(max-width:380px){.cast-grid{gap:6px}.cast-face{padding:4px}.cast-face b{font-size:.76rem}}
 </style>
 </head>
 <body>
@@ -46,12 +48,11 @@ select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;f
 <p class="modehint" id="modeHint"></p>
 
 <div class="card">
-<label>Characters in this Reel</label>
-<div class="row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 12px">
-  <select id="cast1" aria-label="First character"><option>Adrien</option><option>Marinette</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option></select>
-  <select id="cast2" aria-label="Second character"><option>Marinette</option><option>Adrien</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option></select>
-</div>
-<p class="hint">Choose the pair for this Reel. Studio will map the first and second dialogue speakers to these characters.</p>
+<label>Choose your characters</label>
+<p class="hint" style="margin:0 0 12px">Tap a character portrait for each speaker, just like Tiny Japanese. The selected designs will be used in your Reel.</p>
+<div class="cast-pick"><div class="cast-head"><b>Character 1 · First speaker</b><span id="cast1Name">Adrien</span></div><div class="cast-grid" id="cast1Gallery" role="group" aria-label="Choose first character"></div><select id="cast1" class="cast-hidden" aria-label="First character"><option>Adrien</option><option>Marinette</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option></select></div>
+<div class="cast-pick"><div class="cast-head"><b>Character 2 · Second speaker</b><span id="cast2Name">Marinette</span></div><div class="cast-grid" id="cast2Gallery" role="group" aria-label="Choose second character"></div><select id="cast2" class="cast-hidden" aria-label="Second character"><option>Marinette</option><option>Adrien</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option></select></div>
+<p class="hint">Choose two different characters. Studio maps the first and second dialogue speakers to these designs automatically.</p>
 <label for="script">Script</label>
 <textarea id="script" spellcheck="false"></textarea>
 <p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Camille, Théo, Chloé, Lucas. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
@@ -80,6 +81,16 @@ select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;f
 const OWNER="sabaghanbarlo-hash", REPO="tiny-french-story", BRANCH="main", WF="generate.yml";
 const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
 const $=id=>document.getElementById(id);
+const CAST_ART=[{name:"Adrien",id:"adrien",look:"Blond hair · green jacket"},{name:"Marinette",id:"marinette",look:"Blue-black hair · pink outfit"},{name:"Camille",id:"camille",look:"Navy hair · warm gold outfit"},{name:"Théo",id:"theo",look:"Brown hair · teal outfit"},{name:"Chloé",id:"chloe",look:"Blue hair · lavender outfit"},{name:"Lucas",id:"lucas",look:"Warm brown hair · rust outfit"}];
+function chooseCast(slot,value){const other=slot==="cast1"?"cast2":"cast1";$(slot).value=value;if($(other).value===value)$(other).value=CAST_ART.find(c=>c.name!==value).name;drawAllCastGalleries()}
+function drawCastGallery(slot){
+ const select=$(slot),gallery=$(slot+"Gallery"),name=$(slot+"Name");if(!select||!gallery)return;
+ const selected=select.value;name.textContent=selected;gallery.innerHTML=CAST_ART.map(c=>`<button type="button" class="cast-face" data-character="${c.name}" aria-pressed="${c.name===selected}"><img src="characters/${c.id}.png" alt="${c.name} character design" loading="eager"><b>${c.name}</b><small>${c.look}</small></button>`).join("");
+ gallery.querySelectorAll(".cast-face").forEach(btn=>btn.addEventListener("click",()=>chooseCast(slot,btn.dataset.character)));
+}
+function drawAllCastGalleries(){drawCastGallery("cast1");drawCastGallery("cast2")}
+
+drawAllCastGalleries();
 const SAMPLE=`title: Un croissant pour Adrien
 episode: 3
 scene: bakery
