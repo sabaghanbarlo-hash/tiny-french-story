@@ -46,9 +46,15 @@ select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;f
 <p class="modehint" id="modeHint"></p>
 
 <div class="card">
+<label>Characters in this Reel</label>
+<div class="row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 12px">
+  <select id="cast1" aria-label="First character"><option>Adrien</option><option>Marinette</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option></select>
+  <select id="cast2" aria-label="Second character"><option>Marinette</option><option>Adrien</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option></select>
+</div>
+<p class="hint">Choose the pair for this Reel. Studio will map the first and second dialogue speakers to these characters.</p>
 <label for="script">Script</label>
 <textarea id="script" spellcheck="false"></textarea>
-<p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Marinette, Adrien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
+<p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Camille, Théo, Chloé, Lucas. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
 <label for="caption" style="margin-top:14px">Instagram caption <span style="font-weight:400;color:var(--soft)">(optional – auto-written if empty)</span></label>
 <textarea id="caption" class="small" placeholder="Leave empty for an automatic caption with today's words and hashtags"></textarea>
 <label for="postmode" style="margin-top:14px">When to post to Instagram</label>
@@ -147,7 +153,7 @@ vocab: enchanté / enchantée | nice to meet you
 vocab: s'il te plaît | please
 vocab: merci beaucoup | thank you very much
 `;
-const HINTS={small:'Two friends, Adrien and Marinette, sit in a place and chat. One line per speaker: <code>Adrien: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store, restaurant, market, library, beach, apartment, airport, museum, street (leave scene out and it picks one from your words). Errors show the exact line.',story:"Easiest: write the same plain dialogue as Small (<code>title:</code>, optional <code>scene:</code>, <code>Adrien: ...</code> lines, <code>vocab:</code> lines) and Story directs it for you: it picks the place from what they talk about, walks them to the counter/table/bench, and adds reactions. Or hand-direct it: use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Marinette, Adrien. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
+const HINTS={small:'Choose two characters above; they sit in a place and chat. One line per speaker using the two characters selected above, for example <code>Camille: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store, restaurant, market, library, beach, apartment, airport, museum, street (leave scene out and it picks one from your words). Errors show the exact line.',story:"Easiest: write the same plain dialogue as Small (<code>title:</code>, optional <code>scene:</code>, dialogue lines using the selected characters, <code>vocab:</code> lines) and Story directs it for you: it picks the place from what they talk about, walks them to the counter/table/bench, and adds reactions. Or hand-direct it: use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Camille, Théo, Chloé, Lucas. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
 const MODEHINT={small:"Small: two friends sitting and chatting, like Tiny Japanese.",story:"Story: animated scenes. Paste plain dialogue and it directs the scene, or hand-direct with a [story] section."};
 let MODE=get("tfs_mode")==="story"?"story":"small";
 const KEY=m=>"tfs_script_"+m;
@@ -175,24 +181,44 @@ const b64=s=>{const b=new TextEncoder().encode(s);let o="";b.forEach(c=>o+=Strin
 function hdr(){return{Authorization:"Bearer "+get("tjv_token"),Accept:"application/vnd.github+json","Content-Type":"application/json"}}
 async function gh(path,opt={}){const r=await fetch(API+path,{...opt,headers:hdr()});if(!r.ok){let m="";try{m=(await r.json()).message}catch(e){}throw new Error(`GitHub ${r.status}: ${m||r.statusText}`)}return r.status===204?null:r.json()}
 function slug(t){return (t||"story").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40)||"story"}
+function applyCastSelection(source){
+  const chosen=[$("cast1").value,$("cast2").value];
+  if(chosen[0]===chosen[1])throw new Error("Choose two different characters for this Reel.");
+  const known=["Adrien","Marinette","Camille","Théo","Chloé","Lucas"];
+  const seen=[]; const lines=source.split(/\r?\n/);
+  for(const line of lines){const m=line.match(/^\s*([A-Za-zÀ-ÿ]+)\s*:/);if(m){const n=known.find(x=>x.toLowerCase()===m[1].toLowerCase());if(n&&!seen.includes(n))seen.push(n)}}
+  for(const line of lines){const m=line.match(/^\s*[>&]\s*([A-Za-zÀ-ÿ]+)\s+(?:enters|exits|walks|runs|looks|faces|waves|jumps|laughs|nods|cheers|holds|picks|buys|eats|drinks|gives)/i);if(m){const n=known.find(x=>x.toLowerCase()===m[1].toLowerCase());if(n&&!seen.includes(n))seen.push(n)}}
+  if(!seen.length)throw new Error("Add at least one dialogue line with a character name before the colon.");
+  let text=source;
+  const mapping={}; seen.slice(0,2).forEach((n,i)=>mapping[n]=chosen[i]);
+  text=text.split(/\r?\n/).map(line=>{
+    const m=line.match(/^(\s*(?:[>&]\s*)?)([A-Za-zÀ-ÿ]+)(?=\s*(?::|\s+(?:enters|exits|walks|runs|looks|faces|waves|jumps|laughs|nods|cheers|holds|picks|buys|eats|drinks|gives)))/i);
+    if(!m)return line; const n=known.find(x=>x.toLowerCase()===m[2].toLowerCase()); return n&&mapping[n]?m[1]+mapping[n]+line.slice(m[0].length):line;
+  }).join("\n");
+  text=text.replace(/^cast\s*:\s*.*(?:\r?\n|$)/im,"");
+  const firstBreak=text.search(/\r?\n/); text=firstBreak<0?text+"\ncast: "+chosen.join(", "):text.slice(0,firstBreak+1)+"cast: "+chosen.join(", ")+"\n"+text.slice(firstBreak+1);
+  return text;
+}
 function check(text){
   if(MODE==="small"){
     if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
-    if(!/^(Adrien|Marinette)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (see the sample).");
+    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (see the sample).");
     if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for Small).");
     return}
   if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
   if(!/^\[story\]\s*$/im.test(text)){
-    if(!/^(Adrien|Marinette)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (or a [story] section, see the sample).");
+    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (or a [story] section, see the sample).");
     if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for plain dialogue).");
     return}
   if(text.length>20000)throw new Error("The script is too long (limit 20,000 characters).")}
 
+$("cast1").onchange=()=>{if($("cast1").value===$("cast2").value)$("cast2").value=["Adrien","Marinette","Camille","Théo","Chloé","Lucas"].find(n=>n!==$("cast1").value)};
+$("cast2").onchange=()=>{if($("cast1").value===$("cast2").value)$("cast1").value=["Adrien","Marinette","Camille","Théo","Chloé","Lucas"].find(n=>n!==$("cast2").value)};
 $("run").onclick=async()=>{
   const btn=$("run");$("result").innerHTML="";
   try{
     if(!get("tjv_token")){$("setup").open=true;throw new Error("Add your GitHub token first (setup box below).")}
-    const text=$("script").value.trim();check(text);
+    const text=applyCastSelection($("script").value.trim());check(text);$("script").value=text;
     btn.disabled=true;
     const title=(text.match(/^title\s*:\s*(.+)$/im)||[])[1]||"story";
     const stamp=new Date().toISOString().slice(0,16).replace(/[-:T]/g,"");

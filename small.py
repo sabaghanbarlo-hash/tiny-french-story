@@ -94,7 +94,7 @@ def parse_story(text):
         s = raw.strip()
         if not s or s.startswith("#"):
             continue
-        m = re.match(r"^(title|scene|episode|cover)\s*:\s*(.+)$", s, re.I)
+        m = re.match(r"^(title|scene|episode|cover|cast)\s*:\s*(.+)$", s, re.I)
         if m:
             meta[m[1].lower()] = m[2].strip(); continue
         m = re.match(r"^vocab\s*:\s*(.+)$", s, re.I)
@@ -451,8 +451,10 @@ def make_cover(meta, lines, vocab, bg, fg):
     """Reel cover / thumbnail (1080x1920): the two friends at the table, brand tag, big title and today's words.
     Everything that matters sits between y=240 and y=1500, so it survives Instagram's 3:4 profile-grid crop and its Reel buttons."""
     img = bg.copy().convert("RGBA")
-    for nm, c in CHARS.items():
-        s = sprite(nm, 0, False); img.paste(s, (c["x"], CHAR_Y), s)
+    cast = [n.strip() for n in meta.get("cast", "").split(",") if n.strip()] or list(dict.fromkeys(ln["speaker"] for ln in lines))
+    if len(cast) == 1: cast.append("Adrien" if cast[0] != "Adrien" else "Marinette")
+    for idx, nm in enumerate(cast):
+        x = 16 if idx == 0 else 560; s = sprite(nm, 0, False); img.paste(s, (x, CHAR_Y), s)
     img.paste(fg, (0, TABLE_TOP - 55), fg)
     wm = cover_wordmark(); img.paste(wm, ((W - wm.width) // 2, 250), wm)
 
@@ -473,7 +475,7 @@ def make_cover(meta, lines, vocab, bg, fg):
     for ln in tl:
         d.text((W / 2, y), ln, font=tf, fill=COVER_INK, anchor="ma"); y += lh
     d.rounded_rectangle((W / 2 - 60, y + 6, W / 2 + 60, y + 14), radius=4, fill=BRAND); y += 34
-    d.text((W / 2, y), "Learn French with Adrien & Marinette", font=font(36, False), fill=COVER_SOFT, anchor="ma"); y += 52
+    d.text((W / 2, y), "Learn French with " + " & ".join(cast), font=font(36, False), fill=COVER_SOFT, anchor="ma"); y += 52
     if chips:
         img.paste(chips, ((W - chips.width) // 2, y + 40), chips)
     return img.convert("RGB")
@@ -483,6 +485,8 @@ def make_cover(meta, lines, vocab, bg, fg):
 def build(text, rate, dummy, tmp):
     meta, lines, vocab = parse_story(text)
     meta["scene"] = pick_scene(meta, lines)
+    cast = [n.strip() for n in meta.get("cast", "").split(",") if n.strip()] or list(dict.fromkeys(ln["speaker"] for ln in lines))
+    if len(cast) == 1: cast.append("Adrien" if cast[0] != "Adrien" else "Marinette")
     chunks, t = [np.zeros(int(0.6 * SR), np.float32)], 0.6
     for i, ln in enumerate(lines):
         wav = os.path.join(tmp, f"l{i}.wav"); synth(ln["fr"], CHARS[ln["speaker"]]["voice"], wav, rate, dummy)
@@ -494,12 +498,12 @@ def build(text, rate, dummy, tmp):
         for k, (txt, kind) in enumerate(((v["fr"], "fr"), ("means " + v["en"], "en"), (v["fr"], "fr"))):
             wav = os.path.join(tmp, f"v{j}_{k}.wav")
             if kind == "fr":
-                synth(txt, CHARS["Marinette"]["voice"], wav, "-25%", dummy)
+                synth(txt, CHARS[cast[0]]["voice"], wav, "-25%", dummy)
             else:
                 synth(txt, "en-US-AriaNeural", wav, "+0%", dummy, lang="en")
             x = read_wav(wav)
             if kind == "fr":
-                talk.append(dict(speaker="Marinette", start=t, end=t + len(x) / SR))
+                talk.append(dict(speaker=cast[0], start=t, end=t + len(x) / SR))
             gap = 0.45 if k < 2 else 0.9
             chunks += [x, np.zeros(int(gap * SR), np.float32)]; t += len(x) / SR + gap
         v["end"] = t
@@ -509,18 +513,19 @@ def build(text, rate, dummy, tmp):
     n = int(total * FPS); mouth = mouth_levels(audio, n)
     bg, fg = make_scene(meta["scene"], meta)
     cards = [line_card(l) for l in lines]; vcards = [vocab_card(vocab, j) for j in range(len(vocab))]
-    pills = {(nm, a): pill(nm, CHARS[nm]["accent"] if a else (226, 214, 206), (255, 255, 255) if a else (130, 112, 108)) for nm in CHARS for a in (0, 1)}
+    pills = {(nm, a): pill(nm, CHARS[nm]["accent"] if a else (226, 214, 206), (255, 255, 255) if a else (130, 112, 108)) for nm in cast for a in (0, 1)}
 
     def frame(i):
         tt = i / FPS; fr = bg.copy()
         cur = next((k for k, l in enumerate(talk) if l["start"] - 0.02 <= tt <= l["end"] + 0.1), None)
-        for nm, c in CHARS.items():
+        for idx, nm in enumerate(cast):
+            x = 16 if idx == 0 else 560
             sp = cur is not None and talk[cur]["speaker"] == nm
-            bob = 5 * abs(math.sin(tt * 7)) if sp and mouth[i] else 2 * math.sin(tt * 2 + (0 if nm == "Adrien" else 1.7))
-            blink = ((i + (0 if nm == "Adrien" else 41)) % 97) < 4
+            bob = 5 * abs(math.sin(tt * 7)) if sp and mouth[i] else 2 * math.sin(tt * 2 + (0 if nm == cast[0] else 1.7))
+            blink = ((i + (0 if nm == cast[0] else 41)) % 97) < 4
             s = sprite(nm, int(mouth[i]) if sp else 0, blink)
-            fr.paste(s, (c["x"], int(CHAR_Y - bob)), s)
-            p = pills[(nm, int(sp))]; fr.paste(p, (c["x"] + s.width // 2 - p.width // 2, 322), p)
+            fr.paste(s, (x, int(CHAR_Y - bob)), s)
+            p = pills[(nm, int(sp))]; fr.paste(p, (x + s.width // 2 - p.width // 2, 322), p)
         fr.paste(fg, (0, TABLE_TOP - 55), fg)
         card, t0 = None, 0
         if tt >= vstart and vcards:
@@ -544,7 +549,8 @@ def srt_time(t):
 
 
 def caption(meta, vocab):
-    out = f"Learn French with Adrien & Marinette 🇫🇷 — {meta['title']}\n\n"
+    cast = [n.strip() for n in meta.get("cast", "").split(",") if n.strip()] or ["Adrien", "Marinette"]
+    out = f"Learn French with {' & '.join(cast)} 🇫🇷 — {meta['title']}\n\n"
     if vocab:
         out += "Today's tiny French:\n" + "\n".join(f"• {v['fr']} — {v['en']}" for v in vocab) + "\n"
     return out + "\nSave this to practice later! 💌\nSmall steps. Big dreams.\n\n#learnfrench #frenchforbeginners #french #frenchlanguage #frenchlesson #languagelearning #tinyfrench"

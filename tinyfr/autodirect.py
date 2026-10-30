@@ -27,7 +27,7 @@ def parse_plain(text):
     for i, raw in enumerate(text.replace("\ufeff", "").splitlines(), 1):
         s = raw.strip()
         if not s or s.startswith("#"): continue
-        m = re.match(r"^(title|scene|episode|cover)\s*:\s*(.+)$", s, re.I)
+        m = re.match(r"^(title|scene|episode|cover|cast)\s*:\s*(.+)$", s, re.I)
         if m: meta[m[1].lower()] = m[2].strip(); continue
         m = re.match(r"^vocab\s*:\s*(.+)$", s, re.I)
         if m:
@@ -65,7 +65,14 @@ def direct(meta, says, vocab, items=True):
         raise ScriptError(f"unknown scene {meta.get('scene')!r}; use one of: auto, {', '.join(SC.SCENES)}")
     meta = dict(meta, scene=scene)
     a, b, standing = _spots(scene)
-    names = list(CHARS)
+    declared_cast = [n.strip() for n in meta.get("cast", "").split(",") if n.strip()]
+    names = declared_cast or list(dict.fromkeys(s.speaker for s in says))
+    if not declared_cast and len(names) == 1:
+        names.append(next((n for n in CHARS if n != names[0]), "Adrien"))
+    if len(names) != 2 or any(n not in CHARS for n in names):
+        raise ScriptError(f"Story mode cast must contain exactly two known characters; found: {', '.join(names)}")
+    if any(s.speaker not in names for s in says):
+        raise ScriptError("Every dialogue speaker must be one of the two characters in cast:.")
     at = {names[0]: a, names[1]: b}                   # current spot (name, x) of each character
     first = says[0].line
     ev = [SceneChange(scene, first),

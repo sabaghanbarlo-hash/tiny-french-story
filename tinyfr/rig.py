@@ -101,9 +101,10 @@ def draw(name, P):
     _arm(d, sx0, sy0, bx, by, jacket, skin, -1)
     d.rounded_rectangle((cx - 108, y - 408 + lean, cx + 108, y - 160), radius=92, fill=jacket, corners=(True, True, False, False))
     d.rounded_rectangle((cx - 108, y - 300, cx + 108, y - 160), radius=34, fill=jacket, corners=(False, False, True, True))
-    pw = 64 if name == "Adrien" else 54
+    male = name in ("Adrien", "Théo", "Lucas")
+    pw = 64 if male else 54
     d.polygon([(cx - pw, y - 408 + lean), (cx + pw, y - 408 + lean), (cx + pw - 6, y - 162), (cx - pw + 6, y - 162)], fill=top)
-    if name == "Adrien":   # black tee with rainbow stripes, V neck
+    if male:   # dark tee with simple stripes, V neck
         for k, col in enumerate(((110, 176, 120), (150, 108, 190), (244, 202, 100))):
             yy = y - 290 + k * 28; d.polygon([(cx - pw + 4, yy), (cx + pw - 4, yy), (cx + pw - 5, yy + 18), (cx - pw + 5, yy + 18)], fill=col)
         d.polygon([(cx - 34, y - 408 + lean), (cx + 34, y - 408 + lean), (cx, y - 336 + lean)], fill=skin)
@@ -113,7 +114,7 @@ def draw(name, P):
             d.ellipse((fx - 10, fy - 10, fx + 10, fy + 10), fill=(238, 150, 170)); d.ellipse((fx - 3, fy - 3, fx + 3, fy + 3), fill=(252, 220, 120))
     d.line((cx - pw, y - 408 + lean, cx - pw + 6, y - 162), fill=c["edge"], width=5); d.line((cx + pw, y - 408 + lean, cx + pw - 6, y - 162), fill=c["edge"], width=5)
     d.line((cx - 90, y - 396 + lean, cx + 96, y - 190), fill=c["strap"], width=16)
-    if name == "Marinette":
+    if name in ("Marinette", "Camille", "Chloé"):
         d.rounded_rectangle((cx + 62, y - 250, cx + 160, y - 160), radius=14, fill=c["bag"], outline=c["strap"], width=4); d.polygon([(cx + 112, y - 222), (cx + 120, y - 206), (cx + 138, y - 204), (cx + 124, y - 194), (cx + 128, y - 178), (cx + 112, y - 188), (cx + 96, y - 178), (cx + 100, y - 194), (cx + 86, y - 204), (cx + 104, y - 206)], fill=(255, 214, 120))
     else:
         d.rounded_rectangle((cx + 62, y - 262, cx + 156, y - 170), radius=12, fill=c["bag"], outline=c["strap"], width=4); d.rectangle((cx + 62, y - 262, cx + 156, y - 236), fill=c["strap"])

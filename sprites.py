@@ -8,7 +8,11 @@ SKIN_SH = (240, 205, 178)
 INK = (92, 52, 56)
 CHARS = {
     "Adrien": dict(voice="fr-FR-HenriNeural", accent=(95, 158, 134), x=16),
-    "Marinette": dict(voice="fr-FR-DeniseNeural", accent=(228, 140, 152), x=1080 - 16 - int(560 * CHAR_SCALE)),
+    "Marinette": dict(voice="fr-FR-DeniseNeural", accent=(228, 140, 152), x=560),
+    "Camille": dict(voice="fr-FR-DeniseNeural", accent=(205, 153, 54), x=16),
+    "Théo": dict(voice="fr-FR-HenriNeural", accent=(54, 151, 145), x=560),
+    "Chloé": dict(voice="fr-FR-DeniseNeural", accent=(181, 157, 224), x=16),
+    "Lucas": dict(voice="fr-FR-HenriNeural", accent=(177, 91, 57), x=560),
 }
 
 
@@ -65,7 +69,7 @@ def _smooth(layer, S, r=5, thr=120):
 
 
 @functools.lru_cache(None)
-def sprite(name, mouth, blink):
+def _sprite_base(name, mouth, blink):
     S = 2 * CHAR_SCALE
     w, h = int(560 * S), int(760 * S)
     im = Image.new("RGBA", (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
@@ -169,3 +173,43 @@ def sprite(name, mouth, blink):
     ell((166, 398, 210, 422), (252, 190, 190)); ell((350, 398, 394, 422), (252, 190, 190))   # small blush
     _mouth(d, P, S, mouth)
     return im.resize((int(560 * CHAR_SCALE), int(760 * CHAR_SCALE)), Image.LANCZOS)
+
+
+@functools.lru_cache(maxsize=128)
+def sprite(name, mouth, blink):
+    """Render one of the six consistent cast designs for Small mode."""
+    if name in ("Adrien", "Marinette"):
+        return _sprite_base(name, mouth, blink)
+    base_name = "Adrien" if name in ("Théo", "Lucas") else "Marinette"
+    im = _sprite_base(base_name, mouth, blink).copy().convert("RGBA")
+    hair = {"Camille": ((50, 68, 122), (34, 46, 92), (92, 112, 170), (145, 62, 48), (105, 42, 38), (205, 112, 78)),
+            "Théo": ((247, 208, 120), (226, 170, 84), (255, 238, 176), (82, 53, 39), (58, 38, 31), (133, 91, 65)),
+            "Chloé": ((50, 68, 122), (34, 46, 92), (92, 112, 170), (151, 105, 67), (111, 74, 48), (207, 161, 111)),
+            "Lucas": ((247, 208, 120), (226, 170, 84), (255, 238, 176), (35, 31, 34), (20, 18, 21), (83, 73, 75))}[name]
+    old_main, old_dark, old_light, new_main, new_dark, new_light = hair
+    outfit = {"Camille": ((84, 74, 80), (205, 153, 54)), "Théo": ((244, 238, 238), (54, 151, 145)),
+              "Chloé": ((84, 74, 80), (181, 157, 224)), "Lucas": ((244, 238, 238), (177, 91, 57))}[name]
+    px = im.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g, b, a = px[x, y]
+            if a == 0: continue
+            rgb = (r, g, b)
+            if rgb == old_main: px[x, y] = new_main + (a,)
+            elif rgb == old_dark: px[x, y] = new_dark + (a,)
+            elif rgb == old_light: px[x, y] = new_light + (a,)
+            elif rgb == outfit[0]: px[x, y] = outfit[1] + (a,)
+            elif name == "Théo" and rgb == (108, 56, 70): px[x, y] = (75, 142, 105) + (a,)
+    d = ImageDraw.Draw(im)
+    S = 2 * CHAR_SCALE
+    if name == "Camille":
+        for x, y in ((132, 250), (162, 185), (215, 132), (350, 132), (410, 185), (440, 250)):
+            d.ellipse((int((x-15)*S),int((y-15)*S),int((x+15)*S),int((y+15)*S)),fill=new_main+(255,))
+        for ex in (214, 346): d.rounded_rectangle((int((ex-39)*S),int(326*S),int((ex+39)*S),int(390*S)),radius=int(13*S),outline=(105,66,52,255),width=int(5*S))
+        d.line((int(253*S),int(356*S),int(307*S),int(356*S)),fill=(105,66,52,255),width=int(5*S))
+    elif name == "Chloé":
+        d.ellipse((int(382*S),int(168*S),int(426*S),int(212*S)),fill=(181,157,224,255))
+    elif name == "Lucas":
+        for y in (154, 182, 210):
+            d.arc((int(170*S),int(y*S),int(390*S),int((y+54)*S)),190,345,fill=new_light+(255,),width=int(5*S))
+    return im
