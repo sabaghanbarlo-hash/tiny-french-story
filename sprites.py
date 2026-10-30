@@ -329,4 +329,8 @@ def sprite(name, mouth, blink):
         return _sprite_base(name, mouth, blink)
     if name in ("Camille", "Théo", "Chloé", "Lucas", "Félix", "Zoé"):
         return _new_character(name, mouth, blink)
-    raise ValueError(f"Unknown character: {name}")
+    # A script may introduce its own characters. Reuse a matching base silhouette
+    # while the script-specific profile supplies its voice and accent colour.
+    profile = CHARS.get(name, {})
+    base = "Adrien" if profile.get("voice", "fr-FR-HenriNeural").endswith("HenriNeural") else "Marinette"
+    return _sprite_base(base, mouth, blink)

@@ -104,12 +104,13 @@ def parse_story(text):
                 raise ScriptProblem(f"line {n}: vocab needs 'French | English' (or 'French | pronunciation | English').")
             vocab.append(dict(fr=p[0], pron=p[1] if len(p) == 3 else "", en=p[-1])); continue
         m = re.match(r"^([A-Za-zÀ-ÿ]+)\s*[:：]\s*(.+)$", s)
-        if m and m[1].capitalize() in CHARS:
+        if m:
+            speaker = m[1].strip()
             p = [x.strip() for x in m[2].split("|")]
             if len(p) < 2 or not p[0] or not p[1]:
                 raise ScriptProblem(f"line {n}: add the English after a | sign, like 'Adrien: Bonjour ! | Hello!'.")
-            lines.append(dict(speaker=m[1].capitalize(), fr=p[0], en=p[1], pron=p[2] if len(p) > 2 else "")); continue
-        raise ScriptProblem(f"line {n}: can't read this line (speakers are {' and '.join(CHARS)}): {s[:60]}")
+            lines.append(dict(speaker=speaker, fr=p[0], en=p[1], pron=p[2] if len(p) > 2 else "")); continue
+        raise ScriptProblem(f"line {n}: can't read this line: {s[:60]}")
     if not meta["title"]:
         raise ScriptProblem("Add a 'title:' line at the top.")
     if not lines:
@@ -452,7 +453,10 @@ def make_cover(meta, lines, vocab, bg, fg):
     Everything that matters sits between y=240 and y=1500, so it survives Instagram's 3:4 profile-grid crop and its Reel buttons."""
     img = bg.copy().convert("RGBA")
     cast = [n.strip() for n in meta.get("cast", "").split(",") if n.strip()] or list(dict.fromkeys(ln["speaker"] for ln in lines))
-    if len(cast) == 1: cast.append("Adrien" if cast[0] != "Adrien" else "Marinette")
+    if len(cast) == 1:
+        partner = "Adrien" if cast[0] != "Adrien" else "Marinette"
+        cast.append(partner)
+        if partner not in CHARS: CHARS[partner] = dict(CHARS["Adrien" if partner == "Adrien" else "Marinette"])
     for idx, nm in enumerate(cast):
         x = 16 if idx == 0 else 560; s = sprite(nm, 0, False); img.paste(s, (x, CHAR_Y), s)
     img.paste(fg, (0, TABLE_TOP - 55), fg)
@@ -484,9 +488,20 @@ def make_cover(meta, lines, vocab, bg, fg):
 # ---------- build ----------
 def build(text, rate, dummy, tmp):
     meta, lines, vocab = parse_story(text)
+    cast = [n.strip() for n in meta.get("cast", "").split(",") if n.strip()] or list(dict.fromkeys(ln["speaker"] for ln in lines))
+    # Names in a script are identities, not a whitelist. Give unfamiliar names a safe
+    # visual/voice profile while retaining their exact spelling in subtitles and covers.
+    for idx, name in enumerate(dict.fromkeys(cast + [ln["speaker"] for ln in lines])):
+        if name not in CHARS:
+            base = CHARS["Adrien"] if idx % 2 == 0 else CHARS["Marinette"]
+            palette = [(95, 158, 134), (228, 140, 152), (145, 117, 190), (205, 153, 54)]
+            CHARS[name] = dict(base, accent=palette[idx % len(palette)])
     meta["scene"] = pick_scene(meta, lines)
     cast = [n.strip() for n in meta.get("cast", "").split(",") if n.strip()] or list(dict.fromkeys(ln["speaker"] for ln in lines))
-    if len(cast) == 1: cast.append("Adrien" if cast[0] != "Adrien" else "Marinette")
+    if len(cast) == 1:
+        partner = "Adrien" if cast[0] != "Adrien" else "Marinette"
+        cast.append(partner)
+        if partner not in CHARS: CHARS[partner] = dict(CHARS["Adrien" if partner == "Adrien" else "Marinette"])
     chunks, t = [np.zeros(int(0.6 * SR), np.float32)], 0.6
     for i, ln in enumerate(lines):
         wav = os.path.join(tmp, f"l{i}.wav"); synth(ln["fr"], CHARS[ln["speaker"]]["voice"], wav, rate, dummy)
