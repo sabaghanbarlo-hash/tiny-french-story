@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "studio/**"
+      - "sprites.py"
   workflow_dispatch:
 
 permissions:
@@ -25,6 +26,13 @@ jobs:
         run: |
           mkdir -p site/videos site/characters
           cp -R studio/characters/. site/characters/
+          python - <<'PY'
+          from pathlib import Path
+          from sprites import sprite
+          out = Path("site/characters")
+          for name in ("Adrien", "Marinette", "Camille", "Théo", "Chloé", "Lucas"):
+              sprite(name, 0, False).save(out / (name.lower().replace("é", "e") + ".png"))
+          PY
           cp studio/index.html site/index.html
           cp studio/queue.html site/queue.html
           cp -n queue/videos/* site/videos/ 2>/dev/null || true
