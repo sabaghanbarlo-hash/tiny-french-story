@@ -23,7 +23,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Prepare site (studio pages and queued videos)
         run: |
-          mkdir -p site/videos
+          mkdir -p site/videos site/characters
+          cp -R studio/characters/. site/characters/
           cp studio/index.html site/index.html
           cp studio/queue.html site/queue.html
           cp -n queue/videos/* site/videos/ 2>/dev/null || true
