@@ -249,17 +249,23 @@ def starts_off(story, idx, names=NAMES):
                 if op.who and op.who not in first: first[op.who] = op.verb
     return {n for n, v in first.items() if v == "enter"}
 
+def cast_of(script):
+    """(cast, speakers) for an episode: the declared 'cast:' pair, else the people who speak. A lone speaker gets a silent partner.
+    Everything that draws or names the characters (stage, cover, caption, voices) must use this instead of assuming Marinette and Adrien."""
+    speakers = list(dict.fromkeys(ev.speaker for ev in script.story if isinstance(ev, Say)))
+    declared_cast = [n.strip() for n in script.meta.get("cast", "").split(",") if n.strip()]
+    cast = declared_cast or list(speakers)
+    if not declared_cast and len(cast) == 1:
+        cast.append(next((n for n in NAMES if n != cast[0]), "Adrien"))
+    if not cast: cast = list(NAMES)
+    return cast, speakers
+
 def play(script, say_seconds, t0=2.6):
     """Run the story through a Stage. say_seconds(ev) -> seconds a line takes. Returns (stage, timeline items, end time)."""
     story = script.story
     scene = SC.scene_for(script)
     if not scene: raise ScriptError(f"unknown scene {script.meta.get('scene')!r}; scenes: {', '.join(SC.SCENES)}")
-    speakers = list(dict.fromkeys(ev.speaker for ev in story if isinstance(ev, Say)))
-    declared_cast = [n.strip() for n in script.meta.get("cast", "").split(",") if n.strip()]
-    cast = declared_cast or speakers
-    if not declared_cast and len(cast) == 1:
-        cast.append(next((n for n in NAMES if n != cast[0]), "Adrien"))
-    if not cast: cast = list(NAMES)
+    cast, speakers = cast_of(script)
     if len(cast) != 2 or any(n not in CHARS for n in cast):
         raise ScriptError("cast: must list exactly two character names from the character library.")
     if any(n not in cast for n in speakers):

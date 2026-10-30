@@ -7,7 +7,7 @@ Generated from the code (python -m tinyfr.docsgen). Everything below is implemen
 - sections in this order, all required: [story], [vocab], [grammar], [quiz]
 - Shortcut: plain dialogue (the Small-mode format: title:, optional scene:, Name: French | English lines, vocab: lines, no sections) is directed automatically: place chosen from the dialogue, entrances, walking to the scene's spots, reactions, food and drinks. Vocabulary is spoken as French, "means ...", French.
 - Spoken line: Marinette: Bonjour ! | Hello!   (French, a bar, English translation; an optional third field is a pronunciation hint)
-- Speakers: Marinette, Adrien, Camille, Théo, Chloé, Lucas. Each Reel uses at most two selected characters; `cast:` declares the pair and every spoken line must use one of those names. Without `cast:`, the dialogue speakers determine the pair.
+- Speakers: Marinette, Adrien, Camille, Théo, Chloé, Lucas, Félix, Zoé. Each Reel uses at most two selected characters; `cast:` declares the pair and every spoken line must use one of those names. Without `cast:`, the dialogue speakers determine the pair.
 - A line starting with > is a direction and starts a new beat. A line starting with & runs at the same time as the previous beat.
 - @scene <place> cuts to a new scene; the selected pair starts at their home spots (first selected character left, second right) unless the next directions say enters.
 - Directions never speak. Characters finish a beat before the next spoken line starts.

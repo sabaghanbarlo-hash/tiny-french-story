@@ -165,7 +165,7 @@ def envelope(x):
     return e
 
 def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz"), max_quiz=1):
-    cast_names = [n.strip() for n in script.meta.get("cast", "").split(",") if n.strip()] or list(dict.fromkeys(ev.speaker for ev in script.story if isinstance(ev, Say))) or ["Marinette", "Adrien"]
+    cast_names = acting.cast_of(script)[0]
     if len(cast_names) == 1: cast_names.append("Adrien" if cast_names[0] != "Adrien" else "Marinette")
     segs, mix, cues, skipped = [], [], [], 0
     cnt = [0]
@@ -206,7 +206,7 @@ def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz
         for g in script.grammar:
             d = 0.6; parts = []
             for i, (fr, en) in enumerate(g.examples[:2]):
-                a = speak(fr, CHARS["Marinette" if i == 0 else "Adrien"]["voice"]); parts.append((d, a)); d += len(a) / SR + 0.9
+                a = speak(fr, CHARS[cast_names[i % 2]]["voice"]); parts.append((d, a)); d += len(a) / SR + 0.9
             for off, a in parts: place(t + off, a)
             segs.append(dict(kind="grammar", t0=t, t1=t + max(d + 1.2, 6.0), pattern=g.pattern, meaning=g.meaning, examples=g.examples)); t += max(d + 1.2, 6.0)
     if "quiz" in sections:

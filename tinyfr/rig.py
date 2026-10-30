@@ -101,20 +101,25 @@ def draw(name, P):
     _arm(d, sx0, sy0, bx, by, jacket, skin, -1)
     d.rounded_rectangle((cx - 108, y - 408 + lean, cx + 108, y - 160), radius=92, fill=jacket, corners=(True, True, False, False))
     d.rounded_rectangle((cx - 108, y - 300, cx + 108, y - 160), radius=34, fill=jacket, corners=(False, False, True, True))
-    male = name in ("Adrien", "Théo", "Lucas")
+    male = name in ("Adrien", "Théo", "Lucas", "Félix")
     pw = 64 if male else 54
     d.polygon([(cx - pw, y - 408 + lean), (cx + pw, y - 408 + lean), (cx + pw - 6, y - 162), (cx - pw + 6, y - 162)], fill=top)
-    if male:   # dark tee with simple stripes, V neck
+    if name == "Félix":   # plain black cat suit with a gold bell collar
+        d.rounded_rectangle((cx - 44, y - 410 + lean, cx + 44, y - 388 + lean), radius=11, fill=(247, 208, 120))
+        d.ellipse((cx - 17, y - 392 + lean, cx + 17, y - 358 + lean), fill=(247, 208, 120), outline=(160, 111, 43), width=3)
+        d.line((cx - 10, y - 376 + lean, cx + 10, y - 376 + lean), fill=(92, 52, 56), width=3); d.ellipse((cx - 4, y - 372 + lean, cx + 4, y - 364 + lean), fill=(92, 52, 56))
+    elif male:   # dark tee with simple stripes, V neck
         for k, col in enumerate(((110, 176, 120), (150, 108, 190), (244, 202, 100))):
             yy = y - 290 + k * 28; d.polygon([(cx - pw + 4, yy), (cx + pw - 4, yy), (cx + pw - 5, yy + 18), (cx - pw + 5, yy + 18)], fill=col)
         d.polygon([(cx - 34, y - 408 + lean), (cx + 34, y - 408 + lean), (cx, y - 336 + lean)], fill=skin)
     else:                  # white floral top, scoop neck
         d.polygon([(cx - 28, y - 408 + lean), (cx + 28, y - 408 + lean), (cx, y - 350 + lean)], fill=skin)
         for fx, fy in ((cx - 14, y - 282), (cx + 14, y - 258), (cx - 4, y - 226)):
-            d.ellipse((fx - 10, fy - 10, fx + 10, fy + 10), fill=(238, 150, 170)); d.ellipse((fx - 3, fy - 3, fx + 3, fy + 3), fill=(252, 220, 120))
+            if name == "Zoé": d.ellipse((fx - 11, fy - 11, fx + 11, fy + 11), fill=(38, 38, 48))      # polka dots
+            else: d.ellipse((fx - 10, fy - 10, fx + 10, fy + 10), fill=(238, 150, 170)); d.ellipse((fx - 3, fy - 3, fx + 3, fy + 3), fill=(252, 220, 120))
     d.line((cx - pw, y - 408 + lean, cx - pw + 6, y - 162), fill=c["edge"], width=5); d.line((cx + pw, y - 408 + lean, cx + pw - 6, y - 162), fill=c["edge"], width=5)
     d.line((cx - 90, y - 396 + lean, cx + 96, y - 190), fill=c["strap"], width=16)
-    if name in ("Marinette", "Camille", "Chloé"):
+    if name in ("Marinette", "Camille", "Chloé", "Zoé"):
         d.rounded_rectangle((cx + 62, y - 250, cx + 160, y - 160), radius=14, fill=c["bag"], outline=c["strap"], width=4); d.polygon([(cx + 112, y - 222), (cx + 120, y - 206), (cx + 138, y - 204), (cx + 124, y - 194), (cx + 128, y - 178), (cx + 112, y - 188), (cx + 96, y - 178), (cx + 100, y - 194), (cx + 86, y - 204), (cx + 104, y - 206)], fill=(255, 214, 120))
     else:
         d.rounded_rectangle((cx + 62, y - 262, cx + 156, y - 170), radius=12, fill=c["bag"], outline=c["strap"], width=4); d.rectangle((cx + 62, y - 262, cx + 156, y - 236), fill=c["strap"])

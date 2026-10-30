@@ -208,12 +208,11 @@ function applyCastSelection(source){
   if(seen.length>2)throw new Error("This Reel supports two dialogue speakers. Found: "+seen.join(", "));
   let text=source;
   const mapping={}; seen.forEach((n,i)=>mapping[n]=chosen[i]);
-  text=text.split(/\r?\n/).map(line=>{
-    const d=line.match(/^(\s*)([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'’.-]*)(\s*:\s*.+)$/);
-    if(d && mapping[d[2]])return d[1]+mapping[d[2]]+d[3];
-    const m=line.match(/^(\s*[>&]\s*)([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'’.-]*)(?=\s+(?:enters|exits|walks|runs|looks|faces|waves|jumps|laughs|nods|cheers|holds|picks|buys|eats|drinks|gives))/i);
-    if(!m || !mapping[m[2]])return line; return m[1]+mapping[m[2]]+line.slice(m[0].length);
-  }).join("\n");
+  // Swap every mention of a script character for the chosen one in a single pass (so swaps like A->B, B->A are safe):
+  // speaker labels, stage directions ("> Adrian gives the croissant to Mika"), and names inside the spoken French / English.
+  const esc=n=>n.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"), L="A-Za-zÀ-ÿ";
+  const nameRe=new RegExp("(?<![" + L + "])(" + Object.keys(mapping).sort((x,y)=>y.length-x.length).map(esc).join("|") + ")(?![" + L + "])","g");
+  text=text.split(/\r?\n/).map(line=>/^\s*cast\s*:/i.test(line)?line:line.replace(nameRe,n=>mapping[n])).join("\n");
   text=text.replace(/^cast\s*:[^\r\n]*(?:\r?\n|$)/im,"");
   const firstBreak=text.search(/\r?\n/); text=firstBreak<0?text+"\ncast: "+chosen.join(", "):text.slice(0,firstBreak+1)+"cast: "+chosen.join(", ")+"\n"+text.slice(firstBreak+1);
   return text;
@@ -221,12 +220,12 @@ function applyCastSelection(source){
 function check(text){
   if(MODE==="small"){
     if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
-    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (see the sample).");
+    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas|Félix|Zoé)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (see the sample).");
     if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for Small).");
     return}
   if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
   if(!/^\[story\]\s*$/im.test(text)){
-    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (or a [story] section, see the sample).");
+    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas|Félix|Zoé)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (or a [story] section, see the sample).");
     if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for plain dialogue).");
     return}
   if(text.length>20000)throw new Error("The script is too long (limit 20,000 characters).")}
