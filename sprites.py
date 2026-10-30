@@ -13,6 +13,8 @@ CHARS = {
     "Théo": dict(voice="fr-FR-HenriNeural", accent=(54, 151, 145), x=560),
     "Chloé": dict(voice="fr-FR-DeniseNeural", accent=(181, 157, 224), x=16),
     "Lucas": dict(voice="fr-FR-HenriNeural", accent=(177, 91, 57), x=560),
+    "Félix": dict(voice="fr-FR-HenriNeural", accent=(247, 190, 82), x=16),
+    "Zoé": dict(voice="fr-FR-DeniseNeural", accent=(224, 45, 52), x=560),
 }
 
 
