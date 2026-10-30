@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#12151f">
+<title>Tiny French · Video Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#12151f;--card:#1e1822;--field:#120e16;--pink:#8fb4f5;--ink:#f4eaed;--soft:#a99aa1;--line:#3a2f3a;--ok:#6cc58c;--err:#ff7a70}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.5rem;margin:0 0 4px}h1 span{color:var(--pink)}
+p.sub{margin:0 0 20px;color:var(--soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 8px 28px rgba(0,0,0,.35)}
+label{display:block;font-weight:600;margin:0 0 6px}
+textarea,input[type=password],input[type=text],input[type=datetime-local]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--field);color:var(--ink)}
+textarea::placeholder,input::placeholder{color:#7a6c74}
+textarea:focus,input:focus{outline:2px solid var(--pink);outline-offset:1px}
+textarea{min-height:300px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92rem;line-height:1.55}
+textarea.small{min-height:90px}
+code{background:var(--field);padding:1px 6px;border-radius:6px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.check{display:flex;gap:8px;align-items:center;font-weight:600;margin:12px 0}
+.check input{accent-color:var(--pink);width:18px;height:18px}
+button{border:0;border-radius:999px;background:var(--pink);color:#0f1a2e;font:inherit;font-weight:700;padding:14px 28px;cursor:pointer;width:100%;font-size:1.05rem}
+button:hover{filter:brightness(1.08)}
+button:disabled{opacity:.55;cursor:wait}
+button.ghost{background:transparent;color:var(--pink);border:1px solid var(--pink);width:auto;padding:8px 16px;font-size:.9rem}
+details summary{cursor:pointer;font-weight:600}
+.hint{color:var(--soft);font-size:.88rem;margin:8px 0 0}
+#status{white-space:pre-wrap;font-size:.95rem}
+.ok{color:var(--ok)}.err{color:var(--err)}
+video{width:100%;max-width:360px;border-radius:16px;display:block;margin:12px auto 0;background:#000}
+a{color:var(--pink)}
+.seg{display:flex;gap:10px;margin:0 0 10px}.seg button{flex:1;background:transparent;color:var(--pink);border:2px solid var(--pink)}.seg button.on{background:var(--pink);color:#0f1a2e}.modehint{margin:0 0 14px;color:var(--soft);font-size:14px}
+select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--field);color:var(--ink);margin:0 0 12px}
+
+.cast-pick{margin:10px 0 18px}.cast-pick:last-child{margin-bottom:4px}.cast-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.cast-head b{font-size:.98rem}.cast-head span{color:var(--pink);font-weight:700;font-size:.9rem}.cast-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.cast-face{min-width:0;padding:6px 5px 8px;border:2px solid transparent;border-radius:15px;background:var(--field);color:var(--ink);font:inherit;text-align:center;cursor:pointer}.cast-face img{width:100%;aspect-ratio:1.12/1;object-fit:cover;border-radius:10px;display:block;margin:0 auto 6px}.cast-face b{display:block;font-size:.83rem}.cast-face small{display:block;color:var(--soft);font-size:.68rem}.cast-face:hover{filter:brightness(1.08);border-color:var(--line)}.cast-face[aria-pressed=true]{border-color:var(--pink);background:#292b3b;box-shadow:0 0 0 1px var(--pink)}.cast-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}@media(max-width:380px){.cast-grid{gap:6px}.cast-face{padding:4px}.cast-face b{font-size:.76rem}}
+</style>
+</head>
+<body>
+<main>
+<h1>Tiny <span>French</span> · Video Studio</h1>
+<p class="sub">Paste a script, press the button, get a Reel. <a href="queue.html">See the queue →</a></p>
+<div class="seg"><button id="mSmall" type="button">Small</button><button id="mStory" type="button">Story</button></div>
+<p class="modehint" id="modeHint"></p>
+
+<div class="card">
+<label>Choose your characters</label>
+<p class="hint" style="margin:0 0 12px">Tap a character portrait for each speaker, just like Tiny Japanese. The selected designs will be used in your Reel.</p>
+<div class="cast-pick"><div class="cast-head"><b>Character 1 · First speaker</b><span id="cast1Name">Adrien</span></div><div class="cast-grid" id="cast1Gallery" role="group" aria-label="Choose first character"></div><select id="cast1" class="cast-hidden" aria-label="First character"><option>Adrien</option><option>Marinette</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option><option>Félix</option><option>Zoé</option></select></div>
+<div class="cast-pick"><div class="cast-head"><b>Character 2 · Second speaker</b><span id="cast2Name">Marinette</span></div><div class="cast-grid" id="cast2Gallery" role="group" aria-label="Choose second character"></div><select id="cast2" class="cast-hidden" aria-label="Second character"><option>Marinette</option><option>Adrien</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option><option>Félix</option><option>Zoé</option></select></div>
+<p class="hint">Choose two different characters. Studio maps the first and second dialogue speakers to these designs automatically.</p>
+<label for="script">Script</label>
+<textarea id="script" spellcheck="false"></textarea>
+<p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Camille, Théo, Chloé, Lucas, Félix, Zoé. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
+<label for="caption" style="margin-top:14px">Instagram caption <span style="font-weight:400;color:var(--soft)">(optional – auto-written if empty)</span></label>
+<textarea id="caption" class="small" placeholder="Leave empty for an automatic caption with today's words and hashtags"></textarea>
+<label for="postmode" style="margin-top:14px">When to post to Instagram</label>
+<select id="postmode"><option value="queue" selected>Queue: post at the best time for a global audience</option><option value="at">Queue: post at a time I choose</option><option value="now">Post right away</option><option value="false">Do not post, just make the video</option></select>
+<div id="atBox" hidden style="margin:0 0 12px"><label for="postat">Post on</label><input id="postat" type="datetime-local"><p class="hint" id="atHint"></p></div>
+<button id="run">Make video</button>
+</div>
+
+<div class="card"><div id="status">Ready.</div><div id="result"></div></div>
+
+<div class="card">
+<details id="setup">
+<summary>One-time setup: GitHub access token</summary>
+<p class="hint">Create a fine-grained token at GitHub → Settings → Developer settings → Fine-grained tokens. Limit it to the repository <b>tiny-french-story</b> with <b>Contents: read/write</b> and <b>Actions: read/write</b>. It is saved only in this browser. If you already saved a token for Tiny Japanese on this device and it covers tiny-french-story, it is already filled in.</p>
+<label for="token" style="margin-top:10px">Token</label>
+<input id="token" type="password" autocomplete="off" placeholder="github_pat_…">
+<div class="row" style="margin-top:10px"><button class="ghost" id="saveTok" type="button">Save token</button><button class="ghost" id="clearTok" type="button">Forget token</button></div>
+</details>
+</div>
+</main>
+
+<script>
+const OWNER="sabaghanbarlo-hash", REPO="tiny-french-story", BRANCH="main", WF="generate.yml";
+const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
+const $=id=>document.getElementById(id);
+const CAST_ART=[{name:"Adrien",id:"adrien",look:"Blond hair · green jacket"},{name:"Marinette",id:"marinette",look:"Blue-black hair · pink outfit"},{name:"Camille",id:"camille",look:"Navy hair · warm gold outfit"},{name:"Théo",id:"theo",look:"Brown hair · teal outfit"},{name:"Chloé",id:"chloe",look:"Blue hair · lavender outfit"},{name:"Lucas",id:"lucas",look:"Warm brown hair · rust outfit"},{name:"Félix",id:"felix",look:"Golden hair · cat ears · black suit"},{name:"Zoé",id:"zoe",look:"Blue pigtails · red spotted outfit"}];
+function chooseCast(slot,value){const other=slot==="cast1"?"cast2":"cast1";$(slot).value=value;if($(other).value===value)$(other).value=CAST_ART.find(c=>c.name!==value).name;drawAllCastGalleries()}
+function drawCastGallery(slot){
+ const select=$(slot),gallery=$(slot+"Gallery"),name=$(slot+"Name");if(!select||!gallery)return;
+ const selected=select.value;name.textContent=selected;gallery.innerHTML=CAST_ART.map(c=>`<button type="button" class="cast-face" data-character="${c.name}" aria-pressed="${c.name===selected}"><img src="characters/${c.id}.png" alt="${c.name} character design" loading="eager"><b>${c.name}</b><small>${c.look}</small></button>`).join("");
+ gallery.querySelectorAll(".cast-face").forEach(btn=>btn.addEventListener("click",()=>chooseCast(slot,btn.dataset.character)));
+}
+function drawAllCastGalleries(){drawCastGallery("cast1");drawCastGallery("cast2")}
+
+drawAllCastGalleries();
+const SAMPLE=`title: Un croissant pour Adrien
+episode: 3
+scene: bakery
+cover: Croissant Time
+
+[story]
+@scene bakery
+> Marinette enters left
+& Adrien enters left
+> Marinette walks to counter
+Marinette: Bonjour ! Un croissant, s'il vous plaît. | Hello! A croissant, please.
+> Marinette buys a croissant
+> Adrien looks at the display
+Adrien: Moi aussi ! Un croissant, s'il vous plaît. | Me too! A croissant, please.
+> Adrien walks to display
+& Adrien looks confused
+Adrien: Oh non ! Il n'y a plus de croissants. | Oh no! There are no more croissants.
+> Marinette looks worried
+Marinette: Ça va, Adrien ? | Are you OK, Adrien?
+Adrien: J'ai faim ! | I'm hungry!
+> Marinette gives the croissant to Adrien
+Marinette: Tiens ! Un croissant pour toi. | Here you go! A croissant for you.
+> Adrien looks happy
+Adrien: Merci beaucoup, Marinette ! | Thank you very much, Marinette!
+> Adrien eats the croissant
+Adrien: Mmm, il est délicieux ! | Mmm, it's delicious!
+> Marinette cheers
+Marinette: De rien ! À demain ! | You're welcome! See you tomorrow!
+
+[vocab]
+- s'il vous plaît — please
+  Example: Un croissant, s'il vous plaît.
+- merci beaucoup — thank you very much
+  Example: Merci beaucoup, Marinette !
+- tiens — here you go
+  Example: Tiens ! Un croissant pour toi.
+- délicieux — delicious
+  Example: Il est délicieux !
+
+[grammar]
+- Il n'y a plus de + noun — There is no more...
+  Example 1: Il n'y a plus de croissants.
+  Example 2: Il n'y a plus de café.
+
+[quiz]
+Q: What does "Il n'y a plus de croissants" mean?
+A) There are no more croissants.
+B) There are many croissants.
+C) I want a croissant.
+Answer: A
+Explanation: "Il n'y a plus de" means "there is no more" - the shop has run out.
+`;
+const get=k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}};
+const set=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}};
+const SAMPLE_STORY=SAMPLE;
+const SAMPLE_SMALL=`title: Meeting for the First Time
+episode: 1
+scene: cafe
+
+Adrien: Bonjour ! | Hello!
+Marinette: Bonjour ! Je m'appelle Marinette. | Hello! My name is Marinette.
+Adrien: Enchanté ! Je m'appelle Adrien. | Nice to meet you! My name is Adrien.
+Marinette: Enchantée ! Tu veux un café ? | Nice to meet you! Do you want a coffee?
+Adrien: Oui, un café, s'il te plaît. | Yes, a coffee, please.
+Marinette: Voilà ! | Here you go!
+Adrien: Merci beaucoup ! | Thank you very much!
+
+vocab: bonjour | hello
+vocab: je m'appelle | my name is
+vocab: enchanté / enchantée | nice to meet you
+vocab: s'il te plaît | please
+vocab: merci beaucoup | thank you very much
+`;
+const HINTS={small:'Choose two characters above; they sit in a place and chat. One line per speaker using the two characters selected above, for example <code>Camille: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store, restaurant, market, library, beach, apartment, airport, museum, street (leave scene out and it picks one from your words). Errors show the exact line.',story:"Easiest: write the same plain dialogue as Small (<code>title:</code>, optional <code>scene:</code>, dialogue lines using the selected characters, <code>vocab:</code> lines) and Story directs it for you: it picks the place from what they talk about, walks them to the counter/table/bench, and adds reactions. Or hand-direct it: use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Camille, Théo, Chloé, Lucas. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
+const MODEHINT={small:"Small: two friends sitting and chatting, like Tiny Japanese.",story:"Story: animated scenes. Paste plain dialogue and it directs the scene, or hand-direct with a [story] section."};
+let MODE=get("tfs_mode")==="story"?"story":"small";
+const KEY=m=>"tfs_script_"+m;
+function applyMode(m,save){if(save)set(KEY(MODE),$("script").value);MODE=m;set("tfs_mode",m);$("mSmall").classList.toggle("on",m==="small");$("mStory").classList.toggle("on",m==="story");$("script").value=get(KEY(m))||(m==="small"?SAMPLE_SMALL:SAMPLE_STORY);$("hint").innerHTML=HINTS[m];$("modeHint").textContent=MODEHINT[m]}
+$("mSmall").onclick=()=>applyMode("small",true);$("mStory").onclick=()=>applyMode("story",true);
+$("script").addEventListener("input",()=>set(KEY(MODE),$("script").value));
+applyMode(MODE,false);
+$("token").value=get("tjv_token");
+if(!get("tjv_token"))$("setup").open=true;
+$("saveTok").onclick=()=>{set("tjv_token",$("token").value.trim());say("Token saved in this browser.","ok")};
+$("clearTok").onclick=()=>{set("tjv_token","");$("token").value="";say("Token removed.")};
+
+function say(t,cls){const s=$("status");s.textContent=t;s.className=cls||""}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const localInput=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
+const TZ=(()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||"your device time"}catch(e){return "your device time"}})();
+const niceTime=d=>d.toLocaleString([],{weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
+function atChanged(){
+  const on=$("postmode").value==="at";$("atBox").hidden=!on;
+  if(on&&!$("postat").value){const d=new Date(Date.now()+3600e3);d.setMinutes(0,0,0);$("postat").value=localInput(d)}
+  $("atHint").textContent="Time zone: "+TZ+" (this device). The Reel goes out within about 15–30 minutes after the time you pick.";
+}
+$("postmode").addEventListener("change",atChanged);
+const b64=s=>{const b=new TextEncoder().encode(s);let o="";b.forEach(c=>o+=String.fromCharCode(c));return btoa(o)};
+function hdr(){return{Authorization:"Bearer "+get("tjv_token"),Accept:"application/vnd.github+json","Content-Type":"application/json"}}
+async function gh(path,opt={}){const r=await fetch(API+path,{...opt,headers:hdr()});if(!r.ok){let m="";try{m=(await r.json()).message}catch(e){}throw new Error(`GitHub ${r.status}: ${m||r.statusText}`)}return r.status===204?null:r.json()}
+function slug(t){return (t||"story").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40)||"story"}
+function applyCastSelection(source){
+  const chosen=[$("cast1").value,$("cast2").value];
+  if(chosen[0]===chosen[1])throw new Error("Choose two different characters for this Reel.");
+  const reserved=new Set(["title","scene","episode","cover","cast","vocab","pronunciation","grammar","quiz","answer","explanation"]);
+  const seen=[]; const lines=source.split(/\r?\n/);
+  // Detect actual translated dialogue labels, not just the built-in character list.
+  // This lets names such as Adrian, Mika, or any user-created name map to the selected designs.
+  for(const line of lines){
+    const m=line.match(/^\s*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'’.-]*)\s*:\s*(.+)$/);
+    if(!m || reserved.has(m[1].toLowerCase()) || !m[2].includes("|"))continue;
+    if(!seen.includes(m[1]))seen.push(m[1]);
+  }
+  if(!seen.length)throw new Error("Add at least one translated dialogue line like ‘Adrian: Bonjour ! | Hello!’ before making the Reel.");
+  if(seen.length>2)throw new Error("This Reel supports two dialogue speakers. Found: "+seen.join(", "));
+  let text=source;
+  const mapping={}; seen.forEach((n,i)=>mapping[n]=chosen[i]);
+  text=text.split(/\r?\n/).map(line=>{
+    const d=line.match(/^(\s*)([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'’.-]*)(\s*:\s*.+)$/);
+    if(d && mapping[d[2]])return d[1]+mapping[d[2]]+d[3];
+    const m=line.match(/^(\s*[>&]\s*)([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'’.-]*)(?=\s+(?:enters|exits|walks|runs|looks|faces|waves|jumps|laughs|nods|cheers|holds|picks|buys|eats|drinks|gives))/i);
+    if(!m || !mapping[m[2]])return line; return m[1]+mapping[m[2]]+line.slice(m[0].length);
+  }).join("\n");
+  text=text.replace(/^cast\s*:[^\r\n]*(?:\r?\n|$)/im,"");
+  const firstBreak=text.search(/\r?\n/); text=firstBreak<0?text+"\ncast: "+chosen.join(", "):text.slice(0,firstBreak+1)+"cast: "+chosen.join(", ")+"\n"+text.slice(firstBreak+1);
+  return text;
+}
+function check(text){
+  if(MODE==="small"){
+    if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
+    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (see the sample).");
+    if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for Small).");
+    return}
+  if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
+  if(!/^\[story\]\s*$/im.test(text)){
+    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (or a [story] section, see the sample).");
+    if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for plain dialogue).");
+    return}
+  if(text.length>20000)throw new Error("The script is too long (limit 20,000 characters).")}
+
+$("cast1").onchange=()=>{if($("cast1").value===$("cast2").value)$("cast2").value=["Adrien","Marinette","Camille","Théo","Chloé","Lucas","Félix","Zoé"].find(n=>n!==$("cast1").value)};
+$("cast2").onchange=()=>{if($("cast1").value===$("cast2").value)$("cast1").value=["Adrien","Marinette","Camille","Théo","Chloé","Lucas","Félix","Zoé"].find(n=>n!==$("cast2").value)};
+$("run").onclick=async()=>{
+  const btn=$("run");$("result").innerHTML="";
+  try{
+    if(!get("tjv_token")){$("setup").open=true;throw new Error("Add your GitHub token first (setup box below).")}
+    const text=applyCastSelection($("script").value.trim());check(text);$("script").value=text;
+    btn.disabled=true;
+    const title=(text.match(/^title\s*:\s*(.+)$/im)||[])[1]||"story";
+    const stamp=new Date().toISOString().slice(0,16).replace(/[-:T]/g,"");
+    const base=`lessons/web/${stamp}-${slug(title)}`;
+    let post=$("postmode").value,postAt="";
+    if(post==="at"){
+      const t=new Date($("postat").value);
+      if(!$("postat").value||isNaN(t))throw new Error("Pick the date and time you want it to post.");
+      if(t.getTime()<Date.now()+5*60000)throw new Error("Pick a time at least a few minutes from now.");
+      postAt=t.toISOString().replace(/\.\d+Z$/,"Z");post="queue";
+    }
+    say("Saving script…");
+    await gh(`/contents/${base}.txt`,{method:"PUT",body:JSON.stringify({message:"Add story: "+title,content:b64(text+"\n"),branch:BRANCH})});
+    const cap=$("caption").value.trim();
+    if(cap)await gh(`/contents/${base}.caption`,{method:"PUT",body:JSON.stringify({message:"Add caption",content:b64(cap+"\n"),branch:BRANCH})});
+    const t0=Date.now()-5000;
+    say("Starting the video job…");
+    await gh(`/actions/workflows/${WF}/dispatches`,{method:"POST",body:JSON.stringify({ref:BRANCH,inputs:Object.assign({story:base+".txt",post:String(post),format:MODE},postAt?{post_at:postAt}:{})})});
+    let run=null;
+    for(let i=0;i<30&&!run;i++){await sleep(3000);
+      const r=await gh(`/actions/workflows/${WF}/runs?event=workflow_dispatch&per_page=5`);
+      run=(r.workflow_runs||[]).find(x=>new Date(x.created_at).getTime()>=t0)}
+    if(!run)throw new Error("The job didn't start. Check the Actions tab on GitHub.");
+    const started=Date.now();
+    for(;;){await sleep(8000);
+      run=await gh(`/actions/runs/${run.id}`);
+      const mins=Math.floor((Date.now()-started)/60000);
+      say(`Rendering… (${run.status.replace("_"," ")}, ${mins} min)  This takes a few minutes.`);
+      if(run.status==="completed")break}
+    if(run.conclusion!=="success"){
+      let why="";try{const j=await gh(`/actions/runs/${run.id}/jobs`);const bad=j.jobs.find(x=>x.conclusion==="failure");if(bad){const st=(bad.steps.find(s=>s.conclusion==="failure")||{}).name||bad.name;why=` Failed step: "${st}".`;try{const an=await gh(`/check-runs/${bad.id}/annotations`);const m=an.filter(x=>x.annotation_level==="failure").map(x=>x.message).join("\n");if(m)why="\n"+m}catch(e){}}}catch(e){}
+      throw new Error("The job didn't finish."+why+"\n"+run.html_url)}
+    const url=`${location.origin}${location.pathname.replace(/[^/]*$/,"")}videos/${base.split("/").pop()}.mp4`;
+    say(post==="now"?"Done – video made and posted to Instagram.":postAt?"Done – video made. It will post on "+niceTime(new Date(postAt))+" ("+TZ+"). You can change the time in the queue.":post==="queue"?"Done – video made and added to the queue. It posts at the best time (see the queue).":"Done – video is ready.","ok");
+    $("result").innerHTML=`<video controls playsinline poster="${url.replace(/\.mp4$/,".jpg")}" src="${url}"></video><p style="text-align:center;margin:8px 0 0"><a href="${url.replace(/\.mp4$/,".jpg")}" download>Download cover (JPG)</a></p><p style="text-align:center"><a href="${url}" download>Download MP4</a> · <a href="${url.replace(/\.mp4$/,".srt")}" download>Subtitles</a> · <a href="${run.html_url}" target="_blank" rel="noopener">View job</a></p>`;
+  }catch(e){say(String(e.message||e),"err")}
+  finally{btn.disabled=false}
+};
+
+</script>
+</body>
+</html>
