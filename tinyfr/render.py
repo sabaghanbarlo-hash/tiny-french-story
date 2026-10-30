@@ -67,10 +67,19 @@ def wordmark(d, y=SAFE_TOP + 10):
 
 # ---- frames ----
 def f_title(seg, t, meta):
-    img = vgrad(LAVENDER, BLUSH); d = ImageDraw.Draw(img); wordmark(d, 520)
-    y = block(d, W // 2, 760, meta["title"], 78, NAVY, 900, maxlines=4)
-    pill(d, W // 2, y + 30, f"Épisode {meta.get('episode', '1')}", NAVY)
-    d.text((W // 2, SAFE_BOTTOM - 130), "Small steps. Big dreams.", font=font(40, False), fill=NAVY, anchor="ma")
+    """A cinematic, story-specific opening card; the dialogue/story timeline is unchanged."""
+    # Reuse the illustrated location chosen for the first story scene instead of the old pink gradient.
+    img = SC.background(seg.get("place") or "street")
+    d = ImageDraw.Draw(img, "RGBA")
+    # Soft ivory glass panel keeps the title readable while letting the illustrated setting show through.
+    panel = (76, 500, W - 76, 1370)
+    d.rounded_rectangle(panel, radius=76, fill=(255, 251, 246, 226), outline=(255, 255, 255, 245), width=8)
+    d.rounded_rectangle((panel[0] + 16, panel[1] + 16, panel[2] - 16, panel[3] - 16), radius=62,
+                        outline=LAVENDER + (235,), width=4)
+    wordmark(d, 650)
+    y = block(d, W // 2, 830, meta["title"], 78, NAVY, 880, maxlines=4)
+    pill(d, W // 2, y + 48, f"Épisode {meta.get('episode', '1')}", NAVY)
+    d.text((W // 2, 1270), "Une petite histoire en français", font=font(38, False), fill=NAVY, anchor="ma")
     return img
 
 def f_story(seg, t, meta):
@@ -164,7 +173,7 @@ def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz
         cnt[0] += 1; p = os.path.join(tmp, f"a{cnt[0]:03}.wav"); synth(text, voice, p, dummy, rate); return read_wav(p)
     def place(t0, x): mix.append((t0, x))
     t = 0.0
-    segs.append(dict(kind="title", t0=0, t1=2.6)); t = 2.6
+    segs.append(dict(kind="title", t0=0, t1=2.6, place=SC.scene_for(script) or "street")); t = 2.6
     stage = None
     if "story" in sections:
         voices = {}
