@@ -290,17 +290,50 @@ def _new_character(name, mouth, blink):
         G([(115,260),(130,165),(205,112),(330,112),(430,185),(435,260),(390,232),(355,278),(300,235),(250,280),(190,235),(150,285)],hair)
         L([(185,292),(225,280)],dark,7)
         E((407,385,427,405),(221,177,116))
-    # face details and expressive eyes; unique iris colours per character
+    # Face details. Félix and Zoé get individually shaped eyes instead of the default cast eyes.
     E((120,305,166,390),skin); E((394,305,440,390),skin)
-    for ex in (214,346):
-        d.arc(P((ex-31,300,ex+31,340)),195,345,fill=dark,width=int(7*S))
-        if blink:
-            d.arc(P((ex-28,345,ex+28,390)),200,340,fill=ink,width=int(7*S))
-        else:
-            E((ex-25,326,ex+25,397),(58,35,43))
-            E((ex-17,348,ex+17,392),iris)
-            E((ex-12,332,ex+5,352),(255,255,255))
-            E((ex+5,368,ex+15,380),(255,255,255))
+    if name == "Félix":
+        # Bright, balanced cat-like green eyes: almond silhouette, clear iris and two soft catchlights.
+        for ex in (214,346):
+            side = -1 if ex < 280 else 1
+            if blink:
+                d.arc(P((ex-28,350,ex+28,389)),195,345,fill=(35,29,34),width=int(7*S))
+                d.line(P((ex+side*27,365,ex+side*39,354)),fill=(35,29,34),width=int(5*S))
+            else:
+                G([(ex-29,358),(ex-22,333),(ex,325),(ex+22,333),(ex+29,358),(ex+17,389),(ex,397),(ex-17,389)],(42,31,37))
+                G([(ex-23,357),(ex-17,338),(ex,332),(ex+17,338),(ex+23,357),(ex+14,384),(ex,390),(ex-14,384)],(255,250,241))
+                E((ex-15,344,ex+15,389),(119,151,83))
+                E((ex-8,346,ex+9,384),(39,35,32))
+                E((ex-10,337,ex+2,351),(255,255,255))
+                E((ex+7,366,ex+13,374),(255,255,255))
+                d.arc(P((ex-29,326,ex+29,365)),195,345,fill=(35,29,34),width=int(7*S))
+                d.line(P((ex+side*25,345,ex+side*38,333)),fill=(35,29,34),width=int(5*S))
+    elif name == "Zoé":
+        # Warm chocolate-brown, rounder expressive eyes with a soft red-mask edge and lashes.
+        for ex in (214,346):
+            side = -1 if ex < 280 else 1
+            if blink:
+                d.arc(P((ex-29,350,ex+29,390)),195,345,fill=(52,30,37),width=int(7*S))
+                d.line(P((ex+side*27,365,ex+side*39,353)),fill=(52,30,37),width=int(5*S))
+            else:
+                E((ex-29,325,ex+29,399),(48,30,38))
+                E((ex-24,331,ex+24,393),(255,250,241))
+                E((ex-18,342,ex+18,392),(133,77,70))
+                E((ex-10,344,ex+11,387),(48,31,35))
+                E((ex-13,334,ex+2,351),(255,255,255))
+                E((ex+8,369,ex+15,379),(255,255,255))
+                d.arc(P((ex-31,321,ex+31,365)),195,345,fill=(52,30,37),width=int(8*S))
+                d.line(P((ex+side*26,345,ex+side*42,331)),fill=(52,30,37),width=int(6*S))
+    else:
+        for ex in (214,346):
+            d.arc(P((ex-31,300,ex+31,340)),195,345,fill=dark,width=int(7*S))
+            if blink:
+                d.arc(P((ex-28,345,ex+28,390)),200,340,fill=ink,width=int(7*S))
+            else:
+                E((ex-25,326,ex+25,397),(58,35,43))
+                E((ex-17,348,ex+17,392),iris)
+                E((ex-12,332,ex+5,352),(255,255,255))
+                E((ex+5,368,ex+15,380),(255,255,255))
     E((166,398,210,422),blush); E((350,398,394,422),blush)
     if mouth==0: d.arc(P((262,410,298,436)),15,165,fill=ink,width=int(5*S))
     elif mouth==1: E((268,414,292,438),(128,48,62))
