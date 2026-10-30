@@ -16,7 +16,11 @@ INK = (92, 52, 56)
 MOUTH = (128, 48, 62)
 TONGUE = (238, 128, 140)
 HAIR = {"Adrien": dict(main=(247, 208, 120), dark=(226, 170, 84), light=(255, 238, 176), brow=(206, 154, 88)),
-        "Marinette": dict(main=(50, 68, 122), dark=(34, 46, 92), light=(92, 112, 170), brow=(34, 46, 92), tie=(206, 54, 64))}
+        "Marinette": dict(main=(50, 68, 122), dark=(34, 46, 92), light=(92, 112, 170), brow=(34, 46, 92), tie=(206, 54, 64)),
+        "Camille": dict(main=(145, 62, 48), dark=(105, 42, 38), light=(205, 112, 78), brow=(105, 42, 38), tie=(205, 153, 54)),
+        "Théo": dict(main=(82, 53, 39), dark=(58, 38, 31), light=(133, 91, 65), brow=(58, 38, 31), iris=(75, 142, 105)),
+        "Chloé": dict(main=(151, 105, 67), dark=(111, 74, 48), light=(207, 161, 111), brow=(111, 74, 48), tie=(181, 157, 224)),
+        "Lucas": dict(main=(35, 31, 34), dark=(20, 18, 21), light=(83, 73, 75), brow=(20, 18, 21))}
 BLUSH_EXPR = ("embarrassed", "shy", "happy", "excited")
 EXPRESSIONS = ("happy", "excited", "surprised", "sad", "worried", "confused", "embarrassed", "shy")
 
@@ -65,7 +69,7 @@ class _Canvas:
 def _static(name):
     """Hair, ears, face and fringe: everything that does not move."""
     cv = _Canvas(); h = HAIR[name]; g = h["main"]
-    if name == "Adrien":
+    if name in ("Adrien", "Théo", "Lucas"):
         def back(dd):
             cv.ell((112, 112, 448, 440), g, dd)
             for pts in (_lock((150, 250), (100, 300), (74, 372), 70), _lock((410, 250), (462, 290), (486, 352), 64), _lock((262, 124), (288, 76), (338, 58), 54)):
@@ -133,7 +137,7 @@ def _head(name, expr, mq, blink, laugh):
         cy = 357 + oy
         x0, x1, y0, y1 = ex - 27 * k, ex + 27 * k, cy - 39 * k, cy + 39 * k
         d.ellipse(P(x0, y0, x1, y1), fill=(58, 30, 46))
-        d.ellipse(P(ex - 20 * k, y1 - 28 * k, ex + 20 * k, y1 - 2), fill=(108, 56, 70))
+        d.ellipse(P(ex - 20 * k, y1 - 28 * k, ex + 20 * k, y1 - 2), fill=HAIR[name].get("iris", (108, 56, 70)))
         hx = 4 if expr == "shy" else 0
         d.ellipse(P(ex - 17 + hx, y0 + 10, ex + 4 + hx, y0 + 36 * k), fill=(255, 255, 255))
         d.ellipse(P(ex + 6 + hx, y1 - 28 * k, ex + 17 + hx, y1 - 16 * k), fill=(255, 255, 255))
@@ -149,6 +153,11 @@ def _head(name, expr, mq, blink, laugh):
         _brow(cv, name, 214, -1, 14, 0, 2); _brow(cv, name, 346, 1, -4, 0, 0)
     else:
         _brow(cv, name, 214, -1, lift, inner, arch); _brow(cv, name, 346, 1, lift, inner, arch)
+    if name == "Camille":
+        # Thin rounded glasses, positioned around both eyes.
+        for ex in (214, 346):
+            d.rounded_rectangle(P(ex - 39, 326, ex + 39, 390), radius=int(13 * S), outline=(105, 66, 52), width=int(5 * S))
+        d.line(P(253, 356, 307, 356), fill=(105, 66, 52), width=int(5 * S))
     if laugh:
         d.pieslice(P(244, 402, 316, 464), 0, 180, fill=MOUTH); d.pieslice(P(262, 434, 298, 464), 0, 180, fill=TONGUE)
     elif m > 0.06:

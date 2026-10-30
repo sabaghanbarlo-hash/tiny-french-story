@@ -1,7 +1,7 @@
 """Stage directions -> timeline. The vocabulary here IS the supported list (see DIRECTING.md); anything else is a ScriptError."""
 import bisect, math, re
 from dataclasses import dataclass
-from .config import W, CHAR_SCALE, BODY_W
+from .config import W, CHAR_SCALE, BODY_W, CHARS
 from .parser import ScriptError, Say, Direction, SceneChange
 from . import scenes as SC
 from . import items as IT
@@ -30,20 +30,21 @@ _ART = re.compile(r"^(?:the|a|an|his|her)\s+")
 class Op:
     who: str; verb: str; arg: str; ln: int
 
-def _who(tok):
-    return list(NAMES) if tok == "both" else [tok.title()]
+def _who(tok, names=NAMES):
+    return list(names) if tok == "both" else [tok.title()]
 
-def parse_dir(text, ln=0):
+def parse_dir(text, ln=0, names=NAMES):
     t = re.sub(r"\s+", " ", text.strip().rstrip(".!").lower())
     m = re.match(r"^wait (?:for )?(\d+(?:\.\d+)?)(?: seconds?| s)?$", t)
     if m: return [Op("", "wait", m.group(1), ln)]
-    m = re.match(r"^(marinette|adrien|both)\s+(.+)$", t)
-    if not m: raise ScriptError(f"line {ln}: a direction must start with Marinette, Adrien or both (or be 'wait N'): {text!r}")
+    actor_pattern = "|".join(re.escape(n.lower()) for n in names)
+    m = re.match(r"^(" + actor_pattern + r"|both)\s+(.+)$", t)
+    if not m: raise ScriptError(f"line {ln}: a direction must start with one of {', '.join(names)} or both (or be 'wait N'): {text!r}")
     ops, rest = [], m.group(2)
     first, _, tail = rest.partition(" ")
     rest = BASE_VERBS.get(first, first) + (" " + tail if tail else "")
     def add(verb, arg=""):
-        for w in _who(m.group(1)): ops.append(Op(w, verb, arg, ln))
+        for w in _who(m.group(1), names): ops.append(Op(w, verb, arg, ln))
     for pat, verb in ((r"^enters (left|right)(?: to (.+))?$", "enter"), (r"^exits (left|right)$", "exit")):
         mm = re.match(pat, rest)
         if mm: add(verb, " to ".join(x for x in mm.groups() if x)); return ops
@@ -74,7 +75,7 @@ def parse_dir(text, ln=0):
         add("eat" if mm.group(1) == "eats" else "drink", it or ""); return ops
     mm = re.match(r"^(?:drops|finishes|puts away|puts)(?: (.+?))?(?: away)?$", rest)
     if mm: add("drop", (IT.find(mm.group(1)) or "") if mm.group(1) else ""); return ops
-    mm = re.match(r"^gives (.+?) to (marinette|adrien)$", rest)
+    mm = re.match(r"^gives (.+?) to (" + "|".join(re.escape(n.lower()) for n in names) + r")$", rest)
     if mm:
         what = mm.group(1); it = "" if what in ("it", "that", "them") else IT.find(what)
         if what not in ("it", "that", "them") and not it: raise ScriptError(f"line {ln}: unsupported item {what!r}; supported items: {', '.join(IT.ITEMS)}")
@@ -84,30 +85,33 @@ def parse_dir(text, ln=0):
 def _ss(u): u = max(0.0, min(1.0, u)); return u * u * (3 - 2 * u)
 
 class Stage:
-    def __init__(self, scene, starts_off=()):
-        self.scene = scene
-        self.pos = {n: [] for n in NAMES}; self.expr = {n: [(-1, "neutral")] for n in NAMES}; self.item = {n: [(-1, None, 0)] for n in NAMES}
-        self.face = {n: [(-1, "auto")] for n in NAMES}; self.acts = {n: [] for n in NAMES}
+    def __init__(self, scene, starts_off=(), names=NAMES):
+        self.scene = scene; self.names = tuple(names)
+        if len(self.names) != 2 or len(set(self.names)) != 2:
+            raise ScriptError("Each Story episode must use exactly two different characters.")
+        self.home = {self.names[0]: 300, self.names[1]: 780}
+        self.pos = {n: [] for n in self.names}; self.expr = {n: [(-1, "neutral")] for n in self.names}; self.item = {n: [(-1, None, 0)] for n in self.names}
+        self.face = {n: [(-1, "auto")] for n in self.names}; self.acts = {n: [] for n in self.names}
         self.cur = {}
-        for n in NAMES:
-            x = -300 if n in starts_off else HOME[n]
+        for n in self.names:
+            x = -300 if n in starts_off else self.home[n]
             self.cur[n] = dict(x=x, on=n not in starts_off, item=None, bites=0)
             self.pos[n].append((-1, -0.5, x, x, 0))
 
-    def other(self, n): return NAMES[1] if n == NAMES[0] else NAMES[0]
+    def other(self, n): return self.names[1] if n == self.names[0] else self.names[0]
     def spots(self): return SC.SCENES[self.scene]["spots"]
     def cut(self, t, scene, starts_off=()):
         self.scene = scene
-        for n in NAMES:
-            x = -300 if n in starts_off else HOME[n]
+        for n in self.names:
+            x = -300 if n in starts_off else self.home[n]
             self.cur[n]["x"] = x; self.cur[n]["on"] = n not in starts_off; self.pos[n].append((t, t, x, x, 0)); self.face[n].append((t, "auto"))
     def resolve(self, n, arg, ln):
         a = arg.strip()
         if a in ("left", "right", "center", "centre", "home"):
-            return {"left": 150, "right": W - 150, "center": W // 2, "centre": W // 2, "home": HOME[n]}[a]
+            return {"left": 150, "right": W - 150, "center": W // 2, "centre": W // 2, "home": self.home[n]}[a]
         m = re.match(r"^(\d{1,3})\s*%$", a)
         if m: return W * int(m.group(1)) / 100
-        m = re.match(r"^next to (marinette|adrien)$", a)
+        m = re.match(r"^next to (" + "|".join(re.escape(x.lower()) for x in self.names) + r")$", a)
         if m:
             tgt = self.cur[m.group(1).title()]
             if not tgt["on"]: raise ScriptError(f"line {ln}: {m.group(1).title()} is not on stage to stand next to")
@@ -135,7 +139,7 @@ class Stage:
         if not self.cur[n]["on"]: raise ScriptError(f"line {ln}: {n} is not on stage (use 'enters left/right' first)")
 
     def run_beat(self, t, ops):
-        cursor = {n: t for n in NAMES}; end = t; enter_delay = {}
+        cursor = {n: t for n in self.names}; end = t; enter_delay = {}
         for op in ops:
             if op.verb == "wait":
                 end = max(end, t + float(op.arg)); continue
@@ -145,7 +149,7 @@ class Stage:
                 if c["on"]: raise ScriptError(f"line {ln}: {n} is already on stage; use 'walks to' instead of 'enters'")
                 x0 = -240 if side == "left" else W + 240
                 k = enter_delay.get(side, 0); enter_delay[side] = k + 1; s += 0.4 * k
-                tgt = self.sep(n, self.resolve(n, spot, ln) if spot else HOME[n], x0)
+                tgt = self.sep(n, self.resolve(n, spot, ln) if spot else self.home[n], x0)
                 c["x"] = x0; c["on"] = True; self.pos[n].append((s, s, x0, x0, 0))
                 cursor[n] = self._move(n, s, tgt, False, ln)
             elif op.verb in ("walk", "run"):
@@ -157,16 +161,17 @@ class Stage:
                 self._need_on(n, ln); self.expr[n].append((s, op.arg)); cursor[n] = s + 0.35
             elif op.verb == "lookat":
                 self._need_on(n, ln); a = op.arg
-                if a in ("marinette", "adrien"):
-                    tg = a.title(); self._need_on(tg, ln); self.face[n].append((s, 1 if self.cur[tg]["x"] >= c["x"] else -1))
+                if a in tuple(x.lower() for x in self.names):
+                    tg = next(x for x in self.names if x.lower() == a); self._need_on(tg, ln); self.face[n].append((s, 1 if self.cur[tg]["x"] >= c["x"] else -1))
                 else:
                     x = self.resolve(n, a, ln); self.face[n].append((s, 1 if x >= c["x"] else -1))
                 cursor[n] = s + 0.4
             elif op.verb == "face":
                 self._need_on(n, ln); a = op.arg
                 if a in ("left", "right"): self.face[n].append((s, -1 if a == "left" else 1))
-                elif a in ("marinette", "adrien"): self._need_on(a.title(), ln); self.face[n].append((s, 1 if self.cur[a.title()]["x"] >= c["x"] else -1))
-                else: raise ScriptError(f"line {ln}: 'faces' needs Marinette, Adrien, left or right (got {a!r})")
+                elif a in tuple(x.lower() for x in self.names):
+                    tg = next(x for x in self.names if x.lower() == a); self._need_on(tg, ln); self.face[n].append((s, 1 if self.cur[tg]["x"] >= c["x"] else -1))
+                else: raise ScriptError(f"line {ln}: 'faces' needs one of the episode's characters, left or right (got {a!r})")
                 cursor[n] = s + 0.3
             elif op.verb == "gesture":
                 self._need_on(n, ln); name, dur = GESTURES[op.arg]; cursor[n] = self._act(n, s, name, dur)
@@ -222,23 +227,23 @@ class Stage:
         vis = -230 < x < W + 230; ovis = -230 < ox < W + 230
         fv = self._last(self.face[n], t)[1]
         if fv == "auto":
-            fv = (1 if ox >= x else -1) if ovis and vis and abs(ox - x) > 1 else (1 if n == "Marinette" else -1)
+            fv = (1 if ox >= x else -1) if ovis and vis and abs(ox - x) > 1 else (1 if n == self.names[0] else -1)
         expr = self._last(self.expr[n], t)[1]; it = self._last(self.item[n], t)
         act, ap = None, 0.0
         for a0, a1, nm in self.acts[n]:
             if a0 <= t < a1: act, ap = nm, (t - a0) / (a1 - a0)
         lane = 0.0
-        if moving and ovis and not (omoving and n == "Marinette"):
+        if moving and ovis and not (omoving and n == self.names[0]):
             lane = -70 * _ss(1 - (abs(x - ox) - 0.45 * MIN_GAP) / (0.9 * MIN_GAP))
         return dict(x=x, vis=vis, moving=moving, face=fv, expr=expr, act=act, ap=ap, item=it[1], bites=it[2], lane=lane, walking=1.0 if moving else 0.0, phase=x / (52.0 * SC.scale_of(self.scene)))
 
-def starts_off(story, idx):
+def starts_off(story, idx, names=NAMES):
     """Characters whose first direction (before the next spoken line / scene) is 'enters' begin off stage."""
     first = {}
     for ev in story[idx:]:
         if isinstance(ev, (Say, SceneChange)): break
         if isinstance(ev, Direction):
-            try: ops = parse_dir(ev.text, ev.line)
+            try: ops = parse_dir(ev.text, ev.line, names)
             except ScriptError: continue
             for op in ops:
                 if op.who and op.who not in first: first[op.who] = op.verb
@@ -249,17 +254,33 @@ def play(script, say_seconds, t0=2.6):
     story = script.story
     scene = SC.scene_for(script)
     if not scene: raise ScriptError(f"unknown scene {script.meta.get('scene')!r}; scenes: {', '.join(SC.SCENES)}")
-    stage = Stage(scene, starts_off(story, 0)); t = t0; out = []; i = 0
+    speakers = list(dict.fromkeys(ev.speaker for ev in story if isinstance(ev, Say)))
+    declared_cast = [n.strip() for n in script.meta.get("cast", "").split(",") if n.strip()]
+    cast = declared_cast or speakers
+    if not declared_cast and len(cast) == 1:
+        cast.append(next((n for n in NAMES if n != cast[0]), "Adrien"))
+    if not cast: cast = list(NAMES)
+    if len(cast) != 2 or any(n not in CHARS for n in cast):
+        raise ScriptError("cast: must list exactly two character names from the character library.")
+    if any(n not in cast for n in speakers):
+        raise ScriptError("Every dialogue speaker must be one of the two characters in cast:.")
+    if len(cast) == 1:
+        # Keep one-speaker lessons valid; the legacy partner remains the silent scene companion.
+        partner = next((n for n in NAMES if n != cast[0]), "Adrien")
+        cast.append(partner)
+    if len(cast) != 2:
+        raise ScriptError(f"Story mode supports up to two speakers per episode; found {len(cast)}: {', '.join(cast)}")
+    stage = Stage(scene, starts_off(story, 0, cast), cast); t = t0; out = []; i = 0
     while i < len(story):
         ev = story[i]
         if isinstance(ev, SceneChange):
             sc = SC.resolve(ev.place)
             if not sc: raise ScriptError(f"line {ev.line}: unknown scene {ev.place!r}. Scenes: {', '.join(SC.SCENES)}")
-            stage.cut(t, sc, starts_off(story, i + 1)); out.append(("scene", t, t, sc)); i += 1
+            stage.cut(t, sc, starts_off(story, i + 1, stage.names)); out.append(("scene", t, t, sc)); i += 1
         elif isinstance(ev, Direction):
             beats = []
             while i < len(story) and isinstance(story[i], Direction):
-                d = story[i]; ops = parse_dir(d.text, d.line)
+                d = story[i]; ops = parse_dir(d.text, d.line, stage.names)
                 if d.simultaneous and beats: beats[-1].extend(ops)
                 else: beats.append(list(ops))
                 i += 1

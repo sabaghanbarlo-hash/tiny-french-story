@@ -15,6 +15,10 @@ CHARS = {
                       trouser=(60, 66, 104), shoe=(245, 240, 236), iris=(108, 56, 70), strap=(150, 96, 78), bag=(246, 214, 196), ribbon=(206, 54, 64)),
     "Adrien": dict(voice="fr-FR-HenriNeural", hair=(247, 208, 120), hl=(255, 238, 176), hair_d=(226, 170, 84), brow=(206, 154, 88), skin=(253, 227, 203), jacket=(244, 238, 238),
                    top=(42, 36, 42), edge=(224, 212, 214), trouser=(78, 92, 128), shoe=(255, 255, 255), iris=(108, 56, 70), strap=(120, 84, 56), bag=(168, 120, 80)),
+    "Camille": dict(voice="fr-FR-DeniseNeural", hair=(145, 62, 48), hl=(205, 112, 78), hair_d=(105, 42, 38), brow=(105, 42, 38), skin=(253, 227, 203), jacket=(205, 153, 54), top=(255, 239, 204), edge=(160, 111, 43), trouser=(83, 72, 78), shoe=(255, 245, 232), iris=(92, 125, 92), strap=(120, 84, 56), bag=(205, 153, 54)),
+    "Théo": dict(voice="fr-FR-HenriNeural", hair=(82, 53, 39), hl=(133, 91, 65), hair_d=(58, 38, 31), brow=(58, 38, 31), skin=(253, 227, 203), jacket=(54, 151, 145), top=(226, 245, 238), edge=(37, 112, 108), trouser=(65, 75, 88), shoe=(255, 255, 255), iris=(75, 142, 105), strap=(80, 80, 70), bag=(54, 151, 145)),
+    "Chloé": dict(voice="fr-FR-DeniseNeural", hair=(151, 105, 67), hl=(207, 161, 111), hair_d=(111, 74, 48), brow=(111, 74, 48), skin=(253, 227, 203), jacket=(181, 157, 224), top=(247, 240, 255), edge=(139, 119, 186), trouser=(91, 82, 112), shoe=(255, 255, 255), iris=(108, 83, 128), strap=(120, 84, 56), bag=(181, 157, 224)),
+    "Lucas": dict(voice="fr-FR-HenriNeural", hair=(35, 31, 34), hl=(83, 73, 75), hair_d=(20, 18, 21), brow=(20, 18, 21), skin=(253, 227, 203), jacket=(177, 91, 57), top=(255, 225, 194), edge=(139, 63, 44), trouser=(74, 72, 82), shoe=(255, 255, 255), iris=(93, 111, 126), strap=(120, 84, 56), bag=(177, 91, 57)),
 }
 NARRATOR_VOICE = "en-US-AriaNeural"   # English quiz narration
 EN_VOICE = NARRATOR_VOICE              # English "means ..." in the vocabulary section

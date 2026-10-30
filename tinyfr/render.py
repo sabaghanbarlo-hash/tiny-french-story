@@ -76,8 +76,8 @@ def f_title(seg, t, meta):
 def f_story(seg, t, meta):
     img = SC.background(seg["place"]); stage = seg["stage"]; d = ImageDraw.Draw(img, "RGBA"); brand_tag(d)
     pill(d, W // 2, 330, seg["place"].title(), (255, 255, 255, 190), fg=NAVY, size=30)
-    poses = {n: stage.pose(n, t) for n in acting.NAMES}
-    for n in sorted(acting.NAMES, key=lambda k: poses[k]["lane"]):
+    poses = {n: stage.pose(n, t) for n in stage.names}
+    for n in sorted(stage.names, key=lambda k: poses[k]["lane"]):
         P = poses[n]
         if not P["vis"]: continue
         sp = n == seg.get("speaker")
@@ -156,6 +156,8 @@ def envelope(x):
     return e
 
 def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz"), max_quiz=1):
+    cast_names = [n.strip() for n in script.meta.get("cast", "").split(",") if n.strip()] or list(dict.fromkeys(ev.speaker for ev in script.story if isinstance(ev, Say))) or ["Marinette", "Adrien"]
+    if len(cast_names) == 1: cast_names.append("Adrien" if cast_names[0] != "Adrien" else "Marinette")
     segs, mix, cues, skipped = [], [], [], 0
     cnt = [0]
     def speak(text, voice, rate=None):
@@ -182,12 +184,12 @@ def build(script, tmp, dummy=False, sections=("story", "vocab", "grammar", "quiz
     if "vocab" in sections:
         for v in script.vocab:
             # French word -> English "means ..." -> French word again, slowly (the viewer hears AND sees the meaning)
-            x = speak(v.term, CHARS["Marinette"]["voice"]); parts = [(0.3, x)]; d = 0.3 + len(x) / SR + 0.45
+            x = speak(v.term, CHARS[cast_names[0]]["voice"]); parts = [(0.3, x)]; d = 0.3 + len(x) / SR + 0.45
             m = speak("means " + v.meaning, EN_VOICE, "+0%"); parts.append((d, m)); d += len(m) / SR + 0.45
-            x2 = speak(v.term, CHARS["Marinette"]["voice"], "-25%"); parts.append((d, x2)); d += len(x2) / SR + 0.6
+            x2 = speak(v.term, CHARS[cast_names[0]]["voice"], "-25%"); parts.append((d, x2)); d += len(x2) / SR + 0.6
             ex = v.examples[0] if v.examples else None
             if ex:
-                y = speak(ex[0], CHARS["Adrien"]["voice"]); parts.append((d, y)); d += len(y) / SR + 0.8
+                y = speak(ex[0], CHARS[cast_names[1]]["voice"]); parts.append((d, y)); d += len(y) / SR + 0.8
             for off, a in parts: place(t + off, a)
             segs.append(dict(kind="vocab", t0=t, t1=t + max(d, 3.2), term=v.term, meaning=v.meaning, example=ex))
             cues.append((t + 0.3, t + 0.3 + len(x) / SR + 0.2, v.term, v.meaning)); t += max(d, 3.2)
