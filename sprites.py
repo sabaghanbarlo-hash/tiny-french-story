@@ -231,6 +231,31 @@ def _new_character(name, mouth, blink):
         G([(112,255),(140,155),(250,105),(370,130),(445,230),(410,285),(350,218),(290,252),(220,220),(160,285)],hair)
         L([(145,194),(210,130),(330,128),(410,196)],(236,202,164),12)
         E((374,178,414,218),(238,177,197)); E((388,166,400,230),(255,226,235))
+    elif name == "Félix":
+        hair=(247,190,82); dark=(35,31,39); outfit=(37,35,42); iris=(112,132,82)
+        # black cat ears, fluffy golden hair, familiar black mask and bell collar
+        G([(112,220),(80,82),(220,130),(310,100),(470,70),(442,240)],dark)
+        G([(125,205),(95,94),(220,145),(310,125),(450,82),(435,235)],hair)
+        E((100,100,460,500),dark)
+        G([(108,265),(130,170),(210,112),(320,110),(430,170),(450,270),(410,250),(360,290),(300,240),(240,280),(180,245)],hair)
+        G([(112,760),(140,540),(190,480),(370,480),(420,540),(448,760)],outfit)
+        E((142,155,418,470),skin)
+        # bell collar
+        E((255,470,305,525),(247,208,120)); E((270,490,290,510),(92,52,56))
+        # mask silhouette behind the eyes
+        G([(145,325),(170,290),(220,300),(280,325),(340,300),(390,290),(415,325),(390,385),(345,390),(280,370),(215,390),(170,385)],dark)
+    elif name == "Zoé":
+        hair=(48,61,112); dark=(38,34,46); outfit=(218,54,58); iris=(105,75,78)
+        # blue twin pigtails tied with bright red ribbons
+        E((65,300,205,620),hair); E((355,300,495,620),hair)
+        G([(110,760),(135,535),(190,485),(370,485),(425,535),(450,760)],outfit)
+        E((100,100,460,500),dark)
+        E((142,155,418,470),skin)
+        G([(110,265),(125,180),(205,115),(325,110),(430,180),(450,270),(410,245),(360,285),(300,235),(240,280),(180,245)],hair)
+        # red mask and polka-dot top
+        G([(145,325),(170,292),(220,300),(280,325),(340,300),(390,292),(415,325),(390,385),(345,390),(280,370),(215,390),(170,385)],(224,45,52))
+        for x,y in [(225,560),(335,560),(260,650),(360,700),(195,700)]: E((x-13,y-13,x+13,y+13),(38,38,48))
+        E((125,190,165,230),(225,45,52)); E((395,190,435,230),(225,45,52))
     else: # Lucas
         hair=(37,34,39); dark=(22,20,25); outfit=(174,91,61); iris=(62,96,120)
         # tousled wavy dark hair, squarer jaw, layered casual jacket
@@ -266,9 +291,9 @@ def _new_character(name, mouth, blink):
 
 @functools.lru_cache(maxsize=128)
 def sprite(name, mouth, blink):
-    """Render the six cast designs; Adrien and Marinette remain unchanged."""
+    """Render the eight cast designs; Adrien and Marinette remain unchanged."""
     if name in ("Adrien", "Marinette"):
         return _sprite_base(name, mouth, blink)
-    if name in ("Camille", "Théo", "Chloé", "Lucas"):
+    if name in ("Camille", "Théo", "Chloé", "Lucas", "Félix", "Zoé"):
         return _new_character(name, mouth, blink)
     raise ValueError(f"Unknown character: {name}")
