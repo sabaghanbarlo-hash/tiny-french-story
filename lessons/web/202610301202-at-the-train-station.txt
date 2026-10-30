@@ -1,0 +1,26 @@
+title: At the Train Station
+cast: Adrien, Marinette
+episode: 10
+scene: station
+
+Adrien: Bonjour ! Un billet pour Lyon, s'il vous plaît. | Hello! One ticket to Lyon, please.
+Marinette: Aller simple ou aller-retour ? | One-way or round-trip?
+Adrien: Aller-retour, s'il vous plaît. | Round-trip, please.
+Marinette: Pour aujourd'hui ? | For today?
+Adrien: Oui. À quelle heure part le train ? | Yes. What time does the train leave?
+Marinette: Il part à quatorze heures. | It leaves at two p.m.
+Adrien: De quel quai ? | From which platform?
+Marinette: Du quai numéro trois. | From platform number three.
+Adrien: Merci ! Je dois me dépêcher ! | Thanks! I have to hurry!
+Marinette: Bon voyage ! | Have a good trip!
+
+vocab: un billet | a ticket
+vocab: pour Lyon | to Lyon
+vocab: aller simple | one-way
+vocab: aller-retour | round-trip
+vocab: aujourd'hui | today
+vocab: à quelle heure...? | at what time...?
+vocab: partir | to leave / depart
+vocab: un quai | a platform
+vocab: se dépêcher | to hurry
+vocab: bon voyage | have a good trip
