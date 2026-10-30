@@ -21,8 +21,8 @@ def test_parse_good_script_keeps_accents():
     assert lines[2]["fr"].startswith("Enchanté") and lines[4]["fr"].endswith("s'il te plaît.")
 
 
-def test_characters_are_adrien_and_marinette():
-    assert set(small.CHARS) == {"Adrien", "Marinette"}
+def test_character_library_contains_all_six_characters():
+    assert set(small.CHARS) == {"Adrien", "Marinette", "Camille", "Théo", "Chloé", "Lucas"}
 
 
 def test_missing_english_reports_line_number():
