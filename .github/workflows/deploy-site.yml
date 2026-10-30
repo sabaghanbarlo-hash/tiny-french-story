@@ -22,6 +22,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Install sprite renderer dependency
+        run: python -m pip install --disable-pip-version-check Pillow
       - name: Prepare site (studio pages and queued videos)
         run: |
           mkdir -p site/videos site/characters
@@ -30,8 +32,11 @@ jobs:
           from pathlib import Path
           from sprites import sprite
           out = Path("site/characters")
-          for name in ("Adrien", "Marinette", "Camille", "Théo", "Chloé", "Lucas"):
-              sprite(name, 0, False).save(out / (name.lower().replace("é", "e") + ".png"))
+          names = ("Adrien", "Marinette", "Camille", "Th\u00e9o", "Chlo\u00e9", "Lucas")
+          filenames = {"Th\u00e9o": "theo.png", "Chlo\u00e9": "chloe.png"}
+          for name in names:
+              filename = filenames.get(name, name.lower() + ".png")
+              sprite(name, 0, False).save(out / filename)
           PY
           cp studio/index.html site/index.html
           cp studio/queue.html site/queue.html
