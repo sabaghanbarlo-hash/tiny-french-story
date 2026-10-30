@@ -175,41 +175,100 @@ def _sprite_base(name, mouth, blink):
     return im.resize((int(560 * CHAR_SCALE), int(760 * CHAR_SCALE)), Image.LANCZOS)
 
 
+
+def _new_character(name, mouth, blink):
+    """Four independently drawn character rigs in the established soft chibi style."""
+    S = 2 * CHAR_SCALE
+    im = Image.new("RGBA", (int(560*S), int(760*S)), (0,0,0,0))
+    d = ImageDraw.Draw(im)
+    def P(v): return tuple(int(a*S) for a in v)
+    def E(b,c,o=None,w=1): d.ellipse(P(b),fill=c,outline=o,width=max(1,int(w*S)))
+    def G(pts,c,o=None,w=1):
+        q=[P(p) for p in pts]; d.polygon(q,fill=c)
+        if o: d.line(q+[q[0]],fill=o,width=max(1,int(w*S)),joint="curve")
+    def L(pts,c,w=4): d.line([P(p) for p in pts],fill=c,width=max(1,int(w*S)),joint="curve")
+    skin=(253,227,203); ink=(92,52,56); blush=(252,177,177); white=(255,250,241)
+    if name=="Camille":
+        hair=(151,70,49); dark=(105,43,39); outfit=(221,174,72); iris=(92,126,91)
+        # short rounded curly bob, cheek-framing ringlets
+        E((104,105,456,500),dark)
+        for x,y,r in [(145,190,58),(205,130,62),(280,112,65),(355,132,62),(420,205,58),(118,330,48),(442,330,48),(155,410,42),(405,410,42)]: E((x-r,y-r,x+r,y+r),hair)
+        G([(95,760),(112,585),(175,505),(225,480),(335,480),(385,505),(448,585),(465,760)],outfit)
+        G([(225,482),(280,555),(335,482),(320,760),(240,760)],(255,221,153))
+        E((145,160,415,475),skin)
+        G([(130,270),(140,165),(205,115),(235,225),(190,270)],hair)
+        G([(235,220),(280,115),(345,130),(330,245)],hair)
+        for x,y in [(148,275),(412,275),(155,365),(405,365)]: E((x-25,y-28,x+25,y+28),hair)
+        for x,y in [(235,390),(255,400),(275,393),(295,400),(315,390)]: E((x-3,y-3,x+3,y+3),(176,105,83))
+        # round spectacles
+        for x in (214,346): d.ellipse(P((x-39,318,x+39,396)),outline=(105,66,52),width=int(6*S))
+        L([(253,356),(307,356)],(105,66,52),5)
+    elif name=="Théo":
+        hair=(76,52,39); dark=(43,34,32); outfit=(54,155,147); iris=(67,139,91)
+        # tall spiky/quiff silhouette, broad jaw
+        E((120,110,440,455),dark)
+        G([(120,265),(132,165),(190,120),(205,62),(250,130),(296,55),(326,130),(390,92),(440,190),(425,285),(350,235),(285,280),(215,235),(160,290)],hair)
+        G([(100,760),(125,570),(190,500),(230,475),(330,475),(370,500),(435,570),(460,760)],outfit)
+        G([(205,495),(280,600),(355,495),(328,760),(232,760)],(37,116,112))
+        L([(250,545),(240,650)],white,5); L([(310,545),(320,650)],white,5)
+        E((142,155,418,470),skin)
+        G([(148,315),(170,420),(228,478),(280,492),(332,478),(390,420),(412,315)],skin)
+        G([(130,255),(145,155),(220,112),(335,110),(430,190),(420,265),(352,220),(286,270),(224,230),(170,285)],hair)
+        # over-ear headphones
+        d.arc(P((100,145,460,475)),190,350,fill=(35,38,43),width=int(13*S))
+        E((80,290,145,390),(43,48,54)); E((415,290,480,390),(43,48,54))
+        E((96,304,132,378),(100,111,118)); E((428,304,464,378),(100,111,118))
+    elif name=="Chloé":
+        hair=(166,116,72); dark=(112,75,49); outfit=(177,157,220); iris=(86,110,142)
+        # long curtain hair with straight tapered lengths
+        E((100,95,460,660),dark)
+        G([(112,205),(145,115),(250,88),(368,110),(445,210),(445,640),(390,700),(375,330),(180,330),(165,700),(110,640)],hair)
+        G([(112,760),(128,575),(190,510),(232,485),(328,485),(370,510),(432,575),(448,760)],outfit)
+        G([(230,485),(280,555),(330,485),(315,760),(245,760)],(220,207,244))
+        G([(250,500),(280,555),(310,500),(280,590)],(255,239,250))
+        E((142,155,418,470),skin)
+        G([(150,330),(165,430),(220,480),(280,492),(340,480),(395,430),(410,330)],skin)
+        G([(112,255),(140,155),(250,105),(370,130),(445,230),(410,285),(350,218),(290,252),(220,220),(160,285)],hair)
+        L([(145,194),(210,130),(330,128),(410,196)],(236,202,164),12)
+        E((374,178,414,218),(238,177,197)); E((388,166,400,230),(255,226,235))
+    else: # Lucas
+        hair=(37,34,39); dark=(22,20,25); outfit=(174,91,61); iris=(62,96,120)
+        # tousled wavy dark hair, squarer jaw, layered casual jacket
+        E((100,100,460,500),dark)
+        G([(112,260),(130,165),(205,112),(330,112),(430,185),(435,260),(390,232),(355,278),(300,235),(250,280),(190,235),(150,285)],hair)
+        for y in (152,184,216): d.arc(P((160,y,410,y+90)),190,345,fill=(100,91,96),width=int(7*S))
+        G([(72,760),(100,580),(170,505),(225,480),(335,480),(390,505),(460,580),(488,760)],outfit)
+        G([(220,480),(280,570),(340,480),(365,760),(195,760)],(245,223,197))
+        G([(245,492),(315,492),(340,670),(280,710),(220,670)],(58,91,103))
+        L([(246,520),(280,680),(318,520)],(87,128,138),8)
+        E((142,155,418,470),skin)
+        G([(142,315),(158,415),(205,470),(240,488),(320,488),(355,470),(402,415),(418,315)],skin)
+        G([(115,260),(130,165),(205,112),(330,112),(430,185),(435,260),(390,232),(355,278),(300,235),(250,280),(190,235),(150,285)],hair)
+        L([(185,292),(225,280)],dark,7)
+        E((407,385,427,405),(221,177,116))
+    # face details and expressive eyes; unique iris colours per character
+    E((120,305,166,390),skin); E((394,305,440,390),skin)
+    for ex in (214,346):
+        d.arc(P((ex-31,300,ex+31,340)),195,345,fill=dark,width=int(7*S))
+        if blink:
+            d.arc(P((ex-28,345,ex+28,390)),200,340,fill=ink,width=int(7*S))
+        else:
+            E((ex-25,326,ex+25,397),(58,35,43))
+            E((ex-17,348,ex+17,392),iris)
+            E((ex-12,332,ex+5,352),(255,255,255))
+            E((ex+5,368,ex+15,380),(255,255,255))
+    E((166,398,210,422),blush); E((350,398,394,422),blush)
+    if mouth==0: d.arc(P((262,410,298,436)),15,165,fill=ink,width=int(5*S))
+    elif mouth==1: E((268,414,292,438),(128,48,62))
+    else: E((260,410,300,446),(128,48,62)); E((268,430,292,444),(238,128,140))
+    return im.resize((int(560*CHAR_SCALE),int(760*CHAR_SCALE)),Image.LANCZOS)
+
+
 @functools.lru_cache(maxsize=128)
 def sprite(name, mouth, blink):
-    """Render one of the six consistent cast designs for Small mode."""
+    """Render the six cast designs; Adrien and Marinette remain unchanged."""
     if name in ("Adrien", "Marinette"):
         return _sprite_base(name, mouth, blink)
-    base_name = "Adrien" if name in ("Théo", "Lucas") else "Marinette"
-    im = _sprite_base(base_name, mouth, blink).copy().convert("RGBA")
-    hair = {"Camille": ((50, 68, 122), (34, 46, 92), (92, 112, 170), (145, 62, 48), (105, 42, 38), (205, 112, 78)),
-            "Théo": ((247, 208, 120), (226, 170, 84), (255, 238, 176), (82, 53, 39), (58, 38, 31), (133, 91, 65)),
-            "Chloé": ((50, 68, 122), (34, 46, 92), (92, 112, 170), (151, 105, 67), (111, 74, 48), (207, 161, 111)),
-            "Lucas": ((247, 208, 120), (226, 170, 84), (255, 238, 176), (35, 31, 34), (20, 18, 21), (83, 73, 75))}[name]
-    old_main, old_dark, old_light, new_main, new_dark, new_light = hair
-    outfit = {"Camille": ((84, 74, 80), (205, 153, 54)), "Théo": ((244, 238, 238), (54, 151, 145)),
-              "Chloé": ((84, 74, 80), (181, 157, 224)), "Lucas": ((244, 238, 238), (177, 91, 57))}[name]
-    px = im.load()
-    for y in range(im.height):
-        for x in range(im.width):
-            r, g, b, a = px[x, y]
-            if a == 0: continue
-            rgb = (r, g, b)
-            if rgb == old_main: px[x, y] = new_main + (a,)
-            elif rgb == old_dark: px[x, y] = new_dark + (a,)
-            elif rgb == old_light: px[x, y] = new_light + (a,)
-            elif rgb == outfit[0]: px[x, y] = outfit[1] + (a,)
-            elif name == "Théo" and rgb == (108, 56, 70): px[x, y] = (75, 142, 105) + (a,)
-    d = ImageDraw.Draw(im)
-    S = 2 * CHAR_SCALE
-    if name == "Camille":
-        for x, y in ((132, 250), (162, 185), (215, 132), (350, 132), (410, 185), (440, 250)):
-            d.ellipse((int((x-15)*S),int((y-15)*S),int((x+15)*S),int((y+15)*S)),fill=new_main+(255,))
-        for ex in (214, 346): d.rounded_rectangle((int((ex-39)*S),int(326*S),int((ex+39)*S),int(390*S)),radius=int(13*S),outline=(105,66,52,255),width=int(5*S))
-        d.line((int(253*S),int(356*S),int(307*S),int(356*S)),fill=(105,66,52,255),width=int(5*S))
-    elif name == "Chloé":
-        d.ellipse((int(382*S),int(168*S),int(426*S),int(212*S)),fill=(181,157,224,255))
-    elif name == "Lucas":
-        for y in (154, 182, 210):
-            d.arc((int(170*S),int(y*S),int(390*S),int((y+54)*S)),190,345,fill=new_light+(255,),width=int(5*S))
-    return im
+    if name in ("Camille", "Théo", "Chloé", "Lucas"):
+        return _new_character(name, mouth, blink)
+    raise ValueError(f"Unknown character: {name}")
