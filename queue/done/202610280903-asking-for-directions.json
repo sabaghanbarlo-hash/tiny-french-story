@@ -4,7 +4,9 @@
  "format": "small",
  "post_at": "2026-10-31T14:00:00Z",
  "queued_at": "2026-10-28T09:04:46Z",
- "status": "pending",
+ "status": "posted",
  "attempts": 0,
- "scheduled_by": "auto"
+ "scheduled_by": "auto",
+ "posted_at": "2026-10-31T14:11:27Z",
+ "media_id": "18133146841774324"
 }
