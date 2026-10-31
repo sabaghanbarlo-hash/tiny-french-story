@@ -108,14 +108,34 @@ def draw(name, P):
         d.rounded_rectangle((cx - 44, y - 410 + lean, cx + 44, y - 388 + lean), radius=11, fill=(247, 208, 120))
         d.ellipse((cx - 17, y - 392 + lean, cx + 17, y - 358 + lean), fill=(247, 208, 120), outline=(160, 111, 43), width=3)
         d.line((cx - 10, y - 376 + lean, cx + 10, y - 376 + lean), fill=(92, 52, 56), width=3); d.ellipse((cx - 4, y - 372 + lean, cx + 4, y - 364 + lean), fill=(92, 52, 56))
+    elif name == "Théo":   # teal hoodie: darker hood ring, white strings, kangaroo pocket
+        hood = (36, 118, 112)
+        d.ellipse((cx - 74, y - 424 + lean, cx + 74, y - 346 + lean), fill=hood); d.ellipse((cx - 30, y - 404 + lean, cx + 30, y - 356 + lean), fill=skin)
+        for sx in (-20, 20):
+            d.line((cx + sx, y - 352 + lean, cx + sx + sx // 10, y - 276 + lean), fill=(255, 250, 241), width=5); d.ellipse((cx + sx + sx // 10 - 6, y - 280 + lean, cx + sx + sx // 10 + 6, y - 266 + lean), fill=(255, 250, 241))
+        d.rounded_rectangle((cx - 52, y - 238, cx + 52, y - 176), radius=18, fill=hood)
+    elif name == "Lucas":   # cream tee, teal scarf
+        scarf, sl = (62, 120, 128), (96, 150, 158)
+        d.polygon([(cx - 60, y - 410 + lean), (cx + 60, y - 410 + lean), (cx + 66, y - 366 + lean), (cx, y - 336 + lean), (cx - 66, y - 366 + lean)], fill=scarf)
+        d.rounded_rectangle((cx + 4, y - 352 + lean, cx + 44, y - 246 + lean), radius=10, fill=scarf)
+        d.line((cx + 10, y - 316 + lean, cx + 40, y - 312 + lean), fill=sl, width=5); d.line((cx + 10, y - 284 + lean, cx + 40, y - 280 + lean), fill=sl, width=5)
     elif male:   # dark tee with simple stripes, V neck
         for k, col in enumerate(((110, 176, 120), (150, 108, 190), (244, 202, 100))):
             yy = y - 290 + k * 28; d.polygon([(cx - pw + 4, yy), (cx + pw - 4, yy), (cx + pw - 5, yy + 18), (cx - pw + 5, yy + 18)], fill=col)
         d.polygon([(cx - 34, y - 408 + lean), (cx + 34, y - 408 + lean), (cx, y - 336 + lean)], fill=skin)
     else:                  # white floral top, scoop neck
         d.polygon([(cx - 28, y - 408 + lean), (cx + 28, y - 408 + lean), (cx, y - 350 + lean)], fill=skin)
+        if name in ("Camille", "Chloé"):   # round white collar
+            col = (255, 252, 245)
+            d.pieslice((cx - 62, y - 420 + lean, cx - 2, y - 340 + lean), 20, 200, fill=col); d.pieslice((cx + 2, y - 420 + lean, cx + 62, y - 340 + lean), -20, 160, fill=col)
+        if name == "Chloé":   # pink neck bow
+            bow = (244, 150, 180)
+            d.polygon([(cx, y - 352 + lean), (cx - 40, y - 374 + lean), (cx - 40, y - 330 + lean)], fill=bow); d.polygon([(cx, y - 352 + lean), (cx + 40, y - 374 + lean), (cx + 40, y - 330 + lean)], fill=bow)
+            d.ellipse((cx - 11, y - 364 + lean, cx + 11, y - 340 + lean), fill=(232, 120, 156))
         for fx, fy in ((cx - 14, y - 282), (cx + 14, y - 258), (cx - 4, y - 226)):
-            if name == "Zoé": d.ellipse((fx - 11, fy - 11, fx + 11, fy + 11), fill=(38, 38, 48))      # polka dots
+            if name == "Camille": d.ellipse((fx - 9, fy - 9, fx + 9, fy + 9), fill=(176, 124, 44))                       # cardigan buttons
+            elif name == "Chloé": pass
+            elif name == "Zoé": d.ellipse((fx - 11, fy - 11, fx + 11, fy + 11), fill=(38, 38, 48))      # polka dots
             else: d.ellipse((fx - 10, fy - 10, fx + 10, fy + 10), fill=(238, 150, 170)); d.ellipse((fx - 3, fy - 3, fx + 3, fy + 3), fill=(252, 220, 120))
     d.line((cx - pw, y - 408 + lean, cx - pw + 6, y - 162), fill=c["edge"], width=5); d.line((cx + pw, y - 408 + lean, cx + pw - 6, y - 162), fill=c["edge"], width=5)
     d.line((cx - 90, y - 396 + lean, cx + 96, y - 190), fill=c["strap"], width=16)

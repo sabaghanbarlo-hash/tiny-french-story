@@ -71,57 +71,98 @@ class _Canvas:
 
 @functools.lru_cache(None)
 def _static(name):
-    """Hair, ears, face and fringe: everything that does not move."""
+    """Hair, ears, face and fringe: everything that does not move. Every character has their own hairstyle."""
     cv = _Canvas(); h = HAIR[name]; g = h["main"]
+    mx = (lambda pts: [(560 - x, y) for x, y in pts]) if name == "Théo" else (lambda pts: pts)     # Théo's fringe sweeps the other way
+    def mlock(root, ctrl, tip, wd, n=14): return mx(_lock(root, ctrl, tip, wd, n))
+    def mbez(a, b, c, n=10): return mx(_bez(a, b, c, n))
     if name in ("Adrien", "Théo", "Lucas", "Félix"):
-        def back(dd):
-            cv.ell((112, 112, 448, 440), g, dd)
-            for pts in (_lock((150, 250), (100, 300), (74, 372), 70), _lock((410, 250), (462, 290), (486, 352), 64), _lock((262, 124), (288, 76), (338, 58), 54)):
-                cv.poly(pts, g, dd)
+        if name == "Lucas":                       # soft short curtain cut with a little tuft
+            def back(dd):
+                cv.ell((112, 106, 448, 442), g, dd)
+                for pts in (_lock((130, 250), (112, 320), (140, 392), 70), _lock((430, 250), (448, 320), (420, 392), 70), _lock((272, 124), (288, 74), (338, 60), 52)): cv.poly(pts, g, dd)
+        else:
+            def back(dd):
+                cv.ell((112, 112, 448, 440), g, dd)
+                for pts in (mlock((150, 250), (100, 300), (74, 372), 70), mlock((410, 250), (462, 290), (486, 352), 64), mlock((262, 124), (288, 76), (338, 58), 54)): cv.poly(pts, g, dd)
         cv.layer(back, g, 4)
         cv.ell((130, 316, 180, 396), SKIN); cv.ell((136, 154, 424, 462), SKIN)
         if name in MASK_COLOR: cv.poly(MASK, MASK_COLOR[name])      # Félix's eye mask sits under the fringe
-        def front(dd):
-            cv.poly([(118, 262), (124, 190), (196, 126), (330, 116), (432, 184), (442, 262), (430, 226), (300, 214), (180, 226)], g, dd)
-            for root, ctrl, tip, wd in (((400, 150), (420, 215), (392, 262), 66), ((340, 140), (330, 225), (296, 276), 70), ((276, 132), (240, 215), (206, 282), 76),
-                                        ((206, 140), (166, 220), (150, 310), 74), ((140, 190), (118, 240), (124, 300), 50)):
-                cv.poly(_lock(root, ctrl, tip, wd), g, dd)
-        cv.layer(front, g, 2)
-        for root, ctrl, tip in (((390, 150), (360, 200), (330, 232)), ((300, 140), (250, 190), (214, 236)), ((236, 132), (196, 180), (168, 232)), ((330, 120), (400, 150), (428, 214))):
-            cv.line(_bez(root, ctrl, tip, 10), h["dark"], 6)
-        for root, ctrl, tip in (((340, 130), (300, 150), (268, 178)), ((240, 126), (212, 146), (196, 176))):
-            cv.line(_bez(root, ctrl, tip, 8), h["light"], 5)
+        if name == "Lucas":
+            def front(dd):
+                cv.poly([(112, 270), (118, 196), (196, 124), (330, 114), (436, 186), (448, 270), (430, 250), (300, 240), (170, 255)], g, dd)
+                for root, ctrl, tip, wd in (((190, 134), (150, 215), (170, 292), 80), ((262, 126), (232, 200), (236, 266), 80), ((330, 126), (352, 200), (330, 268), 80), ((404, 140), (434, 210), (414, 278), 62)):
+                    cv.poly(_lock(root, ctrl, tip, wd), g, dd)
+            cv.layer(front, g, 2)
+            for root, ctrl, tip in (((176, 140), (140, 214), (166, 280)), ((330, 130), (360, 190), (340, 250)), ((406, 150), (432, 214), (414, 268))):
+                cv.line(_bez(root, ctrl, tip, 10), h["light"], 5)
+            cv.ell((410, 384, 428, 404), (232, 188, 110))           # tiny gold earring
+        else:
+            def front(dd):
+                cv.poly(mx([(118, 262), (124, 190), (196, 126), (330, 116), (432, 184), (442, 262), (430, 226), (300, 214), (180, 226)]), g, dd)
+                for root, ctrl, tip, wd in (((400, 150), (420, 215), (392, 262), 66), ((340, 140), (330, 225), (296, 276), 70), ((276, 132), (240, 215), (206, 282), 76),
+                                            ((206, 140), (166, 220), (150, 310), 74), ((140, 190), (118, 240), (124, 300), 50)):
+                    cv.poly(mlock(root, ctrl, tip, wd), g, dd)
+            cv.layer(front, g, 2)
+            for root, ctrl, tip in (((390, 150), (360, 200), (330, 232)), ((300, 140), (250, 190), (214, 236)), ((236, 132), (196, 180), (168, 232)), ((330, 120), (400, 150), (428, 214))):
+                cv.line(mbez(root, ctrl, tip), h["dark"], 6)
+            for root, ctrl, tip in (((340, 130), (300, 150), (268, 178)), ((240, 126), (212, 146), (196, 176))):
+                cv.line(mbez(root, ctrl, tip, 8), h["light"], 5)
         if name == "Félix":                                              # black cat ears with charcoal inner ears
-            ink = (12, 12, 16)
-            for outer, inner in (([(132, 190), (150, 62), (250, 174), (268, 204), (176, 214)], [(162, 176), (170, 94), (226, 174)]),
-                                 ([(332, 204), (350, 174), (444, 58), (456, 190), (408, 218)], [(372, 176), (438, 92), (432, 184)])):
-                cv.poly(outer, (22, 21, 27)); cv.line(outer + [outer[0]], ink, 3)
-                cv.poly(inner, (75, 72, 82))
+            def ears(dd):
+                cv.poly([(132, 190), (150, 62), (250, 174), (268, 204), (176, 214)], (22, 21, 27), dd); cv.poly([(332, 204), (350, 174), (444, 58), (456, 190), (408, 218)], (22, 21, 27), dd)
+            cv.layer(ears, (22, 21, 27), 5)
+            def inner(dd):
+                cv.poly([(164, 178), (172, 100), (228, 174)], (75, 72, 82), dd); cv.poly([(372, 178), (436, 100), (430, 184)], (75, 72, 82), dd)
+            cv.layer(inner, (75, 72, 82), 3)
+        if name == "Théo":                                               # soft over-ear headphones
+            cv.d.arc(cv.P(104, 132, 456, 470), 196, 344, fill=(48, 52, 60), width=int(14 * S))
+            for c0 in (112, 448):
+                cv.ell((c0 - 36, 288, c0 + 36, 392), (48, 52, 60)); cv.ell((c0 - 22, 304, c0 + 22, 376), (112, 124, 132)); cv.ell((c0 - 10, 322, c0 + 10, 358), (170, 184, 190))
     else:
+        pig = name in ("Marinette", "Zoé")
         def back(dd):
             cv.ell((106, 106, 454, 440), g, dd)
-            cv.poly(_lock((130, 250), (112, 360), (140, 470), 80), g, dd); cv.poly(_lock((430, 250), (448, 360), (420, 470), 80), g, dd)
-        cv.layer(back, g, 5)
+            if name == "Camille":                 # soft bob that curls under
+                cv.poly(_lock((136, 250), (100, 360), (158, 452), 92), g, dd); cv.poly(_lock((424, 250), (460, 360), (402, 452), 92), g, dd)
+                cv.ell((112, 410, 176, 486), g, dd); cv.ell((384, 410, 448, 486), g, dd)
+            elif name == "Chloé":                 # long hair falling past the shoulders
+                cv.poly(_lock((128, 250), (104, 430), (136, 590), 104), g, dd); cv.poly(_lock((432, 250), (456, 430), (424, 590), 104), g, dd)
+            else:
+                cv.poly(_lock((130, 250), (112, 360), (140, 470), 80), g, dd); cv.poly(_lock((430, 250), (448, 360), (420, 470), 80), g, dd)
+        cv.layer(back, g, 6 if name != "Marinette" else 5)
         cv.ell((136, 154, 424, 462), SKIN)
         if name in MASK_COLOR: cv.poly(MASK, MASK_COLOR[name])      # Zoé's red mask
+        locks_ = (((180, 136), (158, 226), (226, 294), 82), ((262, 126), (250, 212), (316, 280), 84), ((336, 128), (374, 196), (400, 252), 76), ((408, 142), (440, 214), (432, 284), 58)) if name == "Chloé" else \
+                 (((178, 134), (140, 240), (180, 346), 84), ((262, 126), (220, 210), (222, 300), 84), ((330, 126), (372, 200), (338, 292), 84), ((404, 140), (434, 220), (404, 300), 60))
         def front(dd):
             cv.poly([(112, 270), (118, 196), (196, 124), (330, 114), (436, 186), (448, 270), (430, 250), (300, 240), (170, 255)], g, dd)
-            for root, ctrl, tip, wd in (((178, 134), (140, 240), (180, 346), 84), ((262, 126), (220, 210), (222, 300), 84),
-                                        ((330, 126), (372, 200), (338, 292), 84), ((404, 140), (434, 220), (404, 300), 60)):
-                cv.poly(_lock(root, ctrl, tip, wd), g, dd)
+            for root, ctrl, tip, wd in locks_: cv.poly(_lock(root, ctrl, tip, wd), g, dd)
         cv.layer(front, g, 2)
-        def tails(dd):
-            cv.ell((80, 470, 206, 650), g, dd); cv.ell((354, 470, 480, 650), g, dd)
-            cv.poly(_lock((160, 440), (150, 470), (136, 520), 54), g, dd); cv.poly(_lock((400, 440), (410, 470), (424, 520), 54), g, dd)
-        cv.layer(tails, g, 6)
-        cv.ell((146, 456, 170, 486), h["tie"]); cv.ell((390, 456, 414, 486), h["tie"])
-        if name == "Zoé":                                                # red bows at the pigtail roots
-            for bow in ([(151, 466), (112, 444), (120, 490), (151, 480)], [(165, 466), (202, 444), (194, 490), (165, 480)],
-                        [(395, 466), (358, 444), (366, 490), (395, 480)], [(409, 466), (448, 444), (440, 490), (409, 480)]):
-                cv.poly(bow, h["tie"]); cv.line(bow + [bow[0]], (150, 28, 39), 2)
+        if pig:
+            def tails(dd):
+                cv.ell((80, 470, 206, 650), g, dd); cv.ell((354, 470, 480, 650), g, dd)
+                cv.poly(_lock((160, 440), (150, 470), (136, 520), 54), g, dd); cv.poly(_lock((400, 440), (410, 470), (424, 520), 54), g, dd)
+            cv.layer(tails, g, 6)
+            cv.ell((146, 456, 170, 486), h["tie"]); cv.ell((390, 456, 414, 486), h["tie"])
+            if name == "Zoé":                                            # red bows at the pigtail roots
+                for bow in ([(151, 466), (112, 444), (120, 490), (151, 480)], [(165, 466), (202, 444), (194, 490), (165, 480)],
+                            [(395, 466), (358, 444), (366, 490), (395, 480)], [(409, 466), (448, 444), (440, 490), (409, 480)]):
+                    cv.poly(bow, h["tie"]); cv.line(bow + [bow[0]], (150, 28, 39), 2)
         for root, ctrl, tip in (((170, 140), (130, 220), (168, 320)), ((260, 130), (222, 180), (232, 250)), ((406, 150), (432, 220), (404, 290))):
             cv.line(_bez(root, ctrl, tip, 10), h["light"], 6)
-        cv.line(_bez((110, 520), (100, 570), (130, 620), 10), h["light"], 5); cv.line(_bez((450, 520), (460, 570), (430, 620), 10), h["light"], 5)
+        if pig:
+            cv.line(_bez((110, 520), (100, 570), (130, 620), 10), h["light"], 5); cv.line(_bez((450, 520), (460, 570), (430, 620), 10), h["light"], 5)
+        if name == "Chloé":
+            cv.layer(lambda dd: (cv.poly(_lock((146, 300), (116, 440), (146, 570), 66), g, dd), cv.poly(_lock((414, 300), (444, 440), (414, 570), 66), g, dd)), g, 5)
+            cv.line(_bez((132, 410), (120, 480), (140, 550), 10), h["light"], 5); cv.line(_bez((428, 410), (440, 480), (420, 550), 10), h["light"], 5)
+            bow = (244, 150, 180)                                        # bow hair clip
+            cv.poly([(176, 196), (146, 176), (146, 216)], bow); cv.poly([(176, 196), (206, 176), (206, 216)], bow); cv.ell((167, 187, 185, 205), (232, 120, 156))
+        if name == "Camille":                                            # little flower clip
+            for k in range(5):
+                a = k * 1.2566 - 1.57; ex, ey = 404 + 17 * math.cos(a), 206 + 17 * math.sin(a)
+                cv.ell((ex - 11, ey - 11, ex + 11, ey + 11), (255, 190, 206))
+            cv.ell((396, 198, 412, 214), (255, 232, 140))
     return cv.im
 
 
@@ -172,7 +213,7 @@ def _head(name, expr, mq, blink, laugh):
     if name == "Camille":
         # Thin rounded glasses, positioned around both eyes.
         for ex in (214, 346):
-            d.rounded_rectangle(P(ex - 39, 326, ex + 39, 390), radius=int(13 * S), outline=(105, 66, 52), width=int(5 * S))
+            d.ellipse(P(ex - 38, 322, ex + 38, 394), outline=(120, 70, 52), width=int(5 * S))
         d.line(P(253, 356, 307, 356), fill=(105, 66, 52), width=int(5 * S))
     if laugh:
         d.pieslice(P(244, 402, 316, 464), 0, 180, fill=MOUTH); d.pieslice(P(262, 434, 298, 464), 0, 180, fill=TONGUE)
