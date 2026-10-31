@@ -9,12 +9,12 @@ INK = (92, 52, 56)
 CHARS = {
     "Adrien": dict(voice="fr-FR-HenriNeural", accent=(95, 158, 134), x=16),
     "Marinette": dict(voice="fr-FR-DeniseNeural", accent=(228, 140, 152), x=560),
-    "Camille": dict(voice="fr-FR-DeniseNeural", accent=(205, 153, 54), x=16),
-    "Théo": dict(voice="fr-FR-HenriNeural", accent=(54, 151, 145), x=560),
+    "Alia": dict(voice="fr-FR-DeniseNeural", accent=(205, 153, 54), x=16),
+    "Nino": dict(voice="fr-FR-HenriNeural", accent=(54, 151, 145), x=560),
     "Chloé": dict(voice="fr-FR-DeniseNeural", accent=(181, 157, 224), x=16),
     "Lucas": dict(voice="fr-FR-HenriNeural", accent=(177, 91, 57), x=560),
-    "Félix": dict(voice="fr-FR-HenriNeural", accent=(247, 190, 82), x=16),
-    "Zoé": dict(voice="fr-FR-DeniseNeural", accent=(224, 45, 52), x=560),
+    "Cat": dict(voice="fr-FR-HenriNeural", accent=(247, 190, 82), x=16),
+    "Bugaboo": dict(voice="fr-FR-DeniseNeural", accent=(224, 45, 52), x=560),
 }
 
 
@@ -229,7 +229,7 @@ def _new_character(name, mouth, blink):
     after = []
     skin_neck = lambda: (ell((246, 446, 314, 520), SKIN), poly([(244, 462), (316, 462), (306, 500), (254, 500)], SKIN))
 
-    if name == "Camille":
+    if name == "Alia":
         hair, hair_d, hair_l = (151, 70, 49), (112, 46, 38), (208, 120, 86)
         mus, mus_d, cream = (226, 178, 74), (176, 124, 44), (255, 240, 208)
         # soft bob that curls under at the ends
@@ -262,7 +262,7 @@ def _new_character(name, mouth, blink):
                 d.arc(P(ex - 30, 330, ex - 8, 352), 200, 260, fill=(255, 255, 255), width=int(3 * S))
         after.append(glasses)
 
-    elif name == "Théo":
+    elif name == "Nino":
         hair, hair_d, hair_l = (86, 56, 40), (54, 36, 30), (140, 96, 68)
         teal, teal_d = (58, 160, 150), (36, 118, 112)
         def back(dd):
@@ -334,7 +334,7 @@ def _new_character(name, mouth, blink):
         brows(hair_d, 300)
         ell((410, 384, 428, 404), (232, 188, 110))                                          # tiny gold earring
 
-    elif name == "Félix":
+    elif name == "Cat":
         gold, gold_d, gold_l = (247, 192, 84), (222, 152, 56), (255, 224, 140)
         blk, blk_l = (36, 32, 40), (74, 68, 82)
         def back(dd):
@@ -355,7 +355,7 @@ def _new_character(name, mouth, blink):
         put(layer(lambda dd: (poly([(132, 190), (150, 62), (250, 174), (268, 204), (176, 214)], blk, dd), poly([(332, 204), (350, 174), (444, 58), (456, 190), (408, 218)], blk, dd)), blk, 5))
         put(layer(lambda dd: (poly([(164, 178), (172, 100), (228, 174)], blk_l, dd), poly([(372, 178), (436, 100), (430, 184)], blk_l, dd)), blk_l, 3))
 
-    else:  # Zoé
+    else:  # Bugaboo
         navy, navy_d, navy_l = (48, 62, 114), (34, 44, 92), (92, 108, 168)
         red, red_d, dot = (222, 52, 58), (150, 28, 39), (38, 36, 48)
         def back(dd):
@@ -392,7 +392,7 @@ def sprite(name, mouth, blink):
     """Render the eight cast designs; Adrien and Marinette remain unchanged."""
     if name in ("Adrien", "Marinette"):
         return _sprite_base(name, mouth, blink)
-    if name in ("Camille", "Théo", "Chloé", "Lucas", "Félix", "Zoé"):
+    if name in ("Alia", "Nino", "Chloé", "Lucas", "Cat", "Bugaboo"):
         return _new_character(name, mouth, blink)
     # A script may introduce its own characters. Reuse a matching base silhouette
     # while the script-specific profile supplies its voice and accent colour.

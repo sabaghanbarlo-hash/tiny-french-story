@@ -101,14 +101,14 @@ def draw(name, P):
     _arm(d, sx0, sy0, bx, by, jacket, skin, -1)
     d.rounded_rectangle((cx - 108, y - 408 + lean, cx + 108, y - 160), radius=92, fill=jacket, corners=(True, True, False, False))
     d.rounded_rectangle((cx - 108, y - 300, cx + 108, y - 160), radius=34, fill=jacket, corners=(False, False, True, True))
-    male = name in ("Adrien", "Théo", "Lucas", "Félix")
+    male = name in ("Adrien", "Nino", "Lucas", "Cat")
     pw = 64 if male else 54
     d.polygon([(cx - pw, y - 408 + lean), (cx + pw, y - 408 + lean), (cx + pw - 6, y - 162), (cx - pw + 6, y - 162)], fill=top)
-    if name == "Félix":   # plain black cat suit with a gold bell collar
+    if name == "Cat":   # plain black cat suit with a gold bell collar
         d.rounded_rectangle((cx - 44, y - 410 + lean, cx + 44, y - 388 + lean), radius=11, fill=(247, 208, 120))
         d.ellipse((cx - 17, y - 392 + lean, cx + 17, y - 358 + lean), fill=(247, 208, 120), outline=(160, 111, 43), width=3)
         d.line((cx - 10, y - 376 + lean, cx + 10, y - 376 + lean), fill=(92, 52, 56), width=3); d.ellipse((cx - 4, y - 372 + lean, cx + 4, y - 364 + lean), fill=(92, 52, 56))
-    elif name == "Théo":   # teal hoodie: darker hood ring, white strings, kangaroo pocket
+    elif name == "Nino":   # teal hoodie: darker hood ring, white strings, kangaroo pocket
         hood = (36, 118, 112)
         d.ellipse((cx - 74, y - 424 + lean, cx + 74, y - 346 + lean), fill=hood); d.ellipse((cx - 30, y - 404 + lean, cx + 30, y - 356 + lean), fill=skin)
         for sx in (-20, 20):
@@ -125,7 +125,7 @@ def draw(name, P):
         d.polygon([(cx - 34, y - 408 + lean), (cx + 34, y - 408 + lean), (cx, y - 336 + lean)], fill=skin)
     else:                  # white floral top, scoop neck
         d.polygon([(cx - 28, y - 408 + lean), (cx + 28, y - 408 + lean), (cx, y - 350 + lean)], fill=skin)
-        if name in ("Camille", "Chloé"):   # round white collar
+        if name in ("Alia", "Chloé"):   # round white collar
             col = (255, 252, 245)
             d.pieslice((cx - 62, y - 420 + lean, cx - 2, y - 340 + lean), 20, 200, fill=col); d.pieslice((cx + 2, y - 420 + lean, cx + 62, y - 340 + lean), -20, 160, fill=col)
         if name == "Chloé":   # pink neck bow
@@ -133,13 +133,13 @@ def draw(name, P):
             d.polygon([(cx, y - 352 + lean), (cx - 40, y - 374 + lean), (cx - 40, y - 330 + lean)], fill=bow); d.polygon([(cx, y - 352 + lean), (cx + 40, y - 374 + lean), (cx + 40, y - 330 + lean)], fill=bow)
             d.ellipse((cx - 11, y - 364 + lean, cx + 11, y - 340 + lean), fill=(232, 120, 156))
         for fx, fy in ((cx - 14, y - 282), (cx + 14, y - 258), (cx - 4, y - 226)):
-            if name == "Camille": d.ellipse((fx - 9, fy - 9, fx + 9, fy + 9), fill=(176, 124, 44))                       # cardigan buttons
+            if name == "Alia": d.ellipse((fx - 9, fy - 9, fx + 9, fy + 9), fill=(176, 124, 44))                       # cardigan buttons
             elif name == "Chloé": pass
-            elif name == "Zoé": d.ellipse((fx - 11, fy - 11, fx + 11, fy + 11), fill=(38, 38, 48))      # polka dots
+            elif name == "Bugaboo": d.ellipse((fx - 11, fy - 11, fx + 11, fy + 11), fill=(38, 38, 48))      # polka dots
             else: d.ellipse((fx - 10, fy - 10, fx + 10, fy + 10), fill=(238, 150, 170)); d.ellipse((fx - 3, fy - 3, fx + 3, fy + 3), fill=(252, 220, 120))
     d.line((cx - pw, y - 408 + lean, cx - pw + 6, y - 162), fill=c["edge"], width=5); d.line((cx + pw, y - 408 + lean, cx + pw - 6, y - 162), fill=c["edge"], width=5)
     d.line((cx - 90, y - 396 + lean, cx + 96, y - 190), fill=c["strap"], width=16)
-    if name in ("Marinette", "Camille", "Chloé", "Zoé"):
+    if name in ("Marinette", "Alia", "Chloé", "Bugaboo"):
         d.rounded_rectangle((cx + 62, y - 250, cx + 160, y - 160), radius=14, fill=c["bag"], outline=c["strap"], width=4); d.polygon([(cx + 112, y - 222), (cx + 120, y - 206), (cx + 138, y - 204), (cx + 124, y - 194), (cx + 128, y - 178), (cx + 112, y - 188), (cx + 96, y - 178), (cx + 100, y - 194), (cx + 86, y - 204), (cx + 104, y - 206)], fill=(255, 214, 120))
     else:
         d.rounded_rectangle((cx + 62, y - 262, cx + 156, y - 170), radius=12, fill=c["bag"], outline=c["strap"], width=4); d.rectangle((cx + 62, y - 262, cx + 156, y - 236), fill=c["strap"])

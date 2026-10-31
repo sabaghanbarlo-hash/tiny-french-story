@@ -22,7 +22,7 @@ def test_parse_good_script_keeps_accents():
 
 
 def test_character_library_contains_all_eight_characters():
-    expected = {"Adrien", "Marinette", "Camille", "Théo", "Chloé", "Lucas", "Félix", "Zoé"}
+    expected = {"Adrien", "Marinette", "Alia", "Nino", "Chloé", "Lucas", "Cat", "Bugaboo"}
     assert set(small.CHARS) == expected
     assert all(entry["voice"].startswith("fr-FR-") for entry in small.CHARS.values())
     assert all(len(entry["accent"]) == 3 for entry in small.CHARS.values())

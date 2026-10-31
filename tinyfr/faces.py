@@ -17,14 +17,14 @@ MOUTH = (128, 48, 62)
 TONGUE = (238, 128, 140)
 HAIR = {"Adrien": dict(main=(247, 208, 120), dark=(226, 170, 84), light=(255, 238, 176), brow=(206, 154, 88)),
         "Marinette": dict(main=(50, 68, 122), dark=(34, 46, 92), light=(92, 112, 170), brow=(34, 46, 92), tie=(206, 54, 64)),
-        "Camille": dict(main=(145, 62, 48), dark=(105, 42, 38), light=(205, 112, 78), brow=(105, 42, 38), tie=(205, 153, 54)),
-        "Théo": dict(main=(82, 53, 39), dark=(58, 38, 31), light=(133, 91, 65), brow=(58, 38, 31), iris=(75, 142, 105)),
+        "Alia": dict(main=(145, 62, 48), dark=(105, 42, 38), light=(205, 112, 78), brow=(105, 42, 38), tie=(205, 153, 54)),
+        "Nino": dict(main=(82, 53, 39), dark=(58, 38, 31), light=(133, 91, 65), brow=(58, 38, 31), iris=(75, 142, 105)),
         "Chloé": dict(main=(151, 105, 67), dark=(111, 74, 48), light=(207, 161, 111), brow=(111, 74, 48), tie=(181, 157, 224)),
         "Lucas": dict(main=(35, 31, 34), dark=(20, 18, 21), light=(83, 73, 75), brow=(20, 18, 21)),
-        "Félix": dict(main=(247, 190, 82), dark=(220, 151, 55), light=(255, 218, 135), brow=(220, 151, 55), iris=(112, 132, 82)),
-        "Zoé": dict(main=(48, 61, 112), dark=(34, 44, 92), light=(76, 91, 145), brow=(34, 44, 92), tie=(225, 45, 52), iris=(105, 75, 78))}
+        "Cat": dict(main=(247, 190, 82), dark=(220, 151, 55), light=(255, 218, 135), brow=(220, 151, 55), iris=(112, 132, 82)),
+        "Bugaboo": dict(main=(48, 61, 112), dark=(34, 44, 92), light=(76, 91, 145), brow=(34, 44, 92), tie=(225, 45, 52), iris=(105, 75, 78))}
 MASK = [(145, 325), (170, 290), (220, 300), (280, 325), (340, 300), (390, 290), (415, 325), (390, 385), (345, 390), (280, 370), (215, 390), (170, 385)]
-MASK_COLOR = {"Félix": (35, 31, 39), "Zoé": (224, 45, 52)}
+MASK_COLOR = {"Cat": (35, 31, 39), "Bugaboo": (224, 45, 52)}
 BLUSH_EXPR = ("embarrassed", "shy", "happy", "excited")
 EXPRESSIONS = ("happy", "excited", "surprised", "sad", "worried", "confused", "embarrassed", "shy")
 
@@ -73,10 +73,10 @@ class _Canvas:
 def _static(name):
     """Hair, ears, face and fringe: everything that does not move. Every character has their own hairstyle."""
     cv = _Canvas(); h = HAIR[name]; g = h["main"]
-    mx = (lambda pts: [(560 - x, y) for x, y in pts]) if name == "Théo" else (lambda pts: pts)     # Théo's fringe sweeps the other way
+    mx = (lambda pts: [(560 - x, y) for x, y in pts]) if name == "Nino" else (lambda pts: pts)     # Nino's fringe sweeps the other way
     def mlock(root, ctrl, tip, wd, n=14): return mx(_lock(root, ctrl, tip, wd, n))
     def mbez(a, b, c, n=10): return mx(_bez(a, b, c, n))
-    if name in ("Adrien", "Théo", "Lucas", "Félix"):
+    if name in ("Adrien", "Nino", "Lucas", "Cat"):
         if name == "Lucas":                       # soft short curtain cut with a little tuft
             def back(dd):
                 cv.ell((112, 106, 448, 442), g, dd)
@@ -87,7 +87,7 @@ def _static(name):
                 for pts in (mlock((150, 250), (100, 300), (74, 372), 70), mlock((410, 250), (462, 290), (486, 352), 64), mlock((262, 124), (288, 76), (338, 58), 54)): cv.poly(pts, g, dd)
         cv.layer(back, g, 4)
         cv.ell((130, 316, 180, 396), SKIN); cv.ell((136, 154, 424, 462), SKIN)
-        if name in MASK_COLOR: cv.poly(MASK, MASK_COLOR[name])      # Félix's eye mask sits under the fringe
+        if name in MASK_COLOR: cv.poly(MASK, MASK_COLOR[name])      # Cat's eye mask sits under the fringe
         if name == "Lucas":
             def front(dd):
                 cv.poly([(112, 270), (118, 196), (196, 124), (330, 114), (436, 186), (448, 270), (430, 250), (300, 240), (170, 255)], g, dd)
@@ -108,22 +108,22 @@ def _static(name):
                 cv.line(mbez(root, ctrl, tip), h["dark"], 6)
             for root, ctrl, tip in (((340, 130), (300, 150), (268, 178)), ((240, 126), (212, 146), (196, 176))):
                 cv.line(mbez(root, ctrl, tip, 8), h["light"], 5)
-        if name == "Félix":                                              # black cat ears with charcoal inner ears
+        if name == "Cat":                                              # black cat ears with charcoal inner ears
             def ears(dd):
                 cv.poly([(132, 190), (150, 62), (250, 174), (268, 204), (176, 214)], (22, 21, 27), dd); cv.poly([(332, 204), (350, 174), (444, 58), (456, 190), (408, 218)], (22, 21, 27), dd)
             cv.layer(ears, (22, 21, 27), 5)
             def inner(dd):
                 cv.poly([(164, 178), (172, 100), (228, 174)], (75, 72, 82), dd); cv.poly([(372, 178), (436, 100), (430, 184)], (75, 72, 82), dd)
             cv.layer(inner, (75, 72, 82), 3)
-        if name == "Théo":                                               # soft over-ear headphones
+        if name == "Nino":                                               # soft over-ear headphones
             cv.d.arc(cv.P(104, 132, 456, 470), 196, 344, fill=(48, 52, 60), width=int(14 * S))
             for c0 in (112, 448):
                 cv.ell((c0 - 36, 288, c0 + 36, 392), (48, 52, 60)); cv.ell((c0 - 22, 304, c0 + 22, 376), (112, 124, 132)); cv.ell((c0 - 10, 322, c0 + 10, 358), (170, 184, 190))
     else:
-        pig = name in ("Marinette", "Zoé")
+        pig = name in ("Marinette", "Bugaboo")
         def back(dd):
             cv.ell((106, 106, 454, 440), g, dd)
-            if name == "Camille":                 # soft bob that curls under
+            if name == "Alia":                 # soft bob that curls under
                 cv.poly(_lock((136, 250), (100, 360), (158, 452), 92), g, dd); cv.poly(_lock((424, 250), (460, 360), (402, 452), 92), g, dd)
                 cv.ell((112, 410, 176, 486), g, dd); cv.ell((384, 410, 448, 486), g, dd)
             elif name == "Chloé":                 # long hair falling past the shoulders
@@ -132,7 +132,7 @@ def _static(name):
                 cv.poly(_lock((130, 250), (112, 360), (140, 470), 80), g, dd); cv.poly(_lock((430, 250), (448, 360), (420, 470), 80), g, dd)
         cv.layer(back, g, 6 if name != "Marinette" else 5)
         cv.ell((136, 154, 424, 462), SKIN)
-        if name in MASK_COLOR: cv.poly(MASK, MASK_COLOR[name])      # Zoé's red mask
+        if name in MASK_COLOR: cv.poly(MASK, MASK_COLOR[name])      # Bugaboo's red mask
         locks_ = (((180, 136), (158, 226), (226, 294), 82), ((262, 126), (250, 212), (316, 280), 84), ((336, 128), (374, 196), (400, 252), 76), ((408, 142), (440, 214), (432, 284), 58)) if name == "Chloé" else \
                  (((178, 134), (140, 240), (180, 346), 84), ((262, 126), (220, 210), (222, 300), 84), ((330, 126), (372, 200), (338, 292), 84), ((404, 140), (434, 220), (404, 300), 60))
         def front(dd):
@@ -145,7 +145,7 @@ def _static(name):
                 cv.poly(_lock((160, 440), (150, 470), (136, 520), 54), g, dd); cv.poly(_lock((400, 440), (410, 470), (424, 520), 54), g, dd)
             cv.layer(tails, g, 6)
             cv.ell((146, 456, 170, 486), h["tie"]); cv.ell((390, 456, 414, 486), h["tie"])
-            if name == "Zoé":                                            # red bows at the pigtail roots
+            if name == "Bugaboo":                                            # red bows at the pigtail roots
                 for bow in ([(151, 466), (112, 444), (120, 490), (151, 480)], [(165, 466), (202, 444), (194, 490), (165, 480)],
                             [(395, 466), (358, 444), (366, 490), (395, 480)], [(409, 466), (448, 444), (440, 490), (409, 480)]):
                     cv.poly(bow, h["tie"]); cv.line(bow + [bow[0]], (150, 28, 39), 2)
@@ -158,7 +158,7 @@ def _static(name):
             cv.line(_bez((132, 410), (120, 480), (140, 550), 10), h["light"], 5); cv.line(_bez((428, 410), (440, 480), (420, 550), 10), h["light"], 5)
             bow = (244, 150, 180)                                        # bow hair clip
             cv.poly([(176, 196), (146, 176), (146, 216)], bow); cv.poly([(176, 196), (206, 176), (206, 216)], bow); cv.ell((167, 187, 185, 205), (232, 120, 156))
-        if name == "Camille":                                            # little flower clip
+        if name == "Alia":                                            # little flower clip
             for k in range(5):
                 a = k * 1.2566 - 1.57; ex, ey = 404 + 17 * math.cos(a), 206 + 17 * math.sin(a)
                 cv.ell((ex - 11, ey - 11, ex + 11, ey + 11), (255, 190, 206))
@@ -210,7 +210,7 @@ def _head(name, expr, mq, blink, laugh):
         _brow(cv, name, 214, -1, 14, 0, 2); _brow(cv, name, 346, 1, -4, 0, 0)
     else:
         _brow(cv, name, 214, -1, lift, inner, arch); _brow(cv, name, 346, 1, lift, inner, arch)
-    if name == "Camille":
+    if name == "Alia":
         # Thin rounded glasses, positioned around both eyes.
         for ex in (214, 346):
             d.ellipse(P(ex - 38, 322, ex + 38, 394), outline=(120, 70, 52), width=int(5 * S))

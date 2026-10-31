@@ -2,7 +2,7 @@
 
 *French, one tiny story at a time. — Small steps. Big dreams.*
 
-Paste a script, choose any two characters in Studio, and get an animated French-learning **Reel** (9:16, 1080x1920). The original Marinette and Adrien remain available, alongside Camille, Théo, Chloé, and Lucas.
+Paste a script, choose any two characters in Studio, and get an animated French-learning **Reel** (9:16, 1080x1920). The original Marinette and Adrien remain available, alongside Alia, Nino, Chloé, and Lucas.
 
 ## Status (stage 3 of 5 done)
 | Works now (tested) | Not built yet |
@@ -21,7 +21,7 @@ Paste a script, choose any two characters in Studio, and get an animated French-
 Samples (real French voices): [docs/samples/02-journee-a-paris.mp4](docs/samples/02-journee-a-paris.mp4) (4 scenes), still frames beside it.
 
 ## Character cast
-Studio lets you select two characters for each Reel. The script's first and second dialogue speakers are mapped to that pair automatically, and a `cast:` header records the selection. You can also write it directly, for example `cast: Camille, Théo`. Available designs: Camille (auburn curls, glasses, mustard), Théo (dark hair, green eyes, teal), Chloé (long light-brown hair, lavender clip and outfit), and Lucas (black wavy hair, warm outfit), plus the unchanged Marinette and Adrien designs.
+Studio lets you select two characters for each Reel. The script's first and second dialogue speakers are mapped to that pair automatically, and a `cast:` header records the selection. You can also write it directly, for example `cast: Alia, Nino`. Available designs: Alia (auburn curls, glasses, mustard), Nino (dark hair, green eyes, teal), Chloé (long light-brown hair, lavender clip and outfit), and Lucas (black wavy hair, warm outfit), plus the unchanged Marinette and Adrien designs.
 
 ## Run locally
 ```

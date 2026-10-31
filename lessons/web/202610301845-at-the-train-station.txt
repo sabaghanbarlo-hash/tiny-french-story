@@ -1,18 +1,18 @@
 title: At the Train Station
-cast: Félix, Zoé
+cast: Cat, Bugaboo
 episode: 10
 scene: station
 
-Félix: Bonjour ! Un billet pour Lyon, s'il vous plaît. | Hello! One ticket to Lyon, please.
-Zoé: Aller simple ou aller-retour ? | One-way or round-trip?
-Félix: Aller-retour, s'il vous plaît. | Round-trip, please.
-Zoé: Pour aujourd'hui ? | For today?
-Félix: Oui. À quelle heure part le train ? | Yes. What time does the train leave?
-Zoé: Il part à quatorze heures. | It leaves at two p.m.
-Félix: De quel quai ? | From which platform?
-Zoé: Du quai numéro trois. | From platform number three.
-Félix: Merci ! Je dois me dépêcher ! | Thanks! I have to hurry!
-Zoé: Bon voyage ! | Have a good trip!
+Cat: Bonjour ! Un billet pour Lyon, s'il vous plaît. | Hello! One ticket to Lyon, please.
+Bugaboo: Aller simple ou aller-retour ? | One-way or round-trip?
+Cat: Aller-retour, s'il vous plaît. | Round-trip, please.
+Bugaboo: Pour aujourd'hui ? | For today?
+Cat: Oui. À quelle heure part le train ? | Yes. What time does the train leave?
+Bugaboo: Il part à quatorze heures. | It leaves at two p.m.
+Cat: De quel quai ? | From which platform?
+Bugaboo: Du quai numéro trois. | From platform number three.
+Cat: Merci ! Je dois me dépêcher ! | Thanks! I have to hurry!
+Bugaboo: Bon voyage ! | Have a good trip!
 
 vocab: un billet | a ticket
 vocab: pour Lyon | to Lyon

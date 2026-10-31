@@ -50,12 +50,12 @@ select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;f
 <div class="card">
 <label>Choose your characters</label>
 <p class="hint" style="margin:0 0 12px">Tap a character portrait for each speaker, just like Tiny Japanese. The selected designs will be used in your Reel.</p>
-<div class="cast-pick"><div class="cast-head"><b>Character 1 · First speaker</b><span id="cast1Name">Adrien</span></div><div class="cast-grid" id="cast1Gallery" role="group" aria-label="Choose first character"></div><select id="cast1" class="cast-hidden" aria-label="First character"><option>Adrien</option><option>Marinette</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option><option>Félix</option><option>Zoé</option></select></div>
-<div class="cast-pick"><div class="cast-head"><b>Character 2 · Second speaker</b><span id="cast2Name">Marinette</span></div><div class="cast-grid" id="cast2Gallery" role="group" aria-label="Choose second character"></div><select id="cast2" class="cast-hidden" aria-label="Second character"><option>Marinette</option><option>Adrien</option><option>Camille</option><option>Théo</option><option>Chloé</option><option>Lucas</option><option>Félix</option><option>Zoé</option></select></div>
+<div class="cast-pick"><div class="cast-head"><b>Character 1 · First speaker</b><span id="cast1Name">Adrien</span></div><div class="cast-grid" id="cast1Gallery" role="group" aria-label="Choose first character"></div><select id="cast1" class="cast-hidden" aria-label="First character"><option>Adrien</option><option>Marinette</option><option>Alia</option><option>Nino</option><option>Chloé</option><option>Lucas</option><option>Cat</option><option>Bugaboo</option></select></div>
+<div class="cast-pick"><div class="cast-head"><b>Character 2 · Second speaker</b><span id="cast2Name">Marinette</span></div><div class="cast-grid" id="cast2Gallery" role="group" aria-label="Choose second character"></div><select id="cast2" class="cast-hidden" aria-label="Second character"><option>Marinette</option><option>Adrien</option><option>Alia</option><option>Nino</option><option>Chloé</option><option>Lucas</option><option>Cat</option><option>Bugaboo</option></select></div>
 <p class="hint">Choose two different characters. Studio maps the first and second dialogue speakers to these designs automatically.</p>
 <label for="script">Script</label>
 <textarea id="script" spellcheck="false"></textarea>
-<p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Camille, Théo, Chloé, Lucas, Félix, Zoé. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
+<p class="hint" id="hint">Use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Alia, Nino, Chloé, Lucas, Cat, Bugaboo. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line.</p>
 <label for="caption" style="margin-top:14px">Instagram caption <span style="font-weight:400;color:var(--soft)">(optional – auto-written if empty)</span></label>
 <textarea id="caption" class="small" placeholder="Leave empty for an automatic caption with today's words and hashtags"></textarea>
 <label for="postmode" style="margin-top:14px">When to post to Instagram</label>
@@ -81,7 +81,7 @@ select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;f
 const OWNER="sabaghanbarlo-hash", REPO="tiny-french-story", BRANCH="main", WF="generate.yml";
 const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
 const $=id=>document.getElementById(id);
-const CAST_ART=[{name:"Adrien",id:"adrien",look:"Blond hair · green jacket"},{name:"Marinette",id:"marinette",look:"Blue-black hair · pink outfit"},{name:"Camille",id:"camille",look:"Navy hair · warm gold outfit"},{name:"Théo",id:"theo",look:"Brown hair · teal outfit"},{name:"Chloé",id:"chloe",look:"Blue hair · lavender outfit"},{name:"Lucas",id:"lucas",look:"Warm brown hair · rust outfit"},{name:"Félix",id:"felix",look:"Golden hair · cat ears · black suit"},{name:"Zoé",id:"zoe",look:"Blue pigtails · red spotted outfit"}];
+const CAST_ART=[{name:"Adrien",id:"adrien",look:"Blond hair · green jacket"},{name:"Marinette",id:"marinette",look:"Blue-black hair · pink outfit"},{name:"Alia",id:"alia",look:"Auburn bob · flower clip · glasses"},{name:"Nino",id:"nino",look:"Brown hair · headphones · teal hoodie"},{name:"Chloé",id:"chloe",look:"Long brown hair · bow · lavender sweater"},{name:"Lucas",id:"lucas",look:"Black hair · scarf · rust jacket"},{name:"Cat",id:"cat",look:"Golden hair · cat ears · black suit"},{name:"Bugaboo",id:"bugaboo",look:"Blue pigtails · red spotted suit"}];
 function chooseCast(slot,value){const other=slot==="cast1"?"cast2":"cast1";$(slot).value=value;if($(other).value===value)$(other).value=CAST_ART.find(c=>c.name!==value).name;drawAllCastGalleries()}
 function drawCastGallery(slot){
  const select=$(slot),gallery=$(slot+"Gallery"),name=$(slot+"Name");if(!select||!gallery)return;
@@ -164,7 +164,7 @@ vocab: enchanté / enchantée | nice to meet you
 vocab: s'il te plaît | please
 vocab: merci beaucoup | thank you very much
 `;
-const HINTS={small:'Choose two characters above; they sit in a place and chat. One line per speaker using the two characters selected above, for example <code>Camille: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store, restaurant, market, library, beach, apartment, airport, museum, street (leave scene out and it picks one from your words). Errors show the exact line.',story:"Easiest: write the same plain dialogue as Small (<code>title:</code>, optional <code>scene:</code>, dialogue lines using the selected characters, <code>vocab:</code> lines) and Story directs it for you: it picks the place from what they talk about, walks them to the counter/table/bench, and adds reactions. Or hand-direct it: use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Camille, Théo, Chloé, Lucas. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
+const HINTS={small:'Choose two characters above; they sit in a place and chat. One line per speaker using the two characters selected above, for example <code>Alia: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store, restaurant, market, library, beach, apartment, airport, museum, street (leave scene out and it picks one from your words). Errors show the exact line.',story:"Easiest: write the same plain dialogue as Small (<code>title:</code>, optional <code>scene:</code>, dialogue lines using the selected characters, <code>vocab:</code> lines) and Story directs it for you: it picks the place from what they talk about, walks them to the counter/table/bench, and adds reactions. Or hand-direct it: use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Alia, Nino, Chloé, Lucas. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
 const MODEHINT={small:"Small: two friends sitting and chatting, like Tiny Japanese.",story:"Story: animated scenes. Paste plain dialogue and it directs the scene, or hand-direct with a [story] section."};
 let MODE=get("tfs_mode")==="story"?"story":"small";
 const KEY=m=>"tfs_script_"+m;
@@ -220,18 +220,18 @@ function applyCastSelection(source){
 function check(text){
   if(MODE==="small"){
     if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
-    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas|Félix|Zoé)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (see the sample).");
+    if(!/^(Adrien|Marinette|Alia|Nino|Chloé|Lucas|Cat|Bugaboo)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (see the sample).");
     if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for Small).");
     return}
   if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
   if(!/^\[story\]\s*$/im.test(text)){
-    if(!/^(Adrien|Marinette|Camille|Théo|Chloé|Lucas|Félix|Zoé)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (or a [story] section, see the sample).");
+    if(!/^(Adrien|Marinette|Alia|Nino|Chloé|Lucas|Cat|Bugaboo)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (or a [story] section, see the sample).");
     if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for plain dialogue).");
     return}
   if(text.length>20000)throw new Error("The script is too long (limit 20,000 characters).")}
 
-$("cast1").onchange=()=>{if($("cast1").value===$("cast2").value)$("cast2").value=["Adrien","Marinette","Camille","Théo","Chloé","Lucas","Félix","Zoé"].find(n=>n!==$("cast1").value)};
-$("cast2").onchange=()=>{if($("cast1").value===$("cast2").value)$("cast1").value=["Adrien","Marinette","Camille","Théo","Chloé","Lucas","Félix","Zoé"].find(n=>n!==$("cast2").value)};
+$("cast1").onchange=()=>{if($("cast1").value===$("cast2").value)$("cast2").value=["Adrien","Marinette","Alia","Nino","Chloé","Lucas","Cat","Bugaboo"].find(n=>n!==$("cast1").value)};
+$("cast2").onchange=()=>{if($("cast1").value===$("cast2").value)$("cast1").value=["Adrien","Marinette","Alia","Nino","Chloé","Lucas","Cat","Bugaboo"].find(n=>n!==$("cast2").value)};
 $("run").onclick=async()=>{
   const btn=$("run");$("result").innerHTML="";
   try{
