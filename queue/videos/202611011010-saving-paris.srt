@@ -1,0 +1,60 @@
+1
+00:00:00,600 --> 00:00:04,752
+Regarde ! La ville est en danger !
+Look! The city is in danger!
+
+2
+00:00:05,252 --> 00:00:08,804
+Oh non ! Que se passe-t-il ?
+Oh no! What's happening?
+
+3
+00:00:09,304 --> 00:00:12,040
+Un méchant attaque la ville !
+A villain is attacking the city!
+
+4
+00:00:12,540 --> 00:00:16,332
+Vite ! Nous devons l'arrêter !
+Quick! We must stop him!
+
+5
+00:00:16,832 --> 00:00:20,528
+Attention ! Il arrive !
+Watch out! He's coming!
+
+6
+00:00:21,028 --> 00:00:22,924
+Ne bouge pas !
+Don't move!
+
+7
+00:00:23,424 --> 00:00:26,640
+Ensemble, nous sommes plus forts !
+Together, we are stronger!
+
+8
+00:00:27,140 --> 00:00:29,012
+Attrape-le !
+Catch him!
+
+9
+00:00:29,512 --> 00:00:31,384
+Je l'ai !
+I've got him!
+
+10
+00:00:31,884 --> 00:00:34,764
+Bravo, La ville est sauvée !
+Well done, The city is saved!
+
+11
+00:00:35,264 --> 00:00:37,448
+C'est notre mission !
+It's our mission!
+
+12
+00:00:37,948 --> 00:00:40,756
+Allez, rentrons à la maison !
+Come on, let's go home!
+
