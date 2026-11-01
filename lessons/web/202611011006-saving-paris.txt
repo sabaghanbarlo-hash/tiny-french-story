@@ -1,0 +1,32 @@
+title: Saving Paris
+cast: Bugaboo, Cat
+episode: 11
+scene: paris_city
+
+Bugaboo: Regarde ! La ville est en danger ! | Look! The city is in danger!
+Cat: Oh non ! Que se passe-t-il ? | Oh no! What's happening?
+Bugaboo: Un méchant attaque la ville ! | A villain is attacking the city!
+Cat: Vite ! Nous devons l'arrêter ! | Quick! We must stop him!
+Bugaboo: Attention ! Il arrive ! | Watch out! He's coming!
+Cat: Ne bouge pas ! | Don't move!
+Bugaboo: Ensemble, nous sommes plus forts ! | Together, we are stronger!
+Cat: Attrape-le ! | Catch him!
+Bugaboo: Je l'ai ! | I've got him!
+Cat: Bravo, La ville est sauvée ! | Well done, The city is saved!
+Bugaboo: C'est notre mission ! | It's our mission!
+Cat: Allez, rentrons à la maison ! | Come on, let's go home!
+
+vocab: regarde | look
+vocab: en danger | in danger
+vocab: un méchant | a villain
+vocab: attaquer | to attack
+vocab: vite | quickly
+vocab: nous devons | we must
+vocab: arrêter | to stop
+vocab: attention | watch out
+vocab: ensemble | together
+vocab: attrape-le | catch him
+vocab: bravo | well done
+vocab: sauvée | saved
+vocab: une mission | a mission
+vocab: rentrons à la maison | let's go home
