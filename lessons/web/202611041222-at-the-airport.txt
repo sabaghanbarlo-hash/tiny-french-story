@@ -1,0 +1,30 @@
+title: At the Airport
+cast: Marinette, Adrien
+episode: 13
+scene: airport
+
+Marinette: Bonjour, Adrien ! Tu as ton passeport ? | Hello, Adrien! Do you have your passport?
+Adrien: Oui, il est dans mon sac. | Yes, it's in my bag.
+Marinette: Et tes billets d'avion ? | And your plane tickets?
+Adrien: Les voilà ! Nous partons pour Paris ! | Here they are! We're leaving for Paris!
+Marinette: Super ! Où est notre porte d'embarquement ? | Great! Where is our boarding gate?
+Adrien: C'est la porte numéro douze. | It's gate number twelve.
+Marinette: À quelle heure est le vol ? | What time is the flight?
+Adrien: À dix heures trente. | At ten thirty.
+Marinette: Vite ! Nous devons passer la sécurité ! | Hurry! We have to go through security!
+Adrien: Ne t'inquiète pas, nous avons le temps ! | Don't worry, we have time!
+Marinette: J'espère que le vol sera agréable ! | I hope the flight will be pleasant!
+Adrien: Moi aussi ! Bon voyage ! | Me too! Have a good trip!
+
+vocab: un passeport | a passport
+vocab: un sac | a bag
+vocab: un billet d'avion | a plane ticket
+vocab: partir | to leave
+vocab: une porte d'embarquement | a boarding gate
+vocab: un vol | a flight
+vocab: à quelle heure ? | at what time?
+vocab: la sécurité | security
+vocab: nous avons le temps | we have time
+vocab: ne t'inquiète pas | don't worry
+vocab: agréable | pleasant
+vocab: bon voyage | have a good trip
