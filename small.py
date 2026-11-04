@@ -507,10 +507,15 @@ def build(text, rate, dummy, tmp):
         wav = os.path.join(tmp, f"l{i}.wav"); synth(ln["fr"], CHARS[ln["speaker"]]["voice"], wav, rate, dummy)
         x = read_wav(wav); ln["start"], ln["end"] = t, t + len(x) / SR
         chunks += [x, np.zeros(int(0.5 * SR), np.float32)]; t = ln["end"] + 0.5
+    vocab = vocab[:int(os.environ.get("MAX_VOCAB", "3"))]   # 3 key words keeps reels short (set MAX_VOCAB=5 for the old length)
     vstart, talk = t, list(lines)
     for j, v in enumerate(vocab):
         v["start"] = t
-        for k, (txt, kind) in enumerate(((v["fr"], "fr"), ("means " + v["en"], "en"), (v["fr"], "fr"))):
+        if os.environ.get("RECAP_STYLE", "short") == "short":
+            steps = ((v["fr"], "fr"), (v["en"], "en"))               # say it once + English, no repeat (shorter reel)
+        else:
+            steps = ((v["fr"], "fr"), ("means " + v["en"], "en"), (v["fr"], "fr"))
+        for k, (txt, kind) in enumerate(steps):
             wav = os.path.join(tmp, f"v{j}_{k}.wav")
             if kind == "fr":
                 synth(txt, CHARS[cast[0]]["voice"], wav, "-25%", dummy)
@@ -519,7 +524,7 @@ def build(text, rate, dummy, tmp):
             x = read_wav(wav)
             if kind == "fr":
                 talk.append(dict(speaker=cast[0], start=t, end=t + len(x) / SR))
-            gap = 0.45 if k < 2 else 0.9
+            gap = (0.35 if k < len(steps) - 1 else 0.7) if os.environ.get("RECAP_STYLE", "short") == "short" else (0.45 if k < 2 else 0.9)
             chunks += [x, np.zeros(int(gap * SR), np.float32)]; t += len(x) / SR + gap
         v["end"] = t
     total = t + (0.6 if vocab else 1.2)
