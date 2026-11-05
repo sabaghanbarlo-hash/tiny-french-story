@@ -1,0 +1,20 @@
+title: Who Stole the Cheese?
+cast: Bugaboo, Cat
+episode: 29
+scene: street
+cover: Who Stole the Cheese?
+
+Bugaboo: Au secours ! Le fromage a disparu ! | Help! The cheese has disappeared!
+Cat: Qui a pris le fromage ? | Who took the cheese?
+Bugaboo: Je ne sais pas. Regarde ces petites traces ! | I don't know. Look at these little tracks!
+Cat: Des traces de pattes ! Elles vont par là ! | Paw prints! They go that way!
+Bugaboo: Oh non ! Ce sont tes pattes ! Tu es coupable ! | Oh no! Those are your paws! You're guilty!
+Cat: Euh… j'ai toujours faim ! Pardon ! | Uh… I'm always hungry! Sorry!
+Bugaboo: Ha ha ! Le héros a volé le fromage ! | Ha ha! The hero stole the cheese!
+Cat: Je paie tout, c'est promis ! | I'll pay for everything, I promise!
+
+vocab: le fromage | the cheese
+vocab: disparu | gone / disappeared
+vocab: une patte | a paw
+vocab: coupable | guilty
+vocab: c'est promis | I promise

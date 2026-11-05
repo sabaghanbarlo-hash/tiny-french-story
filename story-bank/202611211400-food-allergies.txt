@@ -1,0 +1,20 @@
+title: Food Allergies
+cast: Alia, Nino
+episode: 28
+scene: restaurant
+cover: Food Allergies
+
+Alia: Bonsoir ! Voici le menu. | Good evening! Here's the menu.
+Nino: Bonsoir ! Je suis allergique aux noix. | Good evening! I'm allergic to nuts.
+Alia: Pas de problème. Le poulet est sans noix. | No problem. The chicken has no nuts.
+Nino: Et la soupe ? Elle contient du lait ? | And the soup? Does it contain milk?
+Alia: Oui, il y a de la crème dans la soupe. | Yes, there's cream in the soup.
+Nino: Alors je prends le poulet, s'il vous plaît. | Then I'll have the chicken, please.
+Alia: Très bien. Et comme boisson ? | Very well. And to drink?
+Nino: Une carafe d'eau, s'il vous plaît. | A jug of water, please.
+
+vocab: je suis allergique à | I'm allergic to
+vocab: les noix | nuts
+vocab: sans | without
+vocab: il y a de la crème | there's cream
+vocab: une carafe d'eau | a jug of (free) tap water

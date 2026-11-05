@@ -1,0 +1,20 @@
+title: Talking About the Weather
+cast: Alia, Nino
+episode: 32
+scene: park
+cover: The Weather
+
+Nino: Salut Alia ! Quel temps fait-il aujourd'hui ? | Hi Alia! What's the weather like today?
+Alia: Il fait froid et il y a du vent. | It's cold and it's windy.
+Nino: Il pleut aussi ? | Is it raining too?
+Alia: Non, mais il y a des nuages. | No, but there are clouds.
+Nino: Et demain ? | And tomorrow?
+Alia: Demain, il va neiger ! | Tomorrow, it's going to snow!
+Nino: Super ! J'adore la neige ! | Great! I love snow!
+Alia: Moi, je préfère le soleil ! | I prefer the sun!
+
+vocab: quel temps fait-il ? | what's the weather like?
+vocab: il fait froid | it's cold
+vocab: il y a du vent | it's windy
+vocab: un nuage | a cloud
+vocab: il va neiger | it's going to snow

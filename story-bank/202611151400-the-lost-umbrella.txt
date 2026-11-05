@@ -1,0 +1,20 @@
+title: The Lost Umbrella
+cast: Bugaboo, Cat
+episode: 22
+scene: street
+cover: Lost Umbrella
+
+Bugaboo: Il pleut ! Où est mon parapluie ? | It's raining! Where is my umbrella?
+Cat: Je ne sais pas. Il est dans ton sac ? | I don't know. Is it in your bag?
+Bugaboo: Non, il n'est pas là ! | No, it's not there!
+Cat: Regarde, un petit chien dort sous ton parapluie ! | Look, a little dog is sleeping under your umbrella!
+Bugaboo: Il est mignon ! Je ne veux pas le réveiller. | He's cute! I don't want to wake him.
+Cat: Alors, nous restons sous la pluie ? | So, we stay in the rain?
+Bugaboo: Oui ! Un héros aime les animaux ! | Yes! A hero loves animals!
+Cat: Et nous, courons à la maison ! | And us, let's run home!
+
+vocab: il pleut | it's raining
+vocab: un parapluie | an umbrella
+vocab: un chien | a dog
+vocab: mignon | cute
+vocab: courons | let's run

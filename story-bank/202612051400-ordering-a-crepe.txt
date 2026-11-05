@@ -1,0 +1,20 @@
+title: Ordering a Crêpe
+cast: Alia, Nino
+episode: 42
+scene: street
+cover: Order a Crêpe 🥞
+
+Alia: Bonjour ! Je voudrais une crêpe au chocolat. | Hello! I'd like a chocolate crêpe.
+Nino: Avec plaisir ! Vous voulez de la chantilly ? | With pleasure! Would you like whipped cream?
+Alia: Oui, un peu de chantilly, s'il vous plaît. | Yes, a little whipped cream, please.
+Nino: Voilà. Attention, c'est chaud ! | Here you go. Careful, it's hot!
+Alia: Merci ! Ça fait combien ? | Thanks! How much is it?
+Nino: Quatre euros cinquante. | Four euros fifty.
+Alia: Tenez. Gardez la monnaie ! | Here. Keep the change!
+Nino: Merci beaucoup ! Bon appétit ! | Thank you very much! Enjoy!
+
+vocab: une crêpe | a crêpe
+vocab: au chocolat | with chocolate
+vocab: la chantilly | whipped cream
+vocab: attention, c'est chaud | careful, it's hot
+vocab: gardez la monnaie | keep the change

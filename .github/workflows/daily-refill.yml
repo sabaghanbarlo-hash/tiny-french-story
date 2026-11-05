@@ -1,0 +1,92 @@
+name: Daily refill
+
+# Keeps the Instagram queue about 4 days ahead, using the pre-written scripts in story-bank/.
+# Each script is named YYYYMMDDHHMM-name.txt (+ .caption); the prefix is the time it posts (UTC).
+# This renders ONLY the scripts that are due soon, adds them to the queue at their exact time,
+# and refreshes the website so the video links exist before post-queue.yml posts them.
+# No AI, no API keys, no cost. Safe to run by hand any time.
+
+on:
+  schedule:
+    - cron: "30 5 * * *"
+  workflow_dispatch:
+    inputs:
+      days_ahead:
+        description: "Render every script that posts within this many days"
+        default: "4"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: tiny-french-render
+  cancel-in-progress: false
+
+jobs:
+  refill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '4' }}
+      STRICT_VOICE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+      - name: Pick the scripts that are due
+        id: plan
+        run: python refill_bank.py
+      - name: Install FFmpeg and fonts
+        if: ${{ steps.plan.outputs.plan != '' }}
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -y -o Acquire::Retries=3 || true
+            sudo apt-get install -y --no-install-recommends ffmpeg
+          fi
+          sudo apt-get install -y --no-install-recommends fonts-dejavu-core fonts-liberation || true
+      - name: Render, check and queue each Reel
+        id: render
+        if: ${{ steps.plan.outputs.plan != '' }}
+        env:
+          PLAN: ${{ steps.plan.outputs.plan }}
+        run: |
+          failed=0; queued=0
+          mkdir -p site/videos lessons/web
+          for item in $PLAN; do
+            STEM="${item%%=*}"; WHEN="${item#*=}"
+            echo "== $STEM -> posts $WHEN"
+            SRC="story-bank/$STEM.txt"
+            if python small.py "$SRC" -o site/videos \
+               && rm -rf site/videos/.tmp \
+               && cp "story-bank/$STEM.caption" "site/videos/$STEM.caption.txt" \
+               && python -c "import sys; from PIL import Image; s = sys.argv[1]; Image.open(f'site/videos/{s}.cover.png').convert('RGB').save(f'site/videos/{s}.jpg', quality=92)" "$STEM" \
+               && python queue_tool.py add --stem "$STEM" --media-dir site/videos --format small --post-at "$WHEN"
+            then
+              git mv "story-bank/$STEM.txt" "lessons/web/$STEM.txt"
+              git mv "story-bank/$STEM.caption" "lessons/web/$STEM.caption"
+              queued=$((queued+1))
+            else
+              echo "::error::$STEM failed to render or queue. It stays in story-bank/ and is retried on the next run."
+              failed=$((failed+1))
+            fi
+          done
+          echo "queued=$queued" >> "$GITHUB_OUTPUT"
+          { echo "### Refill"; echo "Queued $queued, failed $failed"; echo; python queue_tool.py show; } >> "$GITHUB_STEP_SUMMARY"
+          [ "$failed" -eq 0 ]
+      - name: Save the queue
+        if: ${{ always() && steps.plan.outputs.plan != '' }}
+        run: |
+          git config user.name "tiny-french-bot"; git config user.email "tiny-french-bot@users.noreply.github.com"
+          git add -A queue story-bank lessons/web
+          git commit -m "Refill queue" || exit 0
+          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && break; sleep 5; done
+      - name: Refresh the website (queued videos)
+        if: ${{ always() && steps.render.outputs.queued != '' && steps.render.outputs.queued != '0' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-site.yml --ref main

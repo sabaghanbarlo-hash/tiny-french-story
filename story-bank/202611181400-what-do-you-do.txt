@@ -1,0 +1,20 @@
+title: What Do You Do?
+cast: Alia, Nino
+episode: 25
+scene: cafe
+cover: Your Job
+
+Nino: Salut ! Tu fais quoi dans la vie ? | Hi! What do you do for a living?
+Alia: Je suis professeure. Et toi ? | I'm a teacher. And you?
+Nino: Je suis ingénieur. Je travaille à Lyon. | I'm an engineer. I work in Lyon.
+Alia: Tu aimes ton travail ? | Do you like your job?
+Nino: Oui, j'adore ! Mais je travaille beaucoup. | Yes, I love it! But I work a lot.
+Alia: Moi, je travaille avec des enfants. | I work with children.
+Nino: C'est génial ! Mais c'est fatigant, non ? | That's great! But it's tiring, no?
+Alia: Oui ! On boit un café ? | Yes! Shall we have a coffee?
+
+vocab: tu fais quoi dans la vie ? | what do you do for a living?
+vocab: je suis professeur(e) | I'm a teacher
+vocab: je travaille | I work
+vocab: un ingénieur | an engineer
+vocab: fatigant | tiring

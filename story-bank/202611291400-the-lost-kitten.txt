@@ -1,0 +1,20 @@
+title: The Lost Kitten
+cast: Bugaboo, Cat
+episode: 36
+scene: street
+cover: The Lost Kitten
+
+Bugaboo: Écoute ! J'entends quelqu'un pleurer ! | Listen! I hear someone crying!
+Cat: C'est un petit chaton ! Il est perdu ! | It's a little kitten! He's lost!
+Bugaboo: Pauvre chaton ! Où est sa maison ? | Poor kitten! Where is his home?
+Cat: Il a un collier. Regarde : « Rue des Fleurs ». | He has a collar. Look: "Flower Street".
+Bugaboo: Pas de problème ! On y va ensemble ! | No problem! Let's go together!
+Cat: Voilà la maison ! Il est chez lui ! | Here's the house! He's home!
+Bugaboo: Le chaton sourit. Il est content ! | The kitten is smiling. He's happy!
+Cat: Un bon héros trouve toujours le chemin ! | A good hero always finds the way!
+
+vocab: perdu | lost
+vocab: un chaton | a kitten
+vocab: pleurer | to cry
+vocab: ensemble | together
+vocab: trouver | to find

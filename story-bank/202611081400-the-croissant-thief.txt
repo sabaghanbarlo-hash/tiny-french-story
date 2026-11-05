@@ -1,0 +1,20 @@
+title: The Croissant Thief
+cast: Bugaboo, Cat
+episode: 15
+scene: street
+cover: Croissant Thief
+
+Bugaboo: Regarde ! Quelqu'un court avec des croissants ! | Look! Someone is running with croissants!
+Cat: C'est un voleur ! Il court vite ! | It's a thief! He runs fast!
+Bugaboo: Vite, attrape-le ! | Quick, catch him!
+Cat: Je l'ai ! Rends les croissants ! | I've got him! Give back the croissants!
+Bugaboo: Pourquoi tu les voles ? | Why are you stealing them?
+Cat: Il dit qu'il a très faim. | He says he's very hungry.
+Bugaboo: Pauvre voleur ! Tiens, un croissant. | Poor thief! Here, a croissant.
+Cat: Bravo, Bugaboo ! Tout le monde est content ! | Well done, Bugaboo! Everyone is happy!
+
+vocab: un voleur | a thief
+vocab: attraper | to catch
+vocab: j'ai faim | I'm hungry
+vocab: pauvre | poor
+vocab: rendre | to give back

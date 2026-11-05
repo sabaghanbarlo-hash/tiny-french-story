@@ -1,0 +1,20 @@
+title: Always Say Bonjour
+cast: Marinette, Adrien
+episode: 27
+scene: store
+cover: Say Bonjour First
+
+Adrien: Marinette, dans un magasin, dis toujours « bonjour » d'abord ! | Marinette, in a shop, always say "bonjour" first!
+Marinette: Même si je ne parle pas à la vendeuse ? | Even if I'm not talking to the saleswoman?
+Adrien: Oui ! En France, c'est très poli. | Yes! In France, it's very polite.
+Marinette: Et quand je sors ? | And when I leave?
+Adrien: Tu dis « merci, au revoir, bonne journée ! » | You say "thank you, goodbye, have a nice day!"
+Marinette: Et le soir ? | And in the evening?
+Adrien: Tu dis « bonne soirée ! » | You say "have a nice evening!"
+Marinette: Compris ! Bonjour, madame ! | Got it! Hello, madam!
+
+vocab: bonjour | hello (say it first!)
+vocab: bonne journée | have a nice day
+vocab: bonne soirée | have a nice evening
+vocab: poli | polite
+vocab: au revoir | goodbye

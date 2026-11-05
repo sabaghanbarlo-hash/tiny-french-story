@@ -1,0 +1,20 @@
+title: At the Pharmacy
+cast: Chloé, Lucas
+episode: 23
+scene: store
+cover: At the Pharmacy
+
+Lucas: Bonjour ! J'ai mal à la tête. | Hello! I have a headache.
+Chloé: Vous avez de la fièvre ? | Do you have a fever?
+Lucas: Non, mais j'ai mal à la gorge aussi. | No, but my throat hurts too.
+Chloé: Prenez ces comprimés, deux fois par jour. | Take these tablets, twice a day.
+Lucas: C'est combien, s'il vous plaît ? | How much is it, please?
+Chloé: C'est huit euros. | It's eight euros.
+Lucas: Merci. Je dois aller chez le médecin ? | Thanks. Should I see a doctor?
+Chloé: Si ça continue, oui. Bon rétablissement ! | If it continues, yes. Get well soon!
+
+vocab: j'ai mal à la tête | I have a headache
+vocab: la gorge | the throat
+vocab: la fièvre | fever
+vocab: un comprimé | a tablet
+vocab: bon rétablissement | get well soon

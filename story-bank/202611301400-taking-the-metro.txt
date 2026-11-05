@@ -1,0 +1,20 @@
+title: Taking the Metro
+cast: Marinette, Adrien
+episode: 37
+scene: station
+cover: Paris Metro 🚇
+
+Marinette: Excusez-moi, quelle ligne pour la Tour Eiffel ? | Excuse me, which line for the Eiffel Tower?
+Adrien: Prenez la ligne six. Descendez à Bir-Hakeim. | Take line six. Get off at Bir-Hakeim.
+Marinette: C'est loin d'ici ? | Is it far from here?
+Adrien: Non, c'est à quelques stations. | No, it's a few stops away.
+Marinette: Où est le quai, s'il vous plaît ? | Where is the platform, please?
+Adrien: Tout droit, puis à gauche. | Straight ahead, then left.
+Marinette: Il faut changer de ligne ? | Do I have to change lines?
+Adrien: Non, pas de changement. Bon voyage ! | No, no change. Have a good trip!
+
+vocab: quelle ligne ? | which line?
+vocab: descendre | to get off
+vocab: le quai | the platform
+vocab: tout droit | straight ahead
+vocab: changer | to change (trains)

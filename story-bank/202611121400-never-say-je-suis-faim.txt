@@ -1,0 +1,20 @@
+title: Never Say Je Suis Faim
+cast: Chloé, Lucas
+episode: 19
+scene: park
+cover: Je Suis Faim ❌
+
+Lucas: J'ai faim ! | I'm hungry!
+Chloé: Moi, j'ai soif. | I'm thirsty.
+Lucas: Il fait froid. J'ai froid ! | It's cold. I'm cold!
+Chloé: Moi, j'ai chaud avec mon manteau ! | I'm hot with my coat on!
+Lucas: Attention, on ne dit pas « je suis faim ». | Careful, we don't say "je suis faim".
+Chloé: Non ! En français, on dit « j'ai faim ». | No! In French, we say "j'ai faim".
+Lucas: On « a » faim, soif, chaud et froid ! | We "have" hunger, thirst, hot and cold!
+Chloé: Exactement ! Et j'ai sommeil maintenant ! | Exactly! And now I'm sleepy!
+
+vocab: j'ai faim | I'm hungry
+vocab: j'ai soif | I'm thirsty
+vocab: j'ai froid | I'm cold
+vocab: j'ai chaud | I'm hot
+vocab: j'ai sommeil | I'm sleepy

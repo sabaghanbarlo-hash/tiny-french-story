@@ -1,0 +1,20 @@
+title: Checking Into a Hotel
+cast: Chloé, Lucas
+episode: 30
+scene: apartment
+cover: Hotel Check-in
+
+Lucas: Bonjour ! J'ai une réservation au nom de Martin. | Hello! I have a reservation under the name Martin.
+Chloé: Bonjour monsieur. Une chambre pour deux nuits ? | Hello sir. A room for two nights?
+Lucas: Oui, c'est ça. | Yes, that's right.
+Chloé: Voici votre clé. C'est la chambre douze. | Here's your key. It's room twelve.
+Lucas: Le petit déjeuner est à quelle heure ? | What time is breakfast?
+Chloé: De sept heures à dix heures. | From seven to ten.
+Lucas: Il y a le wifi dans la chambre ? | Is there wifi in the room?
+Chloé: Oui, le code est sur votre clé. Bon séjour ! | Yes, the code is on your key. Enjoy your stay!
+
+vocab: une réservation | a reservation
+vocab: une chambre | a room
+vocab: une clé | a key
+vocab: le petit déjeuner | breakfast
+vocab: bon séjour | enjoy your stay

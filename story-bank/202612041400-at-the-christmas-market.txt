@@ -1,0 +1,20 @@
+title: At the Christmas Market
+cast: Marinette, Adrien
+episode: 41
+scene: market
+cover: Christmas Market 🎄
+
+Marinette: Adrien, regarde ! Le marché de Noël ! | Adrien, look! The Christmas market!
+Adrien: C'est magnifique ! Il y a des lumières partout ! | It's magnificent! There are lights everywhere!
+Marinette: J'ai froid. Je voudrais un chocolat chaud ! | I'm cold. I'd like a hot chocolate!
+Adrien: Moi, un vin chaud, s'il vous plaît ! | Me, a mulled wine, please!
+Marinette: Regarde, il y a un sapin énorme ! | Look, there's an enormous tree!
+Adrien: Et le Père Noël est là aussi ! | And Santa is here too!
+Marinette: Je cherche des cadeaux pour ma famille. | I'm looking for gifts for my family.
+Adrien: Moi aussi ! Joyeux Noël, Marinette ! | Me too! Merry Christmas, Marinette!
+
+vocab: le marché de Noël | the Christmas market
+vocab: un vin chaud | a mulled wine
+vocab: un sapin | a fir / Christmas tree
+vocab: le Père Noël | Santa Claus
+vocab: joyeux Noël | Merry Christmas

@@ -1,0 +1,20 @@
+title: Happy Birthday
+cast: Alia, Nino
+episode: 39
+scene: apartment
+cover: Happy Birthday 🎂
+
+Nino: Alia, c'est quand, ton anniversaire ? | Alia, when is your birthday?
+Alia: Mon anniversaire, c'est le quinze décembre. | My birthday is on December fifteenth.
+Nino: C'est bientôt ! Tu fais une fête ? | That's soon! Are you having a party?
+Alia: Oui, chez moi, avec un gâteau ! | Yes, at my place, with a cake!
+Nino: Super ! J'apporte un cadeau ! | Great! I'll bring a gift!
+Alia: Oh, merci ! Tu es gentil ! | Oh, thanks! You're kind!
+Nino: Joyeux anniversaire en avance ! | Happy birthday in advance!
+Alia: Merci, Nino ! À bientôt ! | Thanks, Nino! See you soon!
+
+vocab: un anniversaire | a birthday
+vocab: joyeux anniversaire | happy birthday
+vocab: un gâteau | a cake
+vocab: une fête | a party
+vocab: en avance | early / in advance

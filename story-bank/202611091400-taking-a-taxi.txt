@@ -1,0 +1,20 @@
+title: Taking a Taxi
+cast: Alia, Nino
+episode: 16
+scene: street
+cover: Taxi in Paris
+
+Nino: Taxi ! Taxi ! | Taxi! Taxi!
+Alia: Bonjour ! Où allez-vous ? | Hello! Where are you going?
+Nino: À la Gare de Lyon, s'il vous plaît. | To Gare de Lyon, please.
+Alia: D'accord. C'est à vingt minutes. | Okay. It's twenty minutes away.
+Nino: C'est combien, environ ? | How much is it, roughly?
+Alia: Environ vingt euros. | Roughly twenty euros.
+Nino: Je peux payer par carte ? | Can I pay by card?
+Alia: Oui, bien sûr. On y va ! | Yes, of course. Let's go!
+
+vocab: où allez-vous ? | where are you going?
+vocab: à vingt minutes | twenty minutes away
+vocab: environ | roughly
+vocab: je peux payer par carte ? | can I pay by card?
+vocab: on y va | let's go

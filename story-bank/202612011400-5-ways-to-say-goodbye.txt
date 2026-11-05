@@ -1,0 +1,20 @@
+title: 5 Ways to Say Goodbye
+cast: Marinette, Adrien
+episode: 38
+scene: street
+cover: Say Goodbye
+
+Marinette: Bon, je dois y aller ! | Well, I have to go!
+Adrien: Déjà ? Allez, à tout à l'heure ! | Already? Okay, see you later!
+Marinette: Oui ! Et on se voit demain ? | Yes! And do we see each other tomorrow?
+Adrien: Oui, à demain ! | Yes, see you tomorrow!
+Marinette: Et vendredi ? | And Friday?
+Adrien: À vendredi ! Et à bientôt pour un café. | See you Friday! And see you soon for a coffee.
+Marinette: À plus ! | See ya!
+Adrien: Salut ! Bonne soirée ! | Bye! Have a nice evening!
+
+vocab: à tout à l'heure | see you later (today)
+vocab: à demain | see you tomorrow
+vocab: à bientôt | see you soon
+vocab: à plus | see ya (casual)
+vocab: salut | bye (casual)

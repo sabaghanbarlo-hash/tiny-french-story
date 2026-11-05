@@ -1,0 +1,20 @@
+title: Saving Christmas
+cast: Bugaboo, Cat
+episode: 43
+scene: street
+cover: Saving Christmas 🎅
+
+Bugaboo: Cat ! Le Père Noël est en retard ! | Cat! Santa is late!
+Cat: Oh non ! Les cadeaux sont encore à l'atelier ! | Oh no! The gifts are still at the workshop!
+Bugaboo: Il faut aider le Père Noël ! | We must help Santa!
+Cat: Je prends les cadeaux. Tu conduis le traîneau ? | I'll take the gifts. Will you drive the sleigh?
+Bugaboo: Oui ! Vite, les rennes ! | Yes! Quick, reindeer!
+Cat: Attention aux toits ! | Watch out for the roofs!
+Bugaboo: Voilà ! Tous les enfants ont des cadeaux ! | Done! All the children have gifts!
+Cat: Joyeux Noël, tout le monde ! | Merry Christmas, everyone!
+
+vocab: en retard | late
+vocab: aider | to help
+vocab: un traîneau | a sleigh
+vocab: un toit | a roof
+vocab: tous les enfants | all the children

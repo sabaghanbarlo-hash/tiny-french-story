@@ -1,0 +1,20 @@
+title: When You Don't Understand
+cast: Marinette, Adrien
+episode: 24
+scene: street
+cover: I Don't Understand
+
+Marinette: Excusez-moi, vous parlez anglais ? | Excuse me, do you speak English?
+Adrien: Un peu. Vous êtes touriste ? | A little. Are you a tourist?
+Marinette: Pardon ? Je ne comprends pas. | Pardon? I don't understand.
+Adrien: Vous êtes touriste ? Vous aimez Paris ? | Are you a tourist? Do you like Paris?
+Marinette: Plus lentement, s'il vous plaît. | More slowly, please.
+Adrien: Vous… aimez… Paris ? | Do… you… like… Paris?
+Marinette: Oui ! Comment ça se dit « I love it » ? | Yes! How do you say "I love it"?
+Adrien: Ça se dit « j'adore » ! | You say "j'adore"!
+
+vocab: je ne comprends pas | I don't understand
+vocab: plus lentement | more slowly
+vocab: vous parlez anglais ? | do you speak English?
+vocab: comment ça se dit… ? | how do you say…?
+vocab: j'adore | I love it

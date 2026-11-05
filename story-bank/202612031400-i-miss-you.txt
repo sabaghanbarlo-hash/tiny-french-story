@@ -1,0 +1,20 @@
+title: I Miss You
+cast: Chloé, Lucas
+episode: 40
+scene: park
+cover: I Miss You 💔
+
+Lucas: Chloé, comment on dit « I miss you » en français ? | Chloé, how do you say "I miss you" in French?
+Chloé: On dit « tu me manques ». | We say "tu me manques".
+Lucas: Mais ça veut dire « you miss me » ! | But that means "you miss me"!
+Chloé: Non ! En français, c'est à l'envers. | No! In French, it's the other way round.
+Chloé: Si je dis « tu me manques », c'est moi qui pense à toi. | If I say "tu me manques", I'm the one thinking of you.
+Lucas: Ah ! Alors « il me manque » pour « I miss him » ? | Ah! So "il me manque" for "I miss him"?
+Chloé: Exactement ! Et « je pense à toi » marche aussi. | Exactly! And "je pense à toi" works too.
+Lucas: Merci ! Tu me manques déjà, Chloé ! | Thanks! I miss you already, Chloé!
+
+vocab: tu me manques | I miss you
+vocab: il me manque | I miss him
+vocab: je pense à toi | I'm thinking of you
+vocab: à l'envers | backwards
+vocab: déjà | already

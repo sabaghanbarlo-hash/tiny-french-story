@@ -1,0 +1,20 @@
+title: Ordering a Coffee
+cast: Marinette, Adrien
+episode: 14
+scene: cafe
+cover: Order a Coffee
+
+Adrien: Bonjour ! Vous désirez ? | Hello! What would you like?
+Marinette: Bonjour ! Un café, s'il vous plaît. | Hello! A coffee, please.
+Adrien: Sur place ou à emporter ? | Here or to go?
+Marinette: Sur place, merci. | Here, thanks.
+Adrien: Avec du lait ou du sucre ? | With milk or sugar?
+Marinette: Un peu de lait, s'il vous plaît. | A little milk, please.
+Adrien: Voilà ! Ça fait deux euros. | Here you go! That's two euros.
+Marinette: Merci beaucoup ! Bonne journée ! | Thank you very much! Have a nice day!
+
+vocab: sur place | here (to stay)
+vocab: à emporter | to go
+vocab: du lait | some milk
+vocab: du sucre | some sugar
+vocab: ça fait deux euros | that's two euros

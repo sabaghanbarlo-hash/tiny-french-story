@@ -1,0 +1,20 @@
+title: 5 Ways to Say You're Welcome
+cast: Marinette, Adrien
+episode: 17
+scene: cafe
+cover: You're Welcome
+
+Marinette: Voilà ton café, Adrien. | Here's your coffee, Adrien.
+Adrien: Merci beaucoup ! | Thank you very much!
+Marinette: Je t'en prie ! | You're welcome!
+Adrien: C'est vraiment gentil ! | That's really kind!
+Marinette: De rien, c'est normal. | It's nothing, it's normal.
+Adrien: Merci mille fois ! | A thousand thanks!
+Marinette: Il n'y a pas de quoi ! | Don't mention it!
+Adrien: Tu es la meilleure ! | You're the best!
+
+vocab: je t'en prie | you're welcome
+vocab: c'est gentil | that's kind
+vocab: de rien | it's nothing
+vocab: il n'y a pas de quoi | don't mention it
+vocab: merci mille fois | a thousand thanks

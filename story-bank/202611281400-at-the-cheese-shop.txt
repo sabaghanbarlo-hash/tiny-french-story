@@ -1,0 +1,20 @@
+title: At the Cheese Shop
+cast: Alia, Nino
+episode: 35
+scene: market
+cover: Cheese Shop 🧀
+
+Alia: Bonjour ! Vous désirez ? | Hello! What would you like?
+Nino: Bonjour ! Je voudrais un bon fromage, mais pas trop fort. | Hello! I'd like a good cheese, but not too strong.
+Alia: Essayez ce camembert. Il est doux et crémeux. | Try this camembert. It's mild and creamy.
+Nino: Je peux goûter ? | Can I taste?
+Alia: Bien sûr ! Voilà un petit morceau. | Of course! Here's a small piece.
+Nino: Mmm, délicieux ! Je le prends. | Mmm, delicious! I'll take it.
+Alia: Parfait ! Une baguette avec ça ? | Perfect! A baguette with that?
+Nino: Oui, une baguette, s'il vous plaît ! | Yes, a baguette, please!
+
+vocab: un fromage | a cheese
+vocab: pas trop fort | not too strong
+vocab: je peux goûter ? | can I taste?
+vocab: un morceau | a piece
+vocab: doux | mild

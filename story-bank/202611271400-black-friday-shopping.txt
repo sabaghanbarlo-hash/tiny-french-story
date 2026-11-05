@@ -1,0 +1,20 @@
+title: Black Friday Shopping
+cast: Marinette, Adrien
+episode: 34
+scene: store
+cover: Black Friday 🛍️
+
+Marinette: Bonjour ! C'est en promotion aujourd'hui ? | Hello! Is it on sale today?
+Adrien: Oui, tout est à moins vingt pour cent ! | Yes, everything is twenty percent off!
+Marinette: Super ! Je cherche un cadeau pour ma mère. | Great! I'm looking for a gift for my mother.
+Adrien: Elle aime les écharpes ? | Does she like scarves?
+Marinette: Oui ! Cette écharpe est jolie. Elle coûte combien ? | Yes! This scarf is pretty. How much is it?
+Adrien: Trente euros, moins vingt pour cent : vingt-quatre euros. | Thirty euros, minus twenty percent: twenty-four euros.
+Marinette: Je la prends ! Je peux payer par carte ? | I'll take it! Can I pay by card?
+Adrien: Bien sûr ! C'est pour offrir ? | Of course! Is it a gift?
+
+vocab: en promotion | on sale
+vocab: un cadeau | a gift
+vocab: une écharpe | a scarf
+vocab: je la prends | I'll take it
+vocab: c'est pour offrir ? | is it a gift?

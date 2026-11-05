@@ -1,0 +1,20 @@
+title: False Friends
+cast: Chloé, Lucas
+episode: 33
+scene: library
+cover: False Friends 😳
+
+Lucas: Chloé, je cherche une bibliothèque pour acheter un livre. | Chloé, I'm looking for a library to buy a book.
+Chloé: Attention ! « Bibliothèque » = library. Pour acheter, c'est « librairie » ! | Careful! "Bibliothèque" = library. To buy, it's "librairie"!
+Lucas: Ah ! Un faux ami ! | Ah! A false friend!
+Chloé: Oui ! Et « actuellement » veut dire « currently », pas « actually ». | Yes! And "actuellement" means "currently", not "actually".
+Lucas: Et « attendre » ? Ça veut dire « to attend » ? | And "attendre"? Does it mean "to attend"?
+Chloé: Non, « attendre » veut dire « to wait » ! | No, "attendre" means "to wait"!
+Lucas: Merci ! Les faux amis sont dangereux ! | Thanks! False friends are dangerous!
+Chloé: Mais tu apprends vite ! | But you learn fast!
+
+vocab: une librairie | a bookstore
+vocab: une bibliothèque | a library
+vocab: actuellement | currently (not "actually")
+vocab: attendre | to wait (not "to attend")
+vocab: un faux ami | a false friend

@@ -1,0 +1,20 @@
+title: At the Market
+cast: Alia, Nino
+episode: 21
+scene: market
+cover: At the Market
+
+Nino: Bonjour ! Je voudrais un kilo de pommes, s'il vous plaît. | Hello! I'd like a kilo of apples, please.
+Alia: Bien sûr ! Et avec ça ? | Of course! Anything else?
+Nino: Et deux poires, s'il vous plaît. | And two pears, please.
+Alia: Voilà ! Ça fait six euros cinquante. | Here you go! That's six euros fifty.
+Nino: C'est un peu cher ! | It's a bit expensive!
+Alia: Mais elles sont bio, monsieur ! | But they're organic, sir!
+Nino: D'accord, je les prends ! | Okay, I'll take them!
+Alia: Merci, bonne journée ! | Thank you, have a nice day!
+
+vocab: un kilo de | a kilo of
+vocab: et avec ça ? | anything else?
+vocab: c'est un peu cher | it's a bit expensive
+vocab: bio | organic
+vocab: je les prends | I'll take them

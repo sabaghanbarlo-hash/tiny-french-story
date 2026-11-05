@@ -1,0 +1,20 @@
+title: Talking About Your Family
+cast: Marinette, Adrien
+episode: 18
+scene: park
+cover: Your Family
+
+Adrien: Tu as des frères et sœurs, Marinette ? | Do you have brothers and sisters, Marinette?
+Marinette: Oui, j'ai un frère et une sœur. | Yes, I have a brother and a sister.
+Adrien: Ils s'appellent comment ? | What are their names?
+Marinette: Mon frère s'appelle Paul et ma sœur s'appelle Léa. | My brother is called Paul and my sister is called Léa.
+Adrien: Ils ont quel âge ? | How old are they?
+Marinette: Paul a douze ans et Léa a huit ans. | Paul is twelve and Léa is eight.
+Adrien: Moi, je suis fils unique. | Me, I'm an only child.
+Marinette: Ma famille est grande et bruyante ! | My family is big and noisy!
+
+vocab: un frère | a brother
+vocab: une sœur | a sister
+vocab: fils unique | only child (son)
+vocab: quel âge ? | how old?
+vocab: bruyant | noisy

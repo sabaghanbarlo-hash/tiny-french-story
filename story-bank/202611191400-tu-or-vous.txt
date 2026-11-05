@@ -1,0 +1,20 @@
+title: Tu or Vous?
+cast: Chloé, Lucas
+episode: 26
+scene: store
+cover: Tu or Vous?
+
+Chloé: Bonjour monsieur ! Je peux vous aider ? | Hello sir! Can I help you?
+Lucas: Salut ! Tu as des baguettes ? | Hi! Do you have baguettes?
+Chloé: Oh, on dit « vous » à quelqu'un qu'on ne connaît pas ! | Oh, we say "vous" to someone we don't know!
+Lucas: Ah pardon ! Vous avez des baguettes, madame ? | Ah, sorry! Do you have baguettes, madam?
+Chloé: Voilà ! Et avec tes amis, tu peux dire « tu ». | Here you go! And with your friends, you can say "tu".
+Lucas: Donc « tu » pour les amis et la famille ? | So "tu" for friends and family?
+Chloé: Oui ! Et « vous » pour les inconnus et les personnes âgées. | Yes! And "vous" for strangers and older people.
+Lucas: Merci ! Vous êtes très gentille. | Thank you! You are very kind.
+
+vocab: tu | you (friends, family)
+vocab: vous | you (polite / several people)
+vocab: un inconnu | a stranger
+vocab: un ami | a friend
+vocab: je peux vous aider ? | can I help you?
