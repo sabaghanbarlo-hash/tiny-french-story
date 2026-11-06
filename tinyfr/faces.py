@@ -15,16 +15,16 @@ SKIN = (253, 227, 203)
 INK = (92, 52, 56)
 MOUTH = (128, 48, 62)
 TONGUE = (238, 128, 140)
-HAIR = {"Adrien": dict(main=(247, 208, 120), dark=(226, 170, 84), light=(255, 238, 176), brow=(206, 154, 88)),
-        "Marinette": dict(main=(50, 68, 122), dark=(34, 46, 92), light=(92, 112, 170), brow=(34, 46, 92), tie=(206, 54, 64)),
+HAIR = {"Adrien": dict(main=(190, 104, 54), dark=(150, 78, 40), light=(232, 150, 92), brow=(150, 78, 40)),
+        "Marinette": dict(main=(92, 48, 84), dark=(62, 32, 58), light=(140, 88, 128), brow=(62, 32, 58), tie=(238, 176, 60), iris=(60, 116, 110)),
         "Alia": dict(main=(145, 62, 48), dark=(105, 42, 38), light=(205, 112, 78), brow=(105, 42, 38), tie=(205, 153, 54)),
         "Nino": dict(main=(82, 53, 39), dark=(58, 38, 31), light=(133, 91, 65), brow=(58, 38, 31), iris=(75, 142, 105)),
         "Chloé": dict(main=(151, 105, 67), dark=(111, 74, 48), light=(207, 161, 111), brow=(111, 74, 48), tie=(181, 157, 224)),
         "Lucas": dict(main=(35, 31, 34), dark=(20, 18, 21), light=(83, 73, 75), brow=(20, 18, 21)),
-        "Cat": dict(main=(247, 190, 82), dark=(220, 151, 55), light=(255, 218, 135), brow=(220, 151, 55), iris=(112, 132, 82)),
-        "Bugaboo": dict(main=(48, 61, 112), dark=(34, 44, 92), light=(76, 91, 145), brow=(34, 44, 92), tie=(225, 45, 52), iris=(105, 75, 78))}
+        "Cat": dict(main=(196, 202, 214), dark=(150, 156, 172), light=(228, 232, 240), brow=(130, 136, 152), iris=(96, 150, 190)),
+        "Bugaboo": dict(main=(122, 84, 176), dark=(88, 56, 138), light=(168, 134, 214), brow=(88, 56, 138), tie=(250, 196, 70), iris=(150, 92, 60))}
 MASK = [(145, 325), (170, 290), (220, 300), (280, 325), (340, 300), (390, 290), (415, 325), (390, 385), (345, 390), (280, 370), (215, 390), (170, 385)]
-MASK_COLOR = {"Cat": (35, 31, 39), "Bugaboo": (224, 45, 52)}
+MASK_COLOR = {}   # redesign: no eye masks
 BLUSH_EXPR = ("embarrassed", "shy", "happy", "excited")
 EXPRESSIONS = ("happy", "excited", "surprised", "sad", "worried", "confused", "embarrassed", "shy")
 
@@ -108,7 +108,7 @@ def _static(name):
                 cv.line(mbez(root, ctrl, tip), h["dark"], 6)
             for root, ctrl, tip in (((340, 130), (300, 150), (268, 178)), ((240, 126), (212, 146), (196, 176))):
                 cv.line(mbez(root, ctrl, tip, 8), h["light"], 5)
-        if name == "Cat":                                              # black cat ears with charcoal inner ears
+        if False:                                              # redesign: no cat ears
             def ears(dd):
                 cv.poly([(132, 190), (150, 62), (250, 174), (268, 204), (176, 214)], (22, 21, 27), dd); cv.poly([(332, 204), (350, 174), (444, 58), (456, 190), (408, 218)], (22, 21, 27), dd)
             cv.layer(ears, (22, 21, 27), 5)
@@ -120,12 +120,14 @@ def _static(name):
             for c0 in (112, 448):
                 cv.ell((c0 - 36, 288, c0 + 36, 392), (48, 52, 60)); cv.ell((c0 - 22, 304, c0 + 22, 376), (112, 124, 132)); cv.ell((c0 - 10, 322, c0 + 10, 358), (170, 184, 190))
     else:
-        pig = name in ("Marinette", "Bugaboo")
+        pig = False   # redesign: no pigtails (Marinette: half-up bun, Bugaboo: bob)
         def back(dd):
             cv.ell((106, 106, 454, 440), g, dd)
             if name == "Alia":                 # soft bob that curls under
                 cv.poly(_lock((136, 250), (100, 360), (158, 452), 92), g, dd); cv.poly(_lock((424, 250), (460, 360), (402, 452), 92), g, dd)
                 cv.ell((112, 410, 176, 486), g, dd); cv.ell((384, 410, 448, 486), g, dd)
+            elif name == "Bugaboo":               # short rounded bob
+                cv.poly(_lock((136, 250), (108, 340), (156, 424), 92), g, dd); cv.poly(_lock((424, 250), (452, 340), (404, 424), 92), g, dd)
             elif name == "Chloé":                 # long hair falling past the shoulders
                 cv.poly(_lock((128, 250), (104, 430), (136, 590), 104), g, dd); cv.poly(_lock((432, 250), (456, 430), (424, 590), 104), g, dd)
             else:
@@ -139,6 +141,14 @@ def _static(name):
             cv.poly([(112, 270), (118, 196), (196, 124), (330, 114), (436, 186), (448, 270), (430, 250), (300, 240), (170, 255)], g, dd)
             for root, ctrl, tip, wd in locks_: cv.poly(_lock(root, ctrl, tip, wd), g, dd)
         cv.layer(front, g, 2)
+        if name == "Marinette":                                          # half-up bun with a mustard scrunchie
+            cv.layer(lambda dd: cv.ell((222, 44, 338, 152), g, dd), g, 6)
+            cv.line(_bez((250, 70), (280, 62), (312, 80), 10), h["light"], 6)
+            cv.ell((230, 132, 330, 162), h["tie"]); cv.line(_bez((236, 150), (280, 160), (324, 150), 8), (206, 140, 40), 3)
+        if name == "Bugaboo":                                            # explorer goggles pushed up on the forehead
+            cv.line([(122, 214), (206, 168), (354, 168), (438, 214)], h["tie"], 18)
+            for gx in (232, 328):
+                cv.ell((gx - 42, 128, gx + 42, 212), (240, 140, 40)); cv.ell((gx - 30, 140, gx + 30, 200), (170, 222, 240)); cv.ell((gx - 20, 148, gx - 4, 166), (255, 255, 255))
         if pig:
             def tails(dd):
                 cv.ell((80, 470, 206, 650), g, dd); cv.ell((354, 470, 480, 650), g, dd)
@@ -182,6 +192,10 @@ def _head(name, expr, mq, blink, laugh):
     bl = expr in BLUSH_EXPR
     pad = 4 if bl else 0; col = (250, 160, 168) if bl else (252, 190, 190)
     cv.ell((166 - pad, 398 - pad // 2, 210 + pad, 422 + pad // 2), col); cv.ell((350 - pad, 398 - pad // 2, 394 + pad, 422 + pad // 2), col)
+    if name == "Adrien":                                                 # freckles
+        for fx, fy in ((172, 408), (188, 402), (204, 410), (356, 410), (372, 402), (388, 408)): cv.ell((fx - 4, fy - 4, fx + 4, fy + 4), (206, 134, 98))
+    if name == "Cat":                                                    # soft whiskers
+        for sx, sy, ex2, ey2 in ((176, 404, 138, 396), (176, 416, 134, 418), (384, 404, 422, 396), (384, 416, 426, 418)): cv.line([(sx, sy), (ex2, ey2)], (150, 112, 104), 3)
     oy = 8 if expr in ("sad", "shy") else 0
     for ex in (214, 346):
         if closed or happy_eyes:
