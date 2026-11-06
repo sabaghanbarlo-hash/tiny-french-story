@@ -102,7 +102,8 @@ if CHECK:
     sys.exit(0)
 
 caption_file, base = (args + ["", ""])[:2]
-caption = open(caption_file, encoding="utf-8").read().strip()
+from tinyfr.meta import clean_caption                       # drop stray generator notes before posting
+caption = clean_caption(open(caption_file, encoding="utf-8").read())
 site = os.environ.get("PAGES_BASE", "").rstrip("/")
 url = f"{site}/videos/{base}.mp4"
 print("Waiting for the video to be reachable:", url, flush=True)
