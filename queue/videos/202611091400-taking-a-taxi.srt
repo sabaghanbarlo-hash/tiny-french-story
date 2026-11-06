@@ -1,0 +1,40 @@
+1
+00:00:00,600 --> 00:00:03,744
+Taxi ! Taxi !
+Taxi! Taxi!
+
+2
+00:00:04,244 --> 00:00:07,868
+Bonjour ! Où allez-vous ?
+Hello! Where are you going?
+
+3
+00:00:08,368 --> 00:00:11,536
+À la Gare de Lyon, s'il vous plaît.
+To Gare de Lyon, please.
+
+4
+00:00:12,036 --> 00:00:16,092
+D'accord. C'est à vingt minutes.
+Okay. It's twenty minutes away.
+
+5
+00:00:16,592 --> 00:00:19,136
+C'est combien, environ ?
+How much is it, roughly?
+
+6
+00:00:19,636 --> 00:00:21,988
+Environ vingt euros.
+Roughly twenty euros.
+
+7
+00:00:22,488 --> 00:00:24,984
+Je peux payer par carte ?
+Can I pay by card?
+
+8
+00:00:25,484 --> 00:00:29,492
+Oui, bien sûr. On y va !
+Yes, of course. Let's go!
+
