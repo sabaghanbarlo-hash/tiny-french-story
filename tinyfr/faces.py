@@ -22,9 +22,9 @@ HAIR = {"Adrien": dict(main=(247, 208, 120), dark=(226, 170, 84), light=(255, 23
         "Chloé": dict(main=(151, 105, 67), dark=(111, 74, 48), light=(207, 161, 111), brow=(111, 74, 48), tie=(181, 157, 224)),
         "Lucas": dict(main=(35, 31, 34), dark=(20, 18, 21), light=(83, 73, 75), brow=(20, 18, 21)),
         "Cat": dict(main=(247, 190, 82), dark=(220, 151, 55), light=(255, 218, 135), brow=(220, 151, 55), iris=(112, 132, 82)),
-        "Bugaboo": dict(main=(48, 61, 112), dark=(34, 44, 92), light=(76, 91, 145), brow=(34, 44, 92), tie=(225, 45, 52), iris=(105, 75, 78))}
+        "Bugaboo": dict(main=(48, 61, 112), dark=(34, 44, 92), light=(76, 91, 145), brow=(34, 44, 92), tie=(250, 196, 70), iris=(105, 75, 78))}
 MASK = [(145, 325), (170, 290), (220, 300), (280, 325), (340, 300), (390, 290), (415, 325), (390, 385), (345, 390), (280, 370), (215, 390), (170, 385)]
-MASK_COLOR = {"Cat": (35, 31, 39), "Bugaboo": (224, 45, 52)}
+MASK_COLOR = {}   # no eye masks
 BLUSH_EXPR = ("embarrassed", "shy", "happy", "excited")
 EXPRESSIONS = ("happy", "excited", "surprised", "sad", "worried", "confused", "embarrassed", "shy")
 
@@ -108,7 +108,7 @@ def _static(name):
                 cv.line(mbez(root, ctrl, tip), h["dark"], 6)
             for root, ctrl, tip in (((340, 130), (300, 150), (268, 178)), ((240, 126), (212, 146), (196, 176))):
                 cv.line(mbez(root, ctrl, tip, 8), h["light"], 5)
-        if name == "Cat":                                              # black cat ears with charcoal inner ears
+        if False:                                              # no cat ears
             def ears(dd):
                 cv.poly([(132, 190), (150, 62), (250, 174), (268, 204), (176, 214)], (22, 21, 27), dd); cv.poly([(332, 204), (350, 174), (444, 58), (456, 190), (408, 218)], (22, 21, 27), dd)
             cv.layer(ears, (22, 21, 27), 5)
@@ -148,7 +148,7 @@ def _static(name):
             if name == "Bugaboo":                                            # red bows at the pigtail roots
                 for bow in ([(151, 466), (112, 444), (120, 490), (151, 480)], [(165, 466), (202, 444), (194, 490), (165, 480)],
                             [(395, 466), (358, 444), (366, 490), (395, 480)], [(409, 466), (448, 444), (440, 490), (409, 480)]):
-                    cv.poly(bow, h["tie"]); cv.line(bow + [bow[0]], (150, 28, 39), 2)
+                    cv.poly(bow, h["tie"]); cv.line(bow + [bow[0]], (200, 150, 40), 2)
         for root, ctrl, tip in (((170, 140), (130, 220), (168, 320)), ((260, 130), (222, 180), (232, 250)), ((406, 150), (432, 220), (404, 290))):
             cv.line(_bez(root, ctrl, tip, 10), h["light"], 6)
         if pig:

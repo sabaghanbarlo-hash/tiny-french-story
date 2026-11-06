@@ -94,6 +94,8 @@ def draw(name, P):
         hx, hyp = cx + side * 34, y - 176; fx, fyp = cx + side * 34 + sw, y - 14 - lift
         d.line((hx, hyp, fx, fyp), fill=trouser, width=58); d.ellipse((hx - 29, hyp - 29, hx + 29, hyp + 29), fill=trouser)
         d.rounded_rectangle((fx - 38 + 6, fyp - 8, fx + 38 + 6, fyp + 26), radius=14, fill=c["shoe"])
+    if name == "Bugaboo":   # teal explorer cape behind the body
+        d.polygon([(cx - 100, y - 400 + lean), (cx + 100, y - 400 + lean), (cx + 168, y - 110), (cx - 168, y - 110)], fill=(26, 108, 118))
     sx0 = cx - 106; sy0 = y - 384 + lean
     bx, by = sx0 - 14 - s * 6, sy0 + 178 + s * 22
     if act == "cheer": bx, by = sx0 - 60, sy0 - 150 + 22 * math.sin(ap * 40)
@@ -104,10 +106,12 @@ def draw(name, P):
     male = name in ("Adrien", "Nino", "Lucas", "Cat")
     pw = 64 if male else 54
     d.polygon([(cx - pw, y - 408 + lean), (cx + pw, y - 408 + lean), (cx + pw - 6, y - 162), (cx - pw + 6, y - 162)], fill=top)
-    if name == "Cat":   # plain black cat suit with a gold bell collar
-        d.rounded_rectangle((cx - 44, y - 410 + lean, cx + 44, y - 388 + lean), radius=11, fill=(247, 208, 120))
-        d.ellipse((cx - 17, y - 392 + lean, cx + 17, y - 358 + lean), fill=(247, 208, 120), outline=(160, 111, 43), width=3)
-        d.line((cx - 10, y - 376 + lean, cx + 10, y - 376 + lean), fill=(92, 52, 56), width=3); d.ellipse((cx - 4, y - 372 + lean, cx + 4, y - 364 + lean), fill=(92, 52, 56))
+    if name == "Cat":   # cream hoodie with a little orange cat-face patch
+        d.ellipse((cx - 74, y - 424 + lean, cx + 74, y - 346 + lean), fill=(214, 196, 164)); d.ellipse((cx - 30, y - 404 + lean, cx + 30, y - 356 + lean), fill=skin)
+        org = (232, 138, 70); pcx, pcy = cx, y - 250
+        d.ellipse((pcx - 40, pcy - 40, pcx + 40, pcy + 40), fill=org)
+        d.polygon([(pcx - 36, pcy - 14), (pcx - 30, pcy - 56), (pcx - 6, pcy - 34)], fill=org); d.polygon([(pcx + 36, pcy - 14), (pcx + 30, pcy - 56), (pcx + 6, pcy - 34)], fill=org)
+        d.ellipse((pcx - 20, pcy - 8, pcx - 10, pcy + 4), fill=(60, 40, 40)); d.ellipse((pcx + 10, pcy - 8, pcx + 20, pcy + 4), fill=(60, 40, 40)); d.polygon([(pcx - 6, pcy + 12), (pcx + 6, pcy + 12), (pcx, pcy + 20)], fill=(200, 90, 90))
     elif name == "Nino":   # teal hoodie: darker hood ring, white strings, kangaroo pocket
         hood = (36, 118, 112)
         d.ellipse((cx - 74, y - 424 + lean, cx + 74, y - 346 + lean), fill=hood); d.ellipse((cx - 30, y - 404 + lean, cx + 30, y - 356 + lean), fill=skin)
@@ -120,8 +124,7 @@ def draw(name, P):
         d.rounded_rectangle((cx + 4, y - 352 + lean, cx + 44, y - 246 + lean), radius=10, fill=scarf)
         d.line((cx + 10, y - 316 + lean, cx + 40, y - 312 + lean), fill=sl, width=5); d.line((cx + 10, y - 284 + lean, cx + 40, y - 280 + lean), fill=sl, width=5)
     elif male:   # dark tee with simple stripes, V neck
-        for k, col in enumerate(((110, 176, 120), (150, 108, 190), (244, 202, 100))):
-            yy = y - 290 + k * 28; d.polygon([(cx - pw + 4, yy), (cx + pw - 4, yy), (cx + pw - 5, yy + 18), (cx - pw + 5, yy + 18)], fill=col)
+        d.rounded_rectangle((cx + 6, y - 280, cx + 50, y - 232), radius=8, outline=(206, 158, 52), width=4)   # chest pocket
         d.polygon([(cx - 34, y - 408 + lean), (cx + 34, y - 408 + lean), (cx, y - 336 + lean)], fill=skin)
     else:                  # white floral top, scoop neck
         d.polygon([(cx - 28, y - 408 + lean), (cx + 28, y - 408 + lean), (cx, y - 350 + lean)], fill=skin)
@@ -135,8 +138,10 @@ def draw(name, P):
         for fx, fy in ((cx - 14, y - 282), (cx + 14, y - 258), (cx - 4, y - 226)):
             if name == "Alia": d.ellipse((fx - 9, fy - 9, fx + 9, fy + 9), fill=(176, 124, 44))                       # cardigan buttons
             elif name == "Chloé": pass
-            elif name == "Bugaboo": d.ellipse((fx - 11, fy - 11, fx + 11, fy + 11), fill=(38, 38, 48))      # polka dots
+            elif name == "Bugaboo": pass
             else: d.ellipse((fx - 10, fy - 10, fx + 10, fy + 10), fill=(238, 150, 170)); d.ellipse((fx - 3, fy - 3, fx + 3, fy + 3), fill=(252, 220, 120))
+    if name == "Bugaboo":   # yellow star badge
+        d.polygon([(cx + (38 if k % 2 == 0 else 16) * math.sin(k * math.pi / 5), y - 290 + lean - (38 if k % 2 == 0 else 16) * math.cos(k * math.pi / 5)) for k in range(10)], fill=(250, 196, 70))
     d.line((cx - pw, y - 408 + lean, cx - pw + 6, y - 162), fill=c["edge"], width=5); d.line((cx + pw, y - 408 + lean, cx + pw - 6, y - 162), fill=c["edge"], width=5)
     d.line((cx - 90, y - 396 + lean, cx + 96, y - 190), fill=c["strap"], width=16)
     if name in ("Marinette", "Alia", "Chloé", "Bugaboo"):
