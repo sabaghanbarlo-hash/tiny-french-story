@@ -15,8 +15,8 @@ SKIN = (253, 227, 203)
 INK = (92, 52, 56)
 MOUTH = (128, 48, 62)
 TONGUE = (238, 128, 140)
-HAIR = {"Adrien": dict(main=(247, 208, 120), dark=(226, 170, 84), light=(255, 238, 176), brow=(206, 154, 88)),
-        "Marinette": dict(main=(50, 68, 122), dark=(34, 46, 92), light=(92, 112, 170), brow=(34, 46, 92), tie=(206, 54, 64)),
+HAIR = {"Adrien": dict(main=(120, 80, 52), dark=(92, 58, 36), light=(160, 114, 80), brow=(92, 58, 36)),
+        "Marinette": dict(main=(34, 34, 44), dark=(22, 22, 30), light=(74, 76, 98), brow=(22, 22, 30), tie=(206, 54, 64)),
         "Alia": dict(main=(145, 62, 48), dark=(105, 42, 38), light=(205, 112, 78), brow=(105, 42, 38), tie=(205, 153, 54)),
         "Nino": dict(main=(82, 53, 39), dark=(58, 38, 31), light=(133, 91, 65), brow=(58, 38, 31), iris=(75, 142, 105)),
         "Chloé": dict(main=(151, 105, 67), dark=(111, 74, 48), light=(207, 161, 111), brow=(111, 74, 48), tie=(181, 157, 224)),
@@ -24,7 +24,7 @@ HAIR = {"Adrien": dict(main=(247, 208, 120), dark=(226, 170, 84), light=(255, 23
         "Cat": dict(main=(247, 190, 82), dark=(220, 151, 55), light=(255, 218, 135), brow=(220, 151, 55), iris=(112, 132, 82)),
         "Bugaboo": dict(main=(48, 61, 112), dark=(34, 44, 92), light=(76, 91, 145), brow=(34, 44, 92), tie=(250, 196, 70), iris=(105, 75, 78))}
 MASK = [(145, 325), (170, 290), (220, 300), (280, 325), (340, 300), (390, 290), (415, 325), (390, 385), (345, 390), (280, 370), (215, 390), (170, 385)]
-MASK_COLOR = {}   # no eye masks
+MASK_COLOR = {"Cat": (74, 52, 96), "Bugaboo": (250, 196, 70)}   # hero masks
 BLUSH_EXPR = ("embarrassed", "shy", "happy", "excited")
 EXPRESSIONS = ("happy", "excited", "surprised", "sad", "worried", "confused", "embarrassed", "shy")
 
