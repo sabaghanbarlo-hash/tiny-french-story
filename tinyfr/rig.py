@@ -94,8 +94,8 @@ def draw(name, P):
         hx, hyp = cx + side * 34, y - 176; fx, fyp = cx + side * 34 + sw, y - 14 - lift
         d.line((hx, hyp, fx, fyp), fill=trouser, width=58); d.ellipse((hx - 29, hyp - 29, hx + 29, hyp + 29), fill=trouser)
         d.rounded_rectangle((fx - 38 + 6, fyp - 8, fx + 38 + 6, fyp + 26), radius=14, fill=c["shoe"])
-    if name == "Bugaboo":   # teal explorer cape behind the body
-        d.polygon([(cx - 100, y - 400 + lean), (cx + 100, y - 400 + lean), (cx + 168, y - 110), (cx - 168, y - 110)], fill=(26, 108, 118))
+    if name in ("Bugaboo", "Cat"):   # hero cape behind the body
+        d.polygon([(cx - 100, y - 400 + lean), (cx + 100, y - 400 + lean), (cx + 168, y - 110), (cx - 168, y - 110)], fill=(26, 108, 118) if name == "Bugaboo" else (176, 84, 34))
     sx0 = cx - 106; sy0 = y - 384 + lean
     bx, by = sx0 - 14 - s * 6, sy0 + 178 + s * 22
     if act == "cheer": bx, by = sx0 - 60, sy0 - 150 + 22 * math.sin(ap * 40)
@@ -106,12 +106,11 @@ def draw(name, P):
     male = name in ("Adrien", "Nino", "Lucas", "Cat")
     pw = 64 if male else 54
     d.polygon([(cx - pw, y - 408 + lean), (cx + pw, y - 408 + lean), (cx + pw - 6, y - 162), (cx - pw + 6, y - 162)], fill=top)
-    if name == "Cat":   # cream hoodie with a little orange cat-face patch
-        d.ellipse((cx - 74, y - 424 + lean, cx + 74, y - 346 + lean), fill=(214, 196, 164)); d.ellipse((cx - 30, y - 404 + lean, cx + 30, y - 356 + lean), fill=skin)
-        org = (232, 138, 70); pcx, pcy = cx, y - 250
-        d.ellipse((pcx - 40, pcy - 40, pcx + 40, pcy + 40), fill=org)
-        d.polygon([(pcx - 36, pcy - 14), (pcx - 30, pcy - 56), (pcx - 6, pcy - 34)], fill=org); d.polygon([(pcx + 36, pcy - 14), (pcx + 30, pcy - 56), (pcx + 6, pcy - 34)], fill=org)
-        d.ellipse((pcx - 20, pcy - 8, pcx - 10, pcy + 4), fill=(60, 40, 40)); d.ellipse((pcx + 10, pcy - 8, pcx + 20, pcy + 4), fill=(60, 40, 40)); d.polygon([(pcx - 6, pcy + 12), (pcx + 6, pcy + 12), (pcx, pcy + 20)], fill=(200, 90, 90))
+    if name == "Cat":   # orange hero suit with a cream paw emblem and belt
+        cream = (244, 230, 206)
+        d.ellipse((cx - 26, y - 262, cx + 26, y - 214), fill=cream)
+        for px, py in ((-34, -276), (-12, -296), (12, -296), (34, -276)): d.ellipse((cx + px - 9, y + py - 9, cx + px + 9, y + py + 9), fill=cream)
+        d.rectangle((cx - pw + 4, y - 176, cx + pw - 4, y - 160), fill=cream)
     elif name == "Nino":   # teal hoodie: darker hood ring, white strings, kangaroo pocket
         hood = (36, 118, 112)
         d.ellipse((cx - 74, y - 424 + lean, cx + 74, y - 346 + lean), fill=hood); d.ellipse((cx - 30, y - 404 + lean, cx + 30, y - 356 + lean), fill=skin)
