@@ -11,6 +11,9 @@ Write ONE complete script, ready to paste into the Tiny French Studio. Do not as
 ## Content rules
 - Level A0/A1 unless the idea asks for another level. Short, natural, everyday French; correct accents, apostrophes and French spacing (Bonjour !).
 - 8-12 spoken lines for a Reel (about 60-90 seconds of story). A clear beginning, one small problem or event, and a happy ending.
+- OPENING RULE (it decides whether people keep watching): the first spoken line must already contain the phrase the viewer came for. No greeting-only opener and no small talk before the point. A greeting is fine only inside a line that also carries the key phrase (for example "Bonjour ! Un croissant, s'il vous plaît."). If the idea is about a greeting, open with the surprising native version, not the textbook one.
+- Start in the middle of the situation (a problem, a question, a surprise). Use the key phrase again naturally before the end, and let the last line echo the first so the Reel loops.
+- Title: 3-6 words, specific and useful ("Never Say Je Suis Faim", "Ordering a Crêpe"). It is shown large on screen for the first 3 seconds.
 - Every spoken line is: Speaker: French | English. The English is natural, not word for word. Only the two characters selected for this Reel speak.
 - 3-4 vocabulary items taken from the story, each with one French example. One grammar pattern with two examples. One multiple-choice quiz question (three options) that tests the story, with the answer letter and a short explanation.
 - Make the learning goal arise naturally in the dialogue; do not add vocabulary the story never uses.
