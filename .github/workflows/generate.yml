@@ -14,7 +14,7 @@ on:
         description: "Only with post=queue (optional): the exact time to post, in UTC, e.g. 2026-10-30T18:30Z. Empty = the next best slot"
         default: ""
       format:
-        description: "small = two friends chatting at a table | story = animated story"
+        description: "small = two friends chatting at a table | story = animated story | practice = short say-it-out-loud reel"
         default: "story"
 
 permissions:
@@ -39,7 +39,7 @@ jobs:
       - name: Check inputs
         run: |
           [[ "$STORY" =~ ^lessons/[A-Za-z0-9._/-]+\.txt$ ]] && [[ "$STORY" != *..* ]] || { echo "::error::Bad script path"; exit 1; }
-          case "$FORMAT" in small|story) ;; *) echo "::error::Bad format"; exit 1;; esac
+          case "$FORMAT" in small|story|practice) ;; *) echo "::error::Bad format"; exit 1;; esac
           [ -f "$STORY" ] || { echo "::error::Script file not found: $STORY"; exit 1; }
           if [ -n "$POST_AT" ]; then python3 queue_tool.py when "$POST_AT" > /dev/null || exit 1; fi
       - uses: actions/setup-python@v5
@@ -50,7 +50,7 @@ jobs:
         run: pip install -r requirements.txt
       - name: Check the script
         run: |
-          if [ "$FORMAT" = "small" ]; then python small.py --check "$STORY"; else python validate_script.py "$STORY"; fi
+          if [ "$FORMAT" = "small" ] || [ "$FORMAT" = "practice" ]; then python small.py --check "$STORY"; else python validate_script.py "$STORY"; fi
       - name: Install FFmpeg and fonts
         run: |
           if ! command -v ffmpeg >/dev/null; then
@@ -62,7 +62,7 @@ jobs:
       - name: Render video
         run: |
           mkdir -p site/videos
-          if [ "$FORMAT" = "small" ]; then python small.py "$STORY" -o site/videos; else python lesson.py "$STORY" -o site/videos; fi
+          if [ "$FORMAT" = "small" ]; then python small.py "$STORY" -o site/videos; elif [ "$FORMAT" = "practice" ]; then python practice_reel.py "$STORY" -o site/videos; else python lesson.py "$STORY" -o site/videos; fi
           rm -rf site/videos/.tmp
           export STEM="$(basename "${STORY%.txt}")"
           CAP="${STORY%.txt}.caption"
