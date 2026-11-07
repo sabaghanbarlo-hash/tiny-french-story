@@ -486,6 +486,27 @@ def make_cover(meta, lines, vocab, bg, fg):
 
 
 # ---------- build ----------
+LEAD = float(os.environ.get("LEAD_IN", "0.25"))           # silent lead-in before the first line (was 0.6s)
+LINE_GAP = float(os.environ.get("LINE_GAP", "0.3"))        # pause between spoken lines (was 0.5s)
+HOOK_SECONDS = float(os.environ.get("HOOK_SECONDS", "3.0"))  # how long the on-screen hook stays up
+
+
+def hook_banner(meta, tag):
+    """Big on-screen hook for the first seconds, so a scroller sees what the reel is about before the first line ends."""
+    maxw = W - 160
+    f = next((font(s) for s in (66, 58, 50) if len(wrap(meta["title"], font(s), maxw)) <= 2), font(50))
+    sub = font(36, False)
+    rows = wrap(meta["title"], f, maxw)[:2]
+    h = 30 + 76 * len(rows) + 64
+    img = Image.new("RGBA", (W - 80, h), (0, 0, 0, 0)); d = ImageDraw.Draw(img)
+    d.rounded_rectangle((0, 0, img.width - 1, h - 1), radius=40, fill=(255, 255, 255, 228))
+    y = 26
+    for r in rows:
+        w = d.textlength(r, font=f); d.text(((img.width - w) / 2, y), r, font=f, fill=(46, 48, 60)); y += 76
+    w = d.textlength(tag, font=sub); d.text(((img.width - w) / 2, y + 6), tag, font=sub, fill=(128, 152, 204))
+    return img
+
+
 def build(text, rate, dummy, tmp):
     meta, lines, vocab = parse_story(text)
     cast = [n.strip() for n in meta.get("cast", "").split(",") if n.strip()] or list(dict.fromkeys(ln["speaker"] for ln in lines))
@@ -502,11 +523,11 @@ def build(text, rate, dummy, tmp):
         partner = "Adrien" if cast[0] != "Adrien" else "Marinette"
         cast.append(partner)
         if partner not in CHARS: CHARS[partner] = dict(CHARS["Adrien" if partner == "Adrien" else "Marinette"])
-    chunks, t = [np.zeros(int(0.6 * SR), np.float32)], 0.6
+    chunks, t = [np.zeros(int(LEAD * SR), np.float32)], LEAD
     for i, ln in enumerate(lines):
         wav = os.path.join(tmp, f"l{i}.wav"); synth(ln["fr"], CHARS[ln["speaker"]]["voice"], wav, rate, dummy)
         x = read_wav(wav); ln["start"], ln["end"] = t, t + len(x) / SR
-        chunks += [x, np.zeros(int(0.5 * SR), np.float32)]; t = ln["end"] + 0.5
+        chunks += [x, np.zeros(int(LINE_GAP * SR), np.float32)]; t = ln["end"] + LINE_GAP
     vocab = vocab[:int(os.environ.get("MAX_VOCAB", "3"))]   # 3 key words keeps reels short (set MAX_VOCAB=5 for the old length)
     vstart, talk = t, list(lines)
     for j, v in enumerate(vocab):
@@ -533,6 +554,7 @@ def build(text, rate, dummy, tmp):
     n = int(total * FPS); mouth = mouth_levels(audio, n)
     bg, fg = make_scene(meta["scene"], meta)
     cards = [line_card(l) for l in lines]; vcards = [vocab_card(vocab, j) for j in range(len(vocab))]
+    banner = hook_banner(meta, "Say it like a French person")
     pills = {(nm, a): pill(nm, CHARS[nm]["accent"] if a else (226, 214, 206), (255, 255, 255) if a else (130, 112, 108)) for nm in cast for a in (0, 1)}
 
     def frame(i):
@@ -559,6 +581,12 @@ def build(text, rate, dummy, tmp):
             if f < 1:
                 card = card.copy(); card.putalpha(card.getchannel("A").point(lambda v: int(v * f)))
             fr.paste(card, (20, CARD_Y - 40 + dy), card)
+        if tt < HOOK_SECONDS:
+            a = min(1.0, tt / 0.15, (HOOK_SECONDS - tt) / 0.35)
+            if a > 0:
+                b = banner if a >= 1 else banner.copy()
+                if a < 1: b.putalpha(b.getchannel("A").point(lambda v: int(v * a)))
+                fr.paste(b, (40, 130), b)
         return fr.convert("RGB")
 
     return meta, lines, vocab, audio, n, frame
