@@ -103,7 +103,13 @@ def build(text, rate, dummy, tmp):
                 fr.paste(b, (40, 130), b)
         return fr.convert("RGB")
 
-    return meta, lines, audio, n, frame
+    return meta, lines, vocab, audio, n, frame
+
+
+def caption(meta, vocab):
+    k = vocab[0]
+    out = f"{meta['title']} 🇫🇷\n\nSay it out loud:\n• {k['fr']} — {k['en']}\n"
+    return out + "\nSend this to a friend who is learning French 💌\nSmall steps. Big dreams.\n\n#learnfrench #frenchforbeginners #french #frenchlanguage #frenchlesson #languagelearning #tinyfrench"
 
 
 def main():
@@ -115,7 +121,7 @@ def main():
     stem = os.path.splitext(os.path.basename(a.script))[0]; os.makedirs(a.out, exist_ok=True)
     try:
         with tempfile.TemporaryDirectory() as tmp:
-            meta, lines, audio, n, frame = build(text, a.rate, a.dummy_audio, tmp)
+            meta, lines, vocab, audio, n, frame = build(text, a.rate, a.dummy_audio, tmp)
             wav = os.path.join(tmp, "final.wav"); sm.write_wav(wav, audio)
             mp4 = os.path.join(a.out, stem + ".mp4")
             p = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-i", wav,
@@ -128,6 +134,18 @@ def main():
                 sys.exit("::error::FFmpeg failed while encoding the video.")
     except sm.ScriptProblem as e:
         print("::error title=Script problem::" + str(e)); sys.exit(1)
+    cover_png = os.path.join(a.out, stem + ".cover.png")
+    try:
+        cbg, cfg = sm.cover_scene(meta["scene"], meta); sm.make_cover(meta, lines, vocab, cbg, cfg).save(cover_png)
+    except Exception as e:   # never lose a finished video over a thumbnail
+        print(f"::warning::Could not draw the cover ({e}); skipping it.")
+    with open(os.path.join(a.out, stem + ".srt"), "w", encoding="utf-8") as f:
+        for i, l in enumerate(lines, 1):
+            f.write(f"{i}\n{sm.srt_time(l['start'])} --> {sm.srt_time(l['end'])}\n{l['fr']}\n{l['en']}\n\n")
+    open(os.path.join(a.out, stem + ".caption.txt"), "w", encoding="utf-8").write(caption(meta, vocab))
+    import json
+    json.dump(dict(title=meta["title"], episode=meta["episode"], scene=meta["scene"], seconds=round(n / FPS, 1), width=W, height=H, fps=FPS, lines=len(lines), vocab=len(vocab)),
+              open(os.path.join(a.out, stem + ".json"), "w", encoding="utf-8"), ensure_ascii=False)
     print(f"Wrote {mp4} ({n / FPS:.1f}s)")
 
 
