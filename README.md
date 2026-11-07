@@ -50,3 +50,12 @@ Every Small video now gets its own designed cover (`<name>.cover.png`, and the `
 - Want a shorter title on the thumbnail? Add a line `cover: Meet Adrien` to the script (the real title is still used everywhere else).
 - Preview only the cover in a second, no voices or video needed: `python small.py lessons/small/01-meeting-for-the-first-time.txt --cover cover.png`
 - If the cover ever fails to draw, the video is still made and a frame from it is used instead (a warning shows in the job log).
+
+## Practice reels (side generator)
+A second, shorter format that lives next to the original system (nothing above changes). About 20 seconds: big hook, 3 short lines, "Your turn! Say it out loud!" with a 3-2-1 countdown, Adrien says the phrase, then "Save this / send it to a study buddy". No vocab recap.
+
+1. Add a file in `practice/` using the normal Small story format (the FIRST `vocab:` line is the phrase to practise), e.g. `practice/01-introduce-yourself.txt`.
+2. Actions -> *Practice reel (side generator)* -> Run workflow (story path or `all`).
+3. Download the MP4 from the run's *practice-videos* artifact. It does not post to Instagram or join the queue.
+
+Local run: `python practice_reel.py practice/01-introduce-yourself.txt -o output/practice`
