@@ -44,7 +44,7 @@ select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;f
 <main>
 <h1>Tiny <span>French</span> · Video Studio</h1>
 <p class="sub">Paste a script, press the button, get a Reel. <a href="queue.html">See the queue →</a></p>
-<div class="seg"><button id="mSmall" type="button">Small</button><button id="mStory" type="button">Story</button></div>
+<div class="seg"><button id="mSmall" type="button">Small</button><button id="mStory" type="button">Story</button><button id="mPractice" type="button">Practice</button></div>
 <p class="modehint" id="modeHint"></p>
 
 <div class="card">
@@ -164,12 +164,23 @@ vocab: enchanté / enchantée | nice to meet you
 vocab: s'il te plaît | please
 vocab: merci beaucoup | thank you very much
 `;
+const SAMPLE_PRACTICE=`title: Introduce yourself in French in 10 seconds
+episode: 1
+scene: cafe
+
+Adrien: Bonjour ! | Hello!
+Marinette: Moi, c'est Marinette. | I'm Marinette.
+Adrien: Enchanté ! | Nice to meet you!
+
+vocab: Enchanté | on-shan-TAY | Nice to meet you
+`;
 const HINTS={small:'Choose two characters above; they sit in a place and chat. One line per speaker using the two characters selected above, for example <code>Alia: Bonjour ! | Hello!</code> (optional third part = pronunciation). End with up to 5 <code>vocab: bonjour | hello</code> lines. Scenes: cafe, bakery, park, classroom, station, store, restaurant, market, library, beach, apartment, airport, museum, street (leave scene out and it picks one from your words). Errors show the exact line.',story:"Easiest: write the same plain dialogue as Small (<code>title:</code>, optional <code>scene:</code>, dialogue lines using the selected characters, <code>vocab:</code> lines) and Story directs it for you: it picks the place from what they talk about, walks them to the counter/table/bench, and adds reactions. Or hand-direct it: use the sample as your template: <code>title:</code>, <code>scene:</code>, then a <code>[story]</code> section with lines like <code>Marinette: Bonjour ! | Hello!</code> and stage directions like <code>&gt; Marinette walks to counter</code>. Characters: Adrien, Marinette, Alia, Nino, Chloé, Lucas. Add <code>[vocab]</code>, <code>[grammar]</code>, <code>[quiz]</code> sections as in the sample. Errors show the exact line."};
-const MODEHINT={small:"Small: two friends sitting and chatting, like Tiny Japanese.",story:"Story: animated scenes. Paste plain dialogue and it directs the scene, or hand-direct with a [story] section."};
-let MODE=get("tfs_mode")==="story"?"story":"small";
+const MODEHINT={practice:"Practice: a short (~20 s) reel. Big hook, 3 quick lines, then the viewer says the phrase out loud during a 3-2-1 countdown. No vocab recap.",small:"Small: two friends sitting and chatting, like Tiny Japanese.",story:"Story: animated scenes. Paste plain dialogue and it directs the scene, or hand-direct with a [story] section."};
+HINTS.practice='Short practice reel (~20 seconds). Write <code>title:</code> (it becomes the big hook, e.g. "Introduce yourself in French in 10 seconds"), optional <code>scene:</code>, then about 3 short dialogue lines like <code>Adrien: Bonjour ! | Hello!</code>, then ONE <code>vocab: French | pronunciation | English</code> line: that phrase is what the viewer practises. Choose two characters above.';
+let MODE=["story","practice"].includes(get("tfs_mode"))?get("tfs_mode"):"small";
 const KEY=m=>"tfs_script_"+m;
-function applyMode(m,save){if(save)set(KEY(MODE),$("script").value);MODE=m;set("tfs_mode",m);$("mSmall").classList.toggle("on",m==="small");$("mStory").classList.toggle("on",m==="story");$("script").value=get(KEY(m))||(m==="small"?SAMPLE_SMALL:SAMPLE_STORY);$("hint").innerHTML=HINTS[m];$("modeHint").textContent=MODEHINT[m]}
-$("mSmall").onclick=()=>applyMode("small",true);$("mStory").onclick=()=>applyMode("story",true);
+function applyMode(m,save){if(save)set(KEY(MODE),$("script").value);MODE=m;set("tfs_mode",m);$("mSmall").classList.toggle("on",m==="small");$("mStory").classList.toggle("on",m==="story");$("mPractice").classList.toggle("on",m==="practice");$("script").value=get(KEY(m))||(m==="small"?SAMPLE_SMALL:m==="practice"?SAMPLE_PRACTICE:SAMPLE_STORY);$("hint").innerHTML=HINTS[m];$("modeHint").textContent=MODEHINT[m]}
+$("mSmall").onclick=()=>applyMode("small",true);$("mStory").onclick=()=>applyMode("story",true);$("mPractice").onclick=()=>applyMode("practice",true);
 $("script").addEventListener("input",()=>set(KEY(MODE),$("script").value));
 applyMode(MODE,false);
 $("token").value=get("tjv_token");
@@ -218,7 +229,8 @@ function applyCastSelection(source){
   return text;
 }
 function check(text){
-  if(MODE==="small"){
+  if(MODE==="practice"&&!/^vocab\s*:/im.test(text))throw new Error("Add one vocab: French | pronunciation | English line: it is the phrase people practise.");
+  if(MODE==="small"||MODE==="practice"){
     if(!/^title\s*:\s*\S/im.test(text))throw new Error("Add a title: line at the top (see the sample).");
     if(!/^(Adrien|Marinette|Alia|Nino|Chloé|Lucas|Cat|Bugaboo)\s*:/im.test(text))throw new Error("Add dialogue lines like Adrien: Bonjour ! | Hello! (see the sample).");
     if(text.length>8000)throw new Error("The script is too long (limit 8,000 characters for Small).");
