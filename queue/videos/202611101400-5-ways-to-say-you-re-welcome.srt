@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:03,346
+Voilà ton café, Adrien.
+Here's your coffee, Adrien.
+
+2
+00:00:03,646 --> 00:00:05,710
+Merci beaucoup !
+Thank you very much!
+
+3
+00:00:06,010 --> 00:00:07,954
+Je t'en prie !
+You're welcome!
+
+4
+00:00:08,254 --> 00:00:10,534
+C'est vraiment gentil !
+That's really kind!
+
+5
+00:00:10,834 --> 00:00:13,642
+De rien, c'est normal.
+It's nothing, it's normal.
+
+6
+00:00:13,942 --> 00:00:16,078
+Merci mille fois !
+A thousand thanks!
+
+7
+00:00:16,378 --> 00:00:18,610
+Il n'y a pas de quoi !
+Don't mention it!
+
+8
+00:00:18,910 --> 00:00:20,998
+Tu es la meilleure !
+You're the best!
+
