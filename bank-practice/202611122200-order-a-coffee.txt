@@ -1,0 +1,9 @@
+title: Order a coffee in French in 10 seconds
+episode: 4
+scene: cafe
+
+Adrien: Qu'est-ce que vous désirez ? | What would you like?
+Marinette: Un café, s'il vous plaît. | A coffee, please.
+Adrien: Voilà ! | Here you go!
+
+vocab: Un café, s'il vous plaît | uh ka-FAY seel voo PLAY | A coffee, please
