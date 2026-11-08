@@ -1,0 +1,9 @@
+title: Never say this in the evening in French
+episode: 7
+scene: market
+
+Adrien: Bonne journée ! | Have a nice day! (at night!)
+Marinette: Pas ce soir ! | Not tonight!
+Marinette: Bonne soirée ! | Have a nice evening!
+
+vocab: Bonne soirée | bun swah-RAY | Have a nice evening
