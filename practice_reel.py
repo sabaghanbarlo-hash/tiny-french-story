@@ -18,6 +18,30 @@ W, H, FPS, SR = sm.W, sm.H, sm.FPS, sm.SR
 HOOK = 2.0
 
 
+RED, GREEN = (214, 83, 79), (79, 154, 110)
+
+
+def badge(img, kind):
+    """Sticker in the top-right corner of a card: red X (mistake) or green check (correct)."""
+    d = ImageDraw.Draw(img); cx, cy, r = img.width - 100, 44, 40
+    d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=RED if kind == "x" else GREEN, outline=(255, 255, 255, 255), width=5)
+    if kind == "x":
+        d.line((cx - 15, cy - 15, cx + 15, cy + 15), fill=(255, 255, 255, 255), width=10); d.line((cx - 15, cy + 15, cx + 15, cy - 15), fill=(255, 255, 255, 255), width=10)
+    else:
+        d.line([(cx - 18, cy + 1), (cx - 5, cy + 14), (cx + 18, cy - 14)], fill=(255, 255, 255, 255), width=10, joint="curve")
+    return img
+
+
+def fcard(tag, color, main, sub, en, main_color, kind):
+    maxw = 840
+    big = next((sm.font(s) for s in (64, 58, 52, 46) if len(sm.wrap(main, sm.font(s), maxw)) <= 2), sm.font(46))
+    parts = [(t, big, main_color, 80) for t in sm.wrap(main, big, maxw)]
+    if sub:
+        parts += [("", None, None, 10)] + [(t, sm.font(36, False), (128, 152, 204), 48) for t in sm.wrap(sub, sm.font(36, False), maxw)]
+    parts += [("", None, None, 16)] + [(t, sm.font(40, False), (84, 86, 96), 54) for t in sm.wrap(en, sm.font(40, False), maxw)]
+    return badge(sm.card_image(tag, color, parts), kind)
+
+
 def silence(sec):
     return np.zeros(int(sec * SR), np.float32)
 
@@ -30,8 +54,11 @@ def ring(n, f):
     return im
 
 
-def build(text, rate, dummy, tmp):
+def build(text, rate, dummy, tmp, style="practice"):
     meta, lines, vocab = sm.parse_story(text)
+    mistake = style == "mistake"
+    if mistake and len(lines) < 2:
+        raise sm.ScriptProblem("Mistake & fix needs at least 2 lines: first the MISTAKE, then the correction.")
     if not vocab:
         raise sm.ScriptProblem("Add a 'vocab: French | pronunciation | English' line: it is the phrase the viewer practises.")
     key = vocab[0]
@@ -44,6 +71,7 @@ def build(text, rate, dummy, tmp):
     if len(cast) == 1:
         cast.append("Adrien" if cast[0] != "Adrien" else "Marinette")
     voice = lambda nm: CHARS[nm]["voice"]
+    ks = lines[-1]["speaker"] if mistake else cast[0]   # who says the key phrase: the one who corrects
     chunks, t = [silence(0.15)], 0.15
     for i, ln in enumerate(lines):
         wav = os.path.join(tmp, f"l{i}.wav"); sm.synth(ln["fr"], voice(ln["speaker"]), wav, rate, dummy)
@@ -51,24 +79,30 @@ def build(text, rate, dummy, tmp):
         chunks += [x, silence(0.25)]; t = ln["end"] + 0.25
     talk = list(lines)
     aria = "en-US-AriaNeural"
-    wav = os.path.join(tmp, "turn.wav"); sm.synth("Your turn! Say it out loud!", aria, wav, "+5%", dummy, lang="en")
+    wav = os.path.join(tmp, "turn.wav"); sm.synth("Now you try! Say it the right way!" if mistake else "Your turn! Say it out loud!", aria, wav, "+5%", dummy, lang="en")
     x = sm.read_wav(wav); turn0 = t; chunks += [x, silence(0.3)]; t += len(x) / SR + 0.3
     cd0 = t; chunks.append(silence(3.0)); t += 3.0
-    wav = os.path.join(tmp, "key.wav"); sm.synth(key["fr"], voice(cast[0]), wav, "-20%", dummy)
-    x = sm.read_wav(wav); key0 = t; talk.append(dict(speaker=cast[0], start=t, end=t + len(x) / SR)); chunks += [x, silence(0.3)]; t += len(x) / SR + 0.3
-    wav = os.path.join(tmp, "end.wav"); sm.synth("Perfect! Save this, and send it to a study buddy.", aria, wav, "+5%", dummy, lang="en")
+    wav = os.path.join(tmp, "key.wav"); sm.synth(key["fr"], voice(ks), wav, "-20%", dummy)
+    x = sm.read_wav(wav); key0 = t; talk.append(dict(speaker=ks, start=t, end=t + len(x) / SR)); chunks += [x, silence(0.3)]; t += len(x) / SR + 0.3
+    wav = os.path.join(tmp, "end.wav"); sm.synth("Now you will not make that mistake! Save this, and send it to a friend." if mistake else "Perfect! Save this, and send it to a study buddy.", aria, wav, "+5%", dummy, lang="en")
     x = sm.read_wav(wav); end0 = t; chunks += [x, silence(0.6)]; t += len(x) / SR + 0.6
     audio = np.concatenate(chunks); audio = audio / max(0.01, np.abs(audio).max()) * 0.9
     n = int(t * FPS); mouth = sm.mouth_levels(audio, n)
     bg, fg = sm.make_scene(meta["scene"], meta)
     cards = [sm.line_card(l) for l in lines]
+    if mistake:
+        w0, c0 = lines[0], lines[-1]
+        cards[0] = fcard("Oops! Do not say this", RED, w0["fr"], w0["pron"], w0["en"], RED, "x")
+        cards[-1] = fcard("Say this instead", GREEN, c0["fr"], c0["pron"], c0["en"], (46, 48, 60), "ok")
     pt = [(key["fr"], sm.font(76), (46, 48, 60), 100)]
     if key["pron"]:
         pt.append((key["pron"], sm.font(44, False), (128, 152, 204), 62))
     pt.append((key["en"], sm.font(46, False), (84, 86, 96), 64))
     turn_card = sm.card_image("Your turn!", sm.BRAND, pt, min_h=420)
     done_card = sm.card_image("Parfait!", (79, 154, 110), pt, min_h=420)
-    cta_card = sm.card_image("Tiny French", sm.BRAND, [("Save this for later", sm.font(60), (46, 48, 60), 90), ("Send it to a study buddy", sm.font(44, False), (118, 122, 136), 70)], min_h=380)
+    if mistake:
+        badge(turn_card, "ok"); badge(done_card, "ok")
+    cta_card = sm.card_image("Tiny French", sm.BRAND, ([("Save this so you never", sm.font(56), (46, 48, 60), 80), ("make this mistake again", sm.font(56), (46, 48, 60), 90), ("Send it to a study buddy", sm.font(40, False), (118, 122, 136), 64)] if mistake else [("Save this for later", sm.font(60), (46, 48, 60), 90), ("Send it to a study buddy", sm.font(44, False), (118, 122, 136), 70)]), min_h=380)
     banner = sm.hook_banner(meta, "Tiny French")
     pills = {(nm, a): sm.pill(nm, CHARS[nm]["accent"] if a else (226, 214, 206), (255, 255, 255) if a else (130, 112, 108)) for nm in cast for a in (0, 1)}
 
@@ -106,8 +140,10 @@ def build(text, rate, dummy, tmp):
     return meta, lines, vocab, audio, n, frame
 
 
-def caption(meta, vocab):
+def caption(meta, vocab, lines=None, style="practice"):
     k = vocab[0]
+    if style == "mistake" and lines:
+        return (f"{meta['title']} 🇫🇷\n\nDo not say: {lines[0]['fr']} 😅\nSay this instead: {k['fr']} — {k['en']}\n\nSend this to a friend who is learning French 💌\nSmall steps. Big dreams.\n\n#learnfrench #frenchmistakes #frenchforbeginners #french #frenchlanguage #languagelearning #tinyfrench")
     out = f"{meta['title']} 🇫🇷\n\nSay it out loud:\n• {k['fr']} — {k['en']}\n"
     return out + "\nSend this to a friend who is learning French 💌\nSmall steps. Big dreams.\n\n#learnfrench #frenchforbeginners #french #frenchlanguage #frenchlesson #languagelearning #tinyfrench"
 
@@ -115,13 +151,13 @@ def caption(meta, vocab):
 def main():
     ap = argparse.ArgumentParser(description="Tiny French practice-style reel")
     ap.add_argument("script"); ap.add_argument("-o", "--out", default="output/practice")
-    ap.add_argument("--rate", default="-10%"); ap.add_argument("--dummy-audio", action="store_true", help="TEST ONLY: tones instead of voices")
+    ap.add_argument("--rate", default="-10%"); ap.add_argument("--dummy-audio", action="store_true", help="TEST ONLY: tones instead of voices"); ap.add_argument("--style", default="practice", choices=["practice", "mistake"])
     a = ap.parse_args()
     text = open(a.script, encoding="utf-8").read()
     stem = os.path.splitext(os.path.basename(a.script))[0]; os.makedirs(a.out, exist_ok=True)
     try:
         with tempfile.TemporaryDirectory() as tmp:
-            meta, lines, vocab, audio, n, frame = build(text, a.rate, a.dummy_audio, tmp)
+            meta, lines, vocab, audio, n, frame = build(text, a.rate, a.dummy_audio, tmp, a.style)
             wav = os.path.join(tmp, "final.wav"); sm.write_wav(wav, audio)
             mp4 = os.path.join(a.out, stem + ".mp4")
             p = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-i", wav,
@@ -142,7 +178,7 @@ def main():
     with open(os.path.join(a.out, stem + ".srt"), "w", encoding="utf-8") as f:
         for i, l in enumerate(lines, 1):
             f.write(f"{i}\n{sm.srt_time(l['start'])} --> {sm.srt_time(l['end'])}\n{l['fr']}\n{l['en']}\n\n")
-    open(os.path.join(a.out, stem + ".caption.txt"), "w", encoding="utf-8").write(caption(meta, vocab))
+    open(os.path.join(a.out, stem + ".caption.txt"), "w", encoding="utf-8").write(caption(meta, vocab, lines, a.style))
     import json
     json.dump(dict(title=meta["title"], episode=meta["episode"], scene=meta["scene"], seconds=round(n / FPS, 1), width=W, height=H, fps=FPS, lines=len(lines), vocab=len(vocab)),
               open(os.path.join(a.out, stem + ".json"), "w", encoding="utf-8"), ensure_ascii=False)
