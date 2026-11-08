@@ -1,0 +1,9 @@
+title: Introduce yourself in French in 10 seconds
+episode: 1
+scene: cafe
+
+Adrien: Bonjour ! | Hello!
+Marinette: Moi, c'est Marinette. | I'm Marinette.
+Adrien: Enchanté ! | Nice to meet you!
+
+vocab: Enchanté | on-shan-TAY | Nice to meet you
