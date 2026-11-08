@@ -1,0 +1,88 @@
+name: Daily refill (Practice and Mistake & fix)
+
+# Keeps the queue about 3 days ahead with the Practice and Mistake & fix reels from bank-practice/ and bank-mistake/.
+# Every script is named YYYYMMDDHHMM-name.txt; the prefix is the UTC time it posts. Practice reels post at 22:00 UTC,
+# Mistake & fix reels at 06:00 UTC (your normal reels keep their own slot). Safe to run by hand any time.
+
+on:
+  schedule:
+    - cron: "40 5 * * *"
+  workflow_dispatch:
+    inputs:
+      days_ahead:
+        description: "Render every script that posts within this many days"
+        default: "3"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: tiny-french-render
+  cancel-in-progress: false
+
+jobs:
+  refill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      DAYS_AHEAD: ${{ github.event.inputs.days_ahead || '3' }}
+      STRICT_VOICE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+      - name: Pick the scripts that are due
+        id: plan
+        run: python refill_extra.py
+      - name: Install FFmpeg and fonts
+        if: ${{ steps.plan.outputs.plan != '' }}
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -y -o Acquire::Retries=3 || true
+            sudo apt-get install -y --no-install-recommends ffmpeg
+          fi
+          sudo apt-get install -y --no-install-recommends fonts-dejavu-core fonts-liberation || true
+      - name: Render, check and queue each Reel
+        id: render
+        if: ${{ steps.plan.outputs.plan != '' }}
+        env:
+          PLAN: ${{ steps.plan.outputs.plan }}
+        run: |
+          failed=0; queued=0
+          mkdir -p site/videos lessons/web
+          for item in $PLAN; do
+            STYLE="${item%%:*}"; rest="${item#*:}"; STEM="${rest%%=*}"; WHEN="${rest#*=}"
+            echo "== $STYLE $STEM -> posts $WHEN"
+            SRC="bank-$STYLE/$STEM.txt"
+            if python practice_reel.py "$SRC" -o site/videos --style "$STYLE" \
+               && rm -rf site/videos/.tmp \
+               && python -c "import sys; from PIL import Image; s = sys.argv[1]; Image.open(f'site/videos/{s}.cover.png').convert('RGB').save(f'site/videos/{s}.jpg', quality=92)" "$STEM" \
+               && python queue_tool.py add --stem "$STEM" --media-dir site/videos --format "$STYLE" --post-at "$WHEN"
+            then
+              git mv "$SRC" "lessons/web/$STEM.txt"
+              queued=$((queued+1))
+            else
+              echo "::error::$STEM failed to render or queue. It stays in bank-$STYLE/ and is retried on the next run."
+              failed=$((failed+1))
+            fi
+          done
+          echo "queued=$queued" >> "$GITHUB_OUTPUT"
+          { echo "### Practice / Mistake refill"; echo "Queued $queued, failed $failed"; echo; python queue_tool.py show; } >> "$GITHUB_STEP_SUMMARY"
+          [ "$failed" -eq 0 ]
+      - name: Save the queue
+        if: ${{ always() && steps.plan.outputs.plan != '' }}
+        run: |
+          git config user.name "tiny-french-bot"; git config user.email "tiny-french-bot@users.noreply.github.com"
+          git add -A queue bank-practice bank-mistake lessons/web
+          git commit -m "Refill queue (practice and mistake)" || exit 0
+          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && break; sleep 5; done
+      - name: Refresh the website (queued videos)
+        if: ${{ always() && steps.render.outputs.queued != '' && steps.render.outputs.queued != '0' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-site.yml --ref main
