@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:03,562
+Tu as des frères et sœurs, Marinette ?
+Do you have brothers and sisters, Marinette?
+
+2
+00:00:03,862 --> 00:00:06,982
+Oui, j'ai un frère et une sœur.
+Yes, I have a brother and a sister.
+
+3
+00:00:07,282 --> 00:00:09,418
+Ils s'appellent comment ?
+What are their names?
+
+4
+00:00:09,718 --> 00:00:13,270
+Mon frère s'appelle Paul et ma sœur s'appelle Léa.
+My brother is called Paul and my sister is called Léa.
+
+5
+00:00:13,570 --> 00:00:15,682
+Ils ont quel âge ?
+How old are they?
+
+6
+00:00:15,982 --> 00:00:18,982
+Paul a douze ans et Léa a huit ans.
+Paul is twelve and Léa is eight.
+
+7
+00:00:19,282 --> 00:00:22,234
+Moi, je suis fils unique.
+Me, I'm an only child.
+
+8
+00:00:22,534 --> 00:00:25,534
+Ma famille est grande et bruyante !
+My family is big and noisy!
+
