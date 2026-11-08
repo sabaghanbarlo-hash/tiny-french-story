@@ -1,0 +1,9 @@
+title: Count to three in French in 10 seconds
+episode: 7
+scene: park
+
+Adrien: Un, deux, trois ! | One, two, three!
+Marinette: Quatre, cinq, six ! | Four, five, six!
+Adrien: Bravo ! | Well done!
+
+vocab: Un, deux, trois | uh, duh, trwah | One, two, three
