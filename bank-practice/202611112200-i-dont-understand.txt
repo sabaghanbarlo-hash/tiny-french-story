@@ -1,0 +1,9 @@
+title: Say I don't understand in French
+episode: 3
+scene: classroom
+
+Adrien: Tu comprends le français ? | Do you understand French?
+Marinette: Pardon, je ne comprends pas. | Sorry, I don't understand.
+Adrien: Pas de problème ! | No problem!
+
+vocab: Je ne comprends pas | zhuh nuh kom-PRAHN pah | I don't understand
