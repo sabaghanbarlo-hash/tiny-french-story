@@ -8,7 +8,7 @@ Story files use the normal Small format; the FIRST `vocab:` line is the practice
 """
 import argparse, math, os, re, subprocess, sys, tempfile
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import small as sm  # noqa: E402
@@ -18,17 +18,28 @@ W, H, FPS, SR = sm.W, sm.H, sm.FPS, sm.SR
 HOOK = 2.0
 
 
+BRAND = sm.BRAND
 RED, GREEN = (214, 83, 79), (79, 154, 110)
 
 
-def badge(img, kind):
-    """Sticker in the top-right corner of a card: red X (mistake) or green check (correct)."""
-    d = ImageDraw.Draw(img); cx, cy, r = img.width - 100, 44, 40
-    d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=RED if kind == "x" else GREEN, outline=(255, 255, 255, 255), width=5)
+def sticker(kind, size=88):
+    """Round sticker: red X (mistake), green check (correct) or a brand-coloured microphone (say it out loud)."""
+    s = Image.new("RGBA", (size, size), (0, 0, 0, 0)); d = ImageDraw.Draw(s); c = size // 2
+    d.ellipse((2, 2, size - 3, size - 3), fill={"x": RED, "ok": GREEN}.get(kind, BRAND), outline=(255, 255, 255, 255), width=5)
+    w = (255, 255, 255, 255)
     if kind == "x":
-        d.line((cx - 15, cy - 15, cx + 15, cy + 15), fill=(255, 255, 255, 255), width=10); d.line((cx - 15, cy + 15, cx + 15, cy - 15), fill=(255, 255, 255, 255), width=10)
-    else:
-        d.line([(cx - 18, cy + 1), (cx - 5, cy + 14), (cx + 18, cy - 14)], fill=(255, 255, 255, 255), width=10, joint="curve")
+        d.line((c - 15, c - 15, c + 15, c + 15), fill=w, width=10); d.line((c - 15, c + 15, c + 15, c - 15), fill=w, width=10)
+    elif kind == "ok":
+        d.line([(c - 18, c + 1), (c - 5, c + 14), (c + 18, c - 14)], fill=w, width=10, joint="curve")
+    else:  # microphone
+        d.rounded_rectangle((c - 9, c - 24, c + 9, c + 6), radius=9, fill=w)
+        d.arc((c - 16, c - 14, c + 16, c + 16), 20, 160, fill=w, width=5)
+        d.line((c, c + 16, c, c + 25), fill=w, width=5); d.line((c - 9, c + 25, c + 9, c + 25), fill=w, width=5)
+    return s
+
+
+def badge(img, kind):
+    s = sticker(kind); img.paste(s, (img.width - 144, 0), s)
     return img
 
 
@@ -40,6 +51,63 @@ def fcard(tag, color, main, sub, en, main_color, kind):
         parts += [("", None, None, 10)] + [(t, sm.font(36, False), (128, 152, 204), 48) for t in sm.wrap(sub, sm.font(36, False), maxw)]
     parts += [("", None, None, 16)] + [(t, sm.font(40, False), (84, 86, 96), 54) for t in sm.wrap(en, sm.font(40, False), maxw)]
     return badge(sm.card_image(tag, color, parts), kind)
+
+
+def chip_row(kind, main, small, w=840):
+    f = sm.font(46)
+    while f.size > 30 and f.getlength(main) > w - 190:
+        f = sm.font(f.size - 2)
+    im = Image.new("RGBA", (w, 112), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((0, 0, w - 1, 111), radius=52, fill=(255, 233, 231, 255) if kind == "x" else (228, 244, 234, 255))
+    s = sticker(kind, 72); im.paste(s, (18, 20), s)
+    d.text((118, 38), main, font=f, fill=RED if kind == "x" else (46, 110, 76), anchor="lm")
+    sf = sm.font(30, False)
+    while sf.size > 22 and sf.getlength(small) > w - 150:
+        sf = sm.font(sf.size - 2, False)
+    d.text((118, 80), small, font=sf, fill=(110, 96, 100), anchor="lm")
+    return im
+
+
+def make_cover(meta, lines, vocab, bg, fg, style):
+    """Professional thumbnail for the practice formats: same room and panel as the normal cover, with a format-specific badge and content."""
+    mistake = style == "mistake"; key = vocab[0]
+    img = bg.copy().convert("RGBA")
+    cast = list(dict.fromkeys(ln["speaker"] for ln in lines))[:2]
+    for idx, nm in enumerate(cast):
+        x = 16 if idx == 0 else 560; s = sprite(nm, 0, False); img.paste(s, (x, sm.CHAR_Y), s)
+    img.paste(fg, (0, sm.TABLE_TOP - 55), fg)
+    wm = sm.cover_wordmark(); img.paste(wm, ((W - wm.width) // 2, 250), wm)
+    accent = RED if mistake else BRAND
+    tf, tl, ts = sm.cover_title((meta.get("cover") or meta["title"]).strip()); lh = int(ts * 1.16)
+    extra = 2 * 112 + 24 if mistake else 96 + 58
+    body = lh * len(tl) + 34 + extra
+    pw, ph, px = 960, body + 150, 60
+    py = 1490 - ph
+    assert py > 330, "cover title too long"
+    shade = Image.new("L", (W, H), 0); ImageDraw.Draw(shade).rounded_rectangle((px, py + 12, px + pw, py + ph + 12), radius=56, fill=95)
+    shadow = Image.new("RGBA", (W, H), (120, 90, 70, 0)); shadow.putalpha(shade.filter(ImageFilter.GaussianBlur(18)))
+    img = Image.alpha_composite(img, shadow); d = ImageDraw.Draw(img)
+    d.rounded_rectangle((px, py, px + pw, py + ph), radius=56, fill=(250, 248, 243, 250))
+    ep = str(meta.get("episode", "")).strip()
+    label = "DON'T SAY THIS" if mistake else "SAY IT OUT LOUD"
+    tag = sm.pill(f"{label}  ·  LEARN FRENCH", accent)
+    img.paste(tag, (px + 44, py - tag.height // 2), tag)
+    st = sticker("x" if mistake else "mic"); img.paste(st, (px + pw - 120, py - 44), st)
+    y = py + 96
+    for ln in tl:
+        d.text((W / 2, y), ln, font=tf, fill=sm.COVER_INK, anchor="ma"); y += lh
+    d.rounded_rectangle((W / 2 - 60, y + 6, W / 2 + 60, y + 14), radius=4, fill=accent); y += 34
+    if mistake:
+        for kind, main, small in (("x", lines[0]["fr"], lines[0]["en"]), ("ok", key["fr"], key["en"])):
+            r = chip_row(kind, main, small); img.paste(r, ((W - r.width) // 2, y), r); y += 112 + 24
+    else:
+        pf = sm.font(76)
+        while pf.size > 44 and pf.getlength(key["fr"]) > pw - 120:
+            pf = sm.font(pf.size - 4)
+        d.text((W / 2, y + 4), key["fr"], font=pf, fill=BRAND, anchor="ma"); y += 96
+        sub = (key["pron"] + "  =  " if key["pron"] else "") + key["en"]
+        d.text((W / 2, y), sub, font=sm.font(38, False), fill=sm.COVER_SOFT, anchor="ma")
+    return img.convert("RGB")
 
 
 def silence(sec):
@@ -151,10 +219,13 @@ def caption(meta, vocab, lines=None, style="practice"):
 def main():
     ap = argparse.ArgumentParser(description="Tiny French practice-style reel")
     ap.add_argument("script"); ap.add_argument("-o", "--out", default="output/practice")
-    ap.add_argument("--rate", default="-10%"); ap.add_argument("--dummy-audio", action="store_true", help="TEST ONLY: tones instead of voices"); ap.add_argument("--style", default="practice", choices=["practice", "mistake"])
+    ap.add_argument("--rate", default="-10%"); ap.add_argument("--dummy-audio", action="store_true", help="TEST ONLY: tones instead of voices"); ap.add_argument("--style", default="practice", choices=["practice", "mistake"]); ap.add_argument("--cover-only", action="store_true")
     a = ap.parse_args()
     text = open(a.script, encoding="utf-8").read()
     stem = os.path.splitext(os.path.basename(a.script))[0]; os.makedirs(a.out, exist_ok=True)
+    if a.cover_only:
+        m, ls, vc = sm.parse_story(text); m["scene"] = sm.pick_scene(m, ls)
+        cb, cf = sm.cover_scene(m["scene"], m); make_cover(m, ls, vc, cb, cf, a.style).save(os.path.join(a.out, stem + ".cover.png")); return
     try:
         with tempfile.TemporaryDirectory() as tmp:
             meta, lines, vocab, audio, n, frame = build(text, a.rate, a.dummy_audio, tmp, a.style)
@@ -172,7 +243,7 @@ def main():
         print("::error title=Script problem::" + str(e)); sys.exit(1)
     cover_png = os.path.join(a.out, stem + ".cover.png")
     try:
-        cbg, cfg = sm.cover_scene(meta["scene"], meta); sm.make_cover(meta, lines, vocab, cbg, cfg).save(cover_png)
+        cbg, cfg = sm.cover_scene(meta["scene"], meta); make_cover(meta, lines, vocab, cbg, cfg, a.style).save(cover_png)
     except Exception as e:   # never lose a finished video over a thumbnail
         print(f"::warning::Could not draw the cover ({e}); skipping it.")
     with open(os.path.join(a.out, stem + ".srt"), "w", encoding="utf-8") as f:
