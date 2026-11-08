@@ -1,0 +1,9 @@
+title: Never say this to a stranger in French
+episode: 5
+scene: street
+
+Adrien: Salut, tu parles anglais ? | Hi, do you speak English? (too casual!)
+Marinette: Oh là là, non ! | Oh dear, no!
+Marinette: Excusez-moi, vous parlez anglais ? | Excuse me, do you speak English? (polite)
+
+vocab: Vous parlez anglais | voo par-lay ahn-GLAY | Do you speak English? (polite)
