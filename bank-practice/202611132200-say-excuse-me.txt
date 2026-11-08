@@ -1,0 +1,9 @@
+title: Say excuse me in French in 10 seconds
+episode: 5
+scene: station
+
+Adrien: Excusez-moi ! | Excuse me!
+Marinette: Oui ? | Yes?
+Adrien: Où est la gare ? | Where is the train station?
+
+vocab: Excusez-moi | ex-kew-zay MWAH | Excuse me
