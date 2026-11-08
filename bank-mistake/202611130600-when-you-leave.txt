@@ -1,0 +1,9 @@
+title: Do not say this when you leave in French
+episode: 4
+scene: station
+
+Adrien: Bonjour ! | Hello! (when leaving!)
+Marinette: Pas du tout ! | Not at all!
+Marinette: Au revoir ! | Goodbye!
+
+vocab: Au revoir | oh ruh-VWAHR | Goodbye
