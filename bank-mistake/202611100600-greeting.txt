@@ -1,0 +1,9 @@
+title: Never say this to greet someone in French
+episode: 1
+scene: cafe
+
+Adrien: Au revoir ! | Goodbye! (not hello!)
+Marinette: Non, non ! | No, no!
+Marinette: Bonjour ! | Hello!
+
+vocab: Bonjour | bon-ZHOOR | Hello
