@@ -1,0 +1,9 @@
+title: Say delicious in French in 10 seconds
+episode: 6
+scene: bakery
+
+Adrien: Alors, ce croissant ? | So, this croissant?
+Marinette: C'est délicieux ! | It's delicious!
+Adrien: Je suis content ! | I'm glad!
+
+vocab: C'est délicieux | say day-lee-SYUH | It's delicious
