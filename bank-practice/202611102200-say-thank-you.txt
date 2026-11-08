@@ -1,0 +1,9 @@
+title: Say thank you in French in 10 seconds
+episode: 2
+scene: bakery
+
+Adrien: Voici ton croissant. | Here's your croissant.
+Marinette: Merci beaucoup ! | Thank you very much!
+Adrien: De rien ! | You're welcome!
+
+vocab: Merci beaucoup | mair-SEE boh-KOO | Thank you very much
