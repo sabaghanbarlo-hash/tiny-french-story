@@ -1,0 +1,9 @@
+title: Never say your age like this in French
+episode: 3
+scene: classroom
+
+Adrien: Je suis vingt ans ! | I am twenty years! (wrong!)
+Marinette: Non, non ! | No, no!
+Marinette: J'ai vingt ans ! | I'm twenty! (I have twenty years)
+
+vocab: J'ai vingt ans | zhay van TAHN | I'm twenty
