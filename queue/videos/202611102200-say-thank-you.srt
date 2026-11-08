@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,526
+Voici ton croissant.
+Here's your croissant.
+
+2
+00:00:02,776 --> 00:00:04,888
+Merci beaucoup !
+Thank you very much!
+
+3
+00:00:05,138 --> 00:00:07,010
+De rien !
+You're welcome!
+
