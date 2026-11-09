@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,214
+Je suis vingt ans !
+I am twenty years! (wrong!)
+
+2
+00:00:02,464 --> 00:00:04,600
+Non, non !
+No, no!
+
+3
+00:00:04,850 --> 00:00:06,794
+J'ai vingt ans !
+I'm twenty! (I have twenty years)
+
