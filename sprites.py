@@ -13,8 +13,8 @@ CHARS = {
     "Nino": dict(voice="fr-FR-HenriNeural", accent=(54, 151, 145), x=560),
     "Chloé": dict(voice="fr-FR-DeniseNeural", accent=(181, 157, 224), x=16),
     "Lucas": dict(voice="fr-FR-HenriNeural", accent=(177, 91, 57), x=560),
-    "Cat": dict(voice="fr-FR-HenriNeural", accent=(232, 138, 70), x=16),
-    "Bugaboo": dict(voice="fr-FR-DeniseNeural", accent=(44, 150, 160), x=560),
+    "Cat": dict(voice="fr-FR-HenriNeural", accent=(96, 220, 140), x=16),
+    "Bugaboo": dict(voice="fr-FR-DeniseNeural", accent=(48, 96, 206), x=560),
 }
 
 
@@ -35,6 +35,12 @@ def lock_pts(root, ctrl, tip, width, n=14):
             w = 0
         left.append((x + nx * w, y + ny * w)); right.append((x - nx * w, y - ny * w))
     return left + right[::-1]
+
+
+def _cowl_pts():
+    """Outline of a full superhero cowl (head top plus eye mask) in the 560x760 design canvas."""
+    top = [(280 + 176 * math.cos(math.radians(a)), 292 - 190 * math.sin(math.radians(a))) for a in range(180, -1, -10)]
+    return top + [(452, 316), (436, 372), (402, 402), (346, 408), (280, 374), (214, 408), (158, 402), (124, 372), (108, 316)]
 
 
 def _eyes(d, P, S, blink, lash):
@@ -103,18 +109,23 @@ def _sprite_base(name, mouth, blink):
         put(layer(back, gold, 4))
         # body: white open jacket, black tee with rainbow stripes
         def jacket(dd):
-            poly([(112, 600), (124, 540), (160, 494), (226, 466), (334, 466), (400, 494), (436, 540), (448, 600), (452, 760), (108, 760)], (112, 130, 80), dd)
-        put(layer(jacket, (112, 130, 80), 6))
+            poly([(112, 600), (124, 540), (160, 494), (226, 466), (334, 466), (400, 494), (436, 540), (448, 600), (452, 760), (108, 760)], (44, 58, 104), dd)
+        put(layer(jacket, (44, 58, 104), 6))
         tee = [(226, 490), (334, 490), (350, 760), (210, 760)]
-        poly(tee, (236, 190, 74)); d.rounded_rectangle(P(262, 612, 320, 668), radius=int(10 * S), outline=(206, 158, 52), width=int(5 * S))
+        poly(tee, (250, 248, 244))                                                         # white shirt
         xl = lambda y: 226 - 16 * (y - 490) / 270; xr = lambda y: 334 + 16 * (y - 490) / 270
         for i, c in enumerate(()):
             y0 = 640 + i * 26; y1 = y0 + 18
             poly([(xl(y0), y0), (xr(y0), y0), (xr(y1), y1), (xl(y1), y1)], c)
-        poly([(240, 462), (320, 462), (280, 548)], SKIN)                                   # chest V
-        poly([(240, 462), (262, 470), (252, 500)], SKIN_SH)
-        poly([(214, 472), (246, 462), (238, 548), (198, 520)], (96, 114, 66)); poly([(346, 472), (314, 462), (322, 548), (362, 520)], (96, 114, 66))   # collar
-        line([(176, 540), (196, 640)], (88, 104, 60), 4); line([(384, 540), (364, 640)], (88, 104, 60), 4)
+        poly([(250, 462), (310, 462), (280, 520)], SKIN)                                   # open neck
+        poly([(236, 466), (272, 462), (284, 528), (244, 506)], (236, 234, 230)); poly([(324, 466), (288, 462), (276, 528), (316, 506)], (236, 234, 230))   # shirt collar
+        poly([(266, 522), (294, 522), (302, 546), (258, 546)], (150, 40, 62))               # tie knot
+        poly([(260, 546), (300, 546), (310, 700), (280, 730), (250, 700)], (150, 40, 62))   # burgundy tie
+        line([(270, 580), (296, 600)], (190, 80, 98), 4); line([(266, 620), (302, 640)], (190, 80, 98), 4)
+        poly([(214, 472), (246, 462), (238, 548), (198, 520)], (30, 42, 82)); poly([(346, 472), (314, 462), (322, 548), (362, 520)], (30, 42, 82))   # blazer lapels
+        poly([(352, 604), (394, 598), (396, 614), (356, 620)], (250, 248, 244))              # pocket square
+        line([(176, 540), (196, 640)], (24, 34, 66), 4); line([(384, 540), (364, 640)], (24, 34, 66), 4)
+        for by in (690, 730): ell((264, by, 280, by + 16), (210, 178, 96))                # gold buttons
         ell((130, 316, 180, 396), SKIN)                                                    # left ear
         ell((136, 154, 424, 462), SKIN)                                                    # face
         # fringe: big swoop from his right to his left
@@ -139,20 +150,20 @@ def _sprite_base(name, mouth, blink):
         put(layer(back, navy, 5))
         # body: charcoal jacket over white floral top
         def jacket(dd):
-            poly([(150, 610), (160, 548), (186, 498), (240, 466), (320, 466), (374, 498), (400, 548), (410, 610), (414, 760), (146, 760)], (122, 150, 112), dd)
-        put(layer(jacket, (122, 150, 112), 6))
-        poly([(236, 474), (324, 474), (338, 760), (222, 760)], (242, 234, 234))
+            poly([(150, 610), (160, 548), (186, 498), (240, 466), (320, 466), (374, 498), (400, 548), (410, 610), (414, 760), (146, 760)], (88, 130, 182), dd)
+        put(layer(jacket, (88, 130, 182), 6))
+        poly([(236, 474), (324, 474), (338, 760), (222, 760)], (250, 244, 232))
+        for k in range(6):                                                                 # breton stripes
+            y0 = 548 + k * 40; y1 = y0 + 18
+            poly([(236 - 14 * (y0 - 474) / 286, y0), (324 + 14 * (y0 - 474) / 286, y0), (324 + 14 * (y1 - 474) / 286, y1), (236 - 14 * (y1 - 474) / 286, y1)], (40, 52, 92))
         ell((246, 446, 314, 520), SKIN)                                                    # neck / scoop neckline
         poly([(244, 462), (316, 462), (306, 500), (254, 500)], SKIN)
-        poly([(226, 468), (252, 466), (264, 560), (240, 640), (212, 540)], (92, 112, 86)); poly([(334, 468), (308, 466), (296, 560), (320, 640), (348, 540)], (92, 112, 86))
-        d.arc(P(244, 480, 316, 560), 20, 160, fill=(120, 110, 114), width=int(3 * S))
-        for fx, fy in ((262, 640), (296, 660), (270, 690)):
-            for ang in range(5):
-                ax, ay = fx + 10 * math.cos(ang * 1.2566), fy + 10 * math.sin(ang * 1.2566)
-                ell((ax - 7, ay - 7, ax + 7, ay + 7), (238, 150, 170))
-            ell((fx - 4, fy - 4, fx + 4, fy + 4), (252, 220, 120))
-        for lx, ly, rot in ((244, 668, 1), (300, 636, -1)):
-            poly([(lx, ly), (lx + 16 * rot, ly - 8), (lx + 22 * rot, ly + 6)], (66, 80, 74))
+        poly([(226, 468), (252, 466), (264, 560), (240, 640), (212, 540)], (62, 98, 146)); poly([(334, 468), (308, 466), (296, 560), (320, 640), (348, 540)], (62, 98, 146))   # denim lapels
+        line([(220, 560), (206, 680)], (60, 96, 144), 4); line([(340, 560), (354, 680)], (60, 96, 144), 4)
+        ell((236, 484, 324, 530), (214, 64, 70))                                           # red neck scarf
+        poly([(252, 520), (308, 520), (292, 592), (280, 606), (268, 592)], (214, 64, 70))
+        for dx, dy in ((-18, 498), (0, 506), (18, 498), (-8, 548), (10, 560)): ell((280 + dx - 4, dy - 4, 280 + dx + 4, dy + 4), (250, 230, 226))
+        for by in (700, 736): ell((222, by, 240, by + 18), (214, 190, 120))               # brass buttons
         ell((136, 154, 424, 462), SKIN)
         # bangs: swept locks with a parting
         def front(dd):
@@ -335,54 +346,67 @@ def _new_character(name, mouth, blink):
         ell((410, 384, 428, 404), (232, 188, 110))                                          # tiny gold earring
 
     elif name == "Cat":
-        gold, gold_d, gold_l = (247, 192, 84), (222, 152, 56), (255, 224, 140)
-        blk, blk_l = (36, 32, 40), (74, 68, 82)
+        hair, suit, suit_d, glow, ebg = (26, 26, 36), (34, 34, 48), (20, 20, 30), (96, 220, 140), (26, 26, 36)
         def back(dd):
-            ell((112, 112, 448, 440), gold, dd)
-            for pts in (lock_pts((150, 250), (100, 300), (74, 372), 70), lock_pts((410, 250), (462, 290), (486, 352), 64), lock_pts((262, 124), (288, 76), (338, 58), 54)):
-                poly(pts, gold, dd)
-        put(layer(back, gold, 4))
-        suit, suit_d, cream = (226, 122, 52), (176, 84, 34), (244, 230, 206)
-        blob([(110, 470), (170, 470), (150, 760), (40, 760)], suit_d, 6)                     # hero cape
-        blob([(450, 470), (390, 470), (410, 760), (520, 760)], suit_d, 6)
+            ell((112, 112, 448, 440), hair, dd)
+            for pts in (lock_pts((150, 250), (100, 300), (74, 372), 70), lock_pts((410, 250), (462, 290), (486, 352), 64)):
+                poly(pts, hair, dd)
+        put(layer(back, hair, 4))
+        blob([(100, 470), (176, 470), (150, 760), (20, 760)], suit_d, 6)                     # hero cape
+        blob([(460, 470), (384, 470), (410, 760), (540, 760)], suit_d, 6)
+        line([(104, 482), (28, 752)], glow, 5); line([(456, 482), (532, 752)], glow, 5)      # glowing cape edge
         blob(BOY_BODY, suit, 6)
-        poly([(236, 470), (324, 470), (280, 540)], SKIN)
-        line([(190, 560), (176, 700)], suit_d, 4); line([(370, 560), (384, 700)], suit_d, 4)
-        ell((250, 600, 310, 652), cream)                                                     # paw emblem
-        for px, py in ((238, 596), (262, 574), (298, 574), (322, 596)): ell((px - 10, py - 10, px + 10, py + 10), cream)
-        line([(196, 704), (364, 704)], cream, 9)                                             # belt
-        ell((130, 316, 180, 396), SKIN); ell((136, 154, 424, 462), SKIN)
-        blob([(150, 330), (214, 310), (280, 326), (346, 310), (410, 330), (404, 394), (346, 402), (280, 386), (214, 402), (156, 394)], (74, 52, 96), 5)   # hero mask
-        locks(BOY_FRINGE, gold, 2, base_poly=CROWN)
-        streaks((((390, 150), (360, 200), (330, 232)), ((300, 140), (250, 190), (214, 236)), ((236, 132), (196, 180), (168, 232)), ((330, 120), (400, 150), (428, 214))), gold_d, 6)
-        streaks((((340, 130), (300, 150), (268, 178)), ((240, 126), (212, 146), (196, 176))), gold_l, 5)
+        blob([(212, 466), (348, 466), (336, 504), (280, 524), (224, 504)], suit_d, 4)         # high collar
+        ell((228, 566, 332, 654), glow); ell((238, 576, 322, 644), ebg)                      # emblem ring
+        ell((260, 612, 300, 640), glow)                                                      # paw emblem
+        for px, py in ((250, 606), (268, 588), (292, 588), (310, 606)): ell((px - 8, py - 8, px + 8, py + 8), glow)
+        line([(130, 704), (430, 704)], glow, 10); ell((258, 686, 302, 722), ebg); d.arc(P(258, 686, 302, 722), 0, 360, fill=glow, width=int(5 * S))   # belt
+        ell((136, 154, 424, 462), SKIN)
+        def ears(dd):
+            poly([(140, 206), (150, 70), (252, 146)], suit, dd); poly([(420, 206), (410, 70), (308, 146)], suit, dd)
+        put(layer(ears, suit, 3))
+        poly([(166, 176), (162, 108), (224, 150)], glow); poly([(394, 176), (398, 108), (336, 150)], glow)
+        blob(_cowl_pts(), suit, 3)                                                           # full cowl + mask
+        line(_cowl_pts()[18:], glow, 5)
+        for ex in (214, 346): ell((ex - 40, 314, ex + 40, 402), (252, 252, 252))             # eye holes
+        brows(glow, 300)
 
     else:  # Bugaboo
-        navy, navy_d, navy_l = (48, 62, 114), (34, 44, 92), (92, 108, 168)
-        red, red_d, dot = (250, 196, 70), (200, 150, 40), (38, 36, 48)
+        hair, hair_l, suit, suit_d, red, gold = (92, 54, 38), (140, 94, 70), (48, 96, 206), (30, 66, 160), (206, 40, 56), (255, 205, 60)
         def back(dd):
-            ell((106, 106, 454, 440), navy, dd)
-            poly(lock_pts((130, 250), (112, 360), (140, 470), 80), navy, dd); poly(lock_pts((430, 250), (448, 360), (420, 470), 80), navy, dd)
-        put(layer(back, navy, 5))
-        blob([(110, 470), (170, 470), (150, 760), (40, 760)], (26, 108, 118), 6)             # explorer cape
-        blob([(450, 470), (390, 470), (410, 760), (520, 760)], (26, 108, 118), 6)
-        blob(GIRL_BODY, (44, 150, 160), 6)
-        poly([(280 + (38 if k % 2 == 0 else 16) * math.sin(k * math.pi / 5), 600 - (38 if k % 2 == 0 else 16) * math.cos(k * math.pi / 5)) for k in range(10)], red)   # star badge
-        skin_neck()
-        line([(280, 520), (280, 760)], (26, 108, 118), 3)
+            ell((106, 106, 454, 440), hair, dd)
+            poly(lock_pts((130, 250), (112, 360), (140, 470), 80), hair, dd); poly(lock_pts((430, 250), (448, 360), (420, 470), 80), hair, dd)
+        put(layer(back, hair, 5))
+        blob([(100, 470), (176, 470), (150, 760), (20, 760)], red, 6)                        # hero cape
+        blob([(460, 470), (384, 470), (410, 760), (540, 760)], red, 6)
+        line([(104, 482), (28, 752)], gold, 5); line([(456, 482), (532, 752)], gold, 5)
+        blob(GIRL_BODY, suit, 6)
+        blob([(216, 466), (344, 466), (334, 502), (280, 520), (226, 502)], suit_d, 4)         # high collar
+        ell((228, 566, 332, 654), gold); ell((238, 576, 322, 644), red)                      # emblem ring + star
+        poly([(280 + (30 if k % 2 == 0 else 13) * math.sin(k * math.pi / 5), 610 - (30 if k % 2 == 0 else 13) * math.cos(k * math.pi / 5)) for k in range(10)], gold)
+        line([(150, 704), (410, 704)], gold, 10); ell((258, 686, 302, 722), red); d.arc(P(258, 686, 302, 722), 0, 360, fill=gold, width=int(5 * S))   # belt
         ell((136, 154, 424, 462), SKIN)
-        blob([(150, 330), (214, 310), (280, 326), (346, 310), (410, 330), (404, 394), (346, 402), (280, 386), (214, 402), (156, 394)], (250, 196, 70), 5)   # hero mask
         locks((((178, 134), (140, 240), (180, 346), 84), ((262, 126), (220, 210), (222, 300), 84), ((330, 126), (372, 200), (338, 292), 84), ((404, 140), (434, 220), (404, 300), 60)),
-              navy, 2, base_poly=GIRL_CROWN)
+              hair, 2, base_poly=GIRL_CROWN)
         def tails(dd):
-            ell((80, 470, 206, 650), navy, dd); ell((354, 470, 480, 650), navy, dd)
-            poly(lock_pts((160, 440), (150, 470), (136, 520), 54), navy, dd); poly(lock_pts((400, 440), (410, 470), (424, 520), 54), navy, dd)
-        put(layer(tails, navy, 6))
-        streaks((((170, 140), (130, 220), (168, 320)), ((260, 130), (222, 180), (232, 250)), ((406, 150), (432, 220), (404, 290))), navy_l, 6)
-        streaks((((110, 520), (100, 570), (130, 620)), ((450, 520), (460, 570), (430, 620))), navy_l, 5)
-        for bx, sg in ((158, -1), (402, 1)):                                                # soft red bows
-            blob([(bx, 468), (bx + sg * 46, 440), (bx + sg * 40, 496)], red, 4); ell((bx - 14, 454, bx + 14, 482), red_d)
-        brows(navy_d)
+            ell((80, 470, 206, 650), hair, dd); ell((354, 470, 480, 650), hair, dd)
+            poly(lock_pts((160, 440), (150, 470), (136, 520), 54), hair, dd); poly(lock_pts((400, 440), (410, 470), (424, 520), 54), hair, dd)
+        put(layer(tails, hair, 6))
+        streaks((((170, 140), (130, 220), (168, 320)), ((260, 130), (222, 180), (232, 250)), ((406, 150), (432, 220), (404, 290))), hair_l, 6)
+        for bx, sg in ((158, -1), (402, 1)):                                                # gold hair bows
+            blob([(bx, 468), (bx + sg * 46, 440), (bx + sg * 40, 496)], gold, 4); ell((bx - 14, 454, bx + 14, 482), (200, 150, 40))
+        def band(dd):                                                                       # antenna headband
+            outer = [(280 + 164 * math.cos(math.radians(a)), 294 - 174 * math.sin(math.radians(a))) for a in range(190, -11, -10)]
+            inner = [(280 + 140 * math.cos(math.radians(a)), 294 - 150 * math.sin(math.radians(a))) for a in range(-10, 191, 10)]
+            poly(outer + inner, red, dd)
+        put(layer(band, red, 3))
+        for sg in (-1, 1):
+            line(_bez((280 + sg * 44, 134), (280 + sg * 66, 92), (280 + sg * 88, 74), 10), red, 8)
+            ell((280 + sg * 88 - 15, 74 - 15, 280 + sg * 88 + 15, 74 + 15), gold)
+        mask = [(130, 322), (158, 286), (214, 292), (280, 318), (346, 292), (402, 286), (430, 322), (414, 388), (352, 408), (300, 390), (280, 382), (260, 390), (208, 408), (146, 388)]
+        blob(mask, red, 3); line(mask + [mask[0]], gold, 4)
+        for ex in (214, 346): ell((ex - 40, 314, ex + 40, 402), (252, 252, 252))             # eye holes
+        brows((66, 38, 26), 300)
 
     _eyes(d, P, S, blink, lash=False)
     ell((166, 398, 210, 422), (252, 188, 188)); ell((350, 398, 394, 422), (252, 188, 188))

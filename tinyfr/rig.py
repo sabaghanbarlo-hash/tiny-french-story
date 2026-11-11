@@ -73,6 +73,7 @@ def _face(d, name, cx, hy, expr, mouth, act, t, fdx):
 def draw(name, P):
     """P: face(+1/-1), expr, walking(0..1), phase, act, ap, item, bites, mouth, t -> RGBA sprite (feet at FY, centre CX)."""
     c = CHARS[name]; img = Image.new("RGBA", (SW, SH), (0, 0, 0, 0)); d = ImageDraw.Draw(img)
+    hero = name in ("Bugaboo", "Cat"); hand = c.get("glove", c["skin"])   # heroes wear gloves and tall boots
     act, ap, t = P["act"], P["ap"], P["t"]; expr = P["expr"]; walk = P["walking"]; ph = P["phase"]
     dy = 0.0; hdy = 0.0; lean = 0
     if walk: dy -= 9 * abs(math.sin(ph))
@@ -93,24 +94,33 @@ def draw(name, P):
         sw = s * 48 * (1 if side > 0 else -1); lift = max(0, math.sin(ph + (0 if side > 0 else math.pi))) * 22 * walk
         hx, hyp = cx + side * 34, y - 176; fx, fyp = cx + side * 34 + sw, y - 14 - lift
         d.line((hx, hyp, fx, fyp), fill=trouser, width=58); d.ellipse((hx - 29, hyp - 29, hx + 29, hyp + 29), fill=trouser)
+        if hero: d.line((fx + 6, fyp - 86, fx + 6, fyp - 4), fill=c["shoe"], width=64); d.rounded_rectangle((fx - 30, fyp - 96, fx + 42, fyp - 72), radius=8, fill=c["glove"])
         d.rounded_rectangle((fx - 38 + 6, fyp - 8, fx + 38 + 6, fyp + 26), radius=14, fill=c["shoe"])
-    if name in ("Bugaboo", "Cat"):   # hero cape behind the body
-        d.polygon([(cx - 100, y - 400 + lean), (cx + 100, y - 400 + lean), (cx + 168, y - 110), (cx - 168, y - 110)], fill=(26, 108, 118) if name == "Bugaboo" else (176, 84, 34))
+    if hero:   # flowing hero cape with a bright lining, clasped at the neck
+        d.polygon([(cx - 104, y - 404 + lean), (cx + 104, y - 404 + lean), (cx + 200, y - 70), (cx + 120, y - 44), (cx, y - 82), (cx - 120, y - 44), (cx - 200, y - 70)], fill=c["cape"])
+        d.polygon([(cx - 64, y - 380 + lean), (cx + 64, y - 380 + lean), (cx + 130, y - 92), (cx, y - 114), (cx - 130, y - 92)], fill=c["cape2"])
+        d.line((cx - 104, y - 404 + lean, cx - 200, y - 70, cx - 120, y - 44, cx, y - 82, cx + 120, y - 44, cx + 200, y - 70, cx + 104, y - 404 + lean), fill=c["accent"], width=6)
     sx0 = cx - 106; sy0 = y - 384 + lean
     bx, by = sx0 - 14 - s * 6, sy0 + 178 + s * 22
     if act == "cheer": bx, by = sx0 - 60, sy0 - 150 + 22 * math.sin(ap * 40)
     if act == "jump": bx, by = sx0 - 70, sy0 - 40
-    _arm(d, sx0, sy0, bx, by, jacket, skin, -1)
+    _arm(d, sx0, sy0, bx, by, jacket, hand, -1)
     d.rounded_rectangle((cx - 108, y - 408 + lean, cx + 108, y - 160), radius=92, fill=jacket, corners=(True, True, False, False))
     d.rounded_rectangle((cx - 108, y - 300, cx + 108, y - 160), radius=34, fill=jacket, corners=(False, False, True, True))
     male = name in ("Adrien", "Nino", "Lucas", "Cat")
     pw = 64 if male else 54
     d.polygon([(cx - pw, y - 408 + lean), (cx + pw, y - 408 + lean), (cx + pw - 6, y - 162), (cx - pw + 6, y - 162)], fill=top)
-    if name == "Cat":   # orange hero suit with a cream paw emblem and belt
-        cream = (244, 230, 206)
-        d.ellipse((cx - 26, y - 262, cx + 26, y - 214), fill=cream)
-        for px, py in ((-34, -276), (-12, -296), (12, -296), (34, -276)): d.ellipse((cx + px - 9, y + py - 9, cx + px + 9, y + py + 9), fill=cream)
-        d.rectangle((cx - pw + 4, y - 176, cx + pw - 4, y - 160), fill=cream)
+    if hero:   # superhero suit: high collar, chest emblem in a ring, belt with buckle
+        acc, ebg = c["accent"], c["emblem_bg"]; ex, ey = cx, y - 262
+        d.rounded_rectangle((cx - 52, y - 420 + lean, cx + 52, y - 384 + lean), radius=14, fill=c["cape2"])
+        d.line((cx - pw + 4, y - 386, cx - 36, y - 330), fill=acc, width=5); d.line((cx + pw - 4, y - 386, cx + 36, y - 330), fill=acc, width=5)
+        d.ellipse((ex - 48, ey - 48, ex + 48, ey + 48), fill=acc); d.ellipse((ex - 39, ey - 39, ex + 39, ey + 39), fill=ebg)
+        if name == "Cat":   # paw print
+            d.ellipse((ex - 20, ey - 2, ex + 20, ey + 28), fill=acc)
+            for px, py in ((-26, -8), (-9, -26), (9, -26), (26, -8)): d.ellipse((ex + px - 8, ey + py - 8, ex + px + 8, ey + py + 8), fill=acc)
+        else:   # star
+            d.polygon([(ex + (30 if k % 2 == 0 else 13) * math.sin(k * math.pi / 5), ey - (30 if k % 2 == 0 else 13) * math.cos(k * math.pi / 5)) for k in range(10)], fill=acc)
+        d.rectangle((cx - pw + 2, y - 194, cx + pw - 2, y - 168), fill=acc); d.rounded_rectangle((cx - 20, y - 198, cx + 20, y - 164), radius=6, fill=ebg, outline=acc, width=5)
     elif name == "Nino":   # teal hoodie: darker hood ring, white strings, kangaroo pocket
         hood = (36, 118, 112)
         d.ellipse((cx - 74, y - 424 + lean, cx + 74, y - 346 + lean), fill=hood); d.ellipse((cx - 30, y - 404 + lean, cx + 30, y - 356 + lean), fill=skin)
@@ -122,7 +132,28 @@ def draw(name, P):
         d.polygon([(cx - 60, y - 410 + lean), (cx + 60, y - 410 + lean), (cx + 66, y - 366 + lean), (cx, y - 336 + lean), (cx - 66, y - 366 + lean)], fill=scarf)
         d.rounded_rectangle((cx + 4, y - 352 + lean, cx + 44, y - 246 + lean), radius=10, fill=scarf)
         d.line((cx + 10, y - 316 + lean, cx + 40, y - 312 + lean), fill=sl, width=5); d.line((cx + 10, y - 284 + lean, cx + 40, y - 280 + lean), fill=sl, width=5)
-    elif male:   # dark tee with simple stripes, V neck
+    elif name == "Adrien":   # navy blazer: white shirt, burgundy tie, lapels, pocket square
+        tie, lap, col = (150, 40, 62), (30, 42, 82), (236, 234, 230)
+        d.polygon([(cx - 28, y - 408 + lean), (cx + 28, y - 408 + lean), (cx, y - 352 + lean)], fill=skin)
+        d.polygon([(cx - 52, y - 412 + lean), (cx - 8, y - 404 + lean), (cx - 4, y - 340 + lean), (cx - 60, y - 366 + lean)], fill=col)
+        d.polygon([(cx + 52, y - 412 + lean), (cx + 8, y - 404 + lean), (cx + 4, y - 340 + lean), (cx + 60, y - 366 + lean)], fill=col)
+        d.polygon([(cx - 12, y - 352 + lean), (cx + 12, y - 352 + lean), (cx + 16, y - 326 + lean), (cx - 16, y - 326 + lean)], fill=tie)
+        d.polygon([(cx - 15, y - 326 + lean), (cx + 15, y - 326 + lean), (cx + 22, y - 206), (cx, y - 180), (cx - 22, y - 206)], fill=tie)
+        d.polygon([(cx - 104, y - 396 + lean), (cx - 62, y - 410 + lean), (cx - 40, y - 296), (cx - 92, y - 330)], fill=lap)
+        d.polygon([(cx + 104, y - 396 + lean), (cx + 62, y - 410 + lean), (cx + 40, y - 296), (cx + 92, y - 330)], fill=lap)
+        d.rectangle((cx + 56, y - 304, cx + 92, y - 290), fill=(250, 248, 244))
+        for by in (-240, -204): d.ellipse((cx - 62 - 7, y + by - 7, cx - 62 + 7, y + by + 7), fill=(210, 178, 96))
+    elif name == "Marinette":   # denim jacket over a breton-striped top with a red neck scarf
+        navy, red, lap = (40, 52, 92), (214, 64, 70), c["edge"]
+        for k in range(5): d.rectangle((cx - pw + 4, y - 330 + k * 34, cx + pw - 4, y - 316 + k * 34), fill=navy)
+        d.polygon([(cx - 28, y - 408 + lean), (cx + 28, y - 408 + lean), (cx, y - 350 + lean)], fill=skin)
+        d.polygon([(cx - 104, y - 396 + lean), (cx - 54, y - 410 + lean), (cx - 30, y - 296), (cx - 92, y - 330)], fill=lap)
+        d.polygon([(cx + 104, y - 396 + lean), (cx + 54, y - 410 + lean), (cx + 30, y - 296), (cx + 92, y - 330)], fill=lap)
+        d.ellipse((cx - 52, y - 394 + lean, cx + 52, y - 350 + lean), fill=red)
+        d.polygon([(cx - 26, y - 362 + lean), (cx + 26, y - 362 + lean), (cx + 10, y - 298 + lean), (cx, y - 284 + lean), (cx - 10, y - 298 + lean)], fill=red)
+        for dx, dy in ((-20, -378), (0, -372), (20, -378), (-6, -330), (8, -316)): d.ellipse((cx + dx - 4, y + dy - 4 + lean, cx + dx + 4, y + dy + 4 + lean), fill=(250, 230, 226))
+        for by in (-230, -196): d.ellipse((cx - 70 - 7, y + by - 7, cx - 70 + 7, y + by + 7), fill=(214, 190, 120))
+    elif male:   # (other boys) tee with chest pocket
         d.rounded_rectangle((cx + 6, y - 280, cx + 50, y - 232), radius=8, outline=(206, 158, 52), width=4)   # chest pocket
         d.polygon([(cx - 34, y - 408 + lean), (cx + 34, y - 408 + lean), (cx, y - 336 + lean)], fill=skin)
     else:                  # white floral top, scoop neck
@@ -139,11 +170,10 @@ def draw(name, P):
             elif name == "Chloé": pass
             elif name == "Bugaboo": pass
             else: d.ellipse((fx - 10, fy - 10, fx + 10, fy + 10), fill=(238, 150, 170)); d.ellipse((fx - 3, fy - 3, fx + 3, fy + 3), fill=(252, 220, 120))
-    if name == "Bugaboo":   # yellow star badge
-        d.polygon([(cx + (38 if k % 2 == 0 else 16) * math.sin(k * math.pi / 5), y - 290 + lean - (38 if k % 2 == 0 else 16) * math.cos(k * math.pi / 5)) for k in range(10)], fill=(250, 196, 70))
     d.line((cx - pw, y - 408 + lean, cx - pw + 6, y - 162), fill=c["edge"], width=5); d.line((cx + pw, y - 408 + lean, cx + pw - 6, y - 162), fill=c["edge"], width=5)
-    d.line((cx - 90, y - 396 + lean, cx + 96, y - 190), fill=c["strap"], width=16)
-    if name in ("Marinette", "Alia", "Chloé", "Bugaboo"):
+    if not hero: d.line((cx - 90, y - 396 + lean, cx + 96, y - 190), fill=c["strap"], width=16)
+    if hero: pass
+    elif name in ("Marinette", "Alia", "Chloé"):
         d.rounded_rectangle((cx + 62, y - 250, cx + 160, y - 160), radius=14, fill=c["bag"], outline=c["strap"], width=4); d.polygon([(cx + 112, y - 222), (cx + 120, y - 206), (cx + 138, y - 204), (cx + 124, y - 194), (cx + 128, y - 178), (cx + 112, y - 188), (cx + 96, y - 178), (cx + 100, y - 194), (cx + 86, y - 204), (cx + 104, y - 206)], fill=(255, 214, 120))
     else:
         d.rounded_rectangle((cx + 62, y - 262, cx + 156, y - 170), radius=12, fill=c["bag"], outline=c["strap"], width=4); d.rectangle((cx + 62, y - 262, cx + 156, y - 236), fill=c["strap"])
@@ -164,9 +194,9 @@ def draw(name, P):
         q = (ap * (3 if act == "eat" else 1.2)) % 1.0; u = math.sin(math.pi * q)
         hx, hyy = sx1 + 70 + (mouth_pt[0] - sx1 - 70) * u, sy1 + 112 + (mouth_pt[1] - sy1 - 112) * u
     elif act == "bend": hx, hyy = sx1 + 90, sy1 + 170 + 70 * math.sin(math.pi * ap)
-    _arm(d, sx1, sy1, hx, hyy, jacket, skin, 1)
+    _arm(d, sx1, sy1, hx, hyy, jacket, hand, 1)
     if item:
         IT.draw(d, item, int(hx + 28), int(hyy - 34), P["bites"])
-        d.ellipse((hx - 25, hyy - 25, hx + 25, hyy + 25), fill=skin)
+        d.ellipse((hx - 25, hyy - 25, hx + 25, hyy + 25), fill=hand)
     if P["face"] < 0: img = img.transpose(Image.FLIP_LEFT_RIGHT)
     return img
