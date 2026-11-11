@@ -21,10 +21,11 @@ HAIR = {"Adrien": dict(main=(120, 80, 52), dark=(92, 58, 36), light=(160, 114, 8
         "Nino": dict(main=(82, 53, 39), dark=(58, 38, 31), light=(133, 91, 65), brow=(58, 38, 31), iris=(75, 142, 105)),
         "Chloé": dict(main=(151, 105, 67), dark=(111, 74, 48), light=(207, 161, 111), brow=(111, 74, 48), tie=(181, 157, 224)),
         "Lucas": dict(main=(35, 31, 34), dark=(20, 18, 21), light=(83, 73, 75), brow=(20, 18, 21)),
-        "Cat": dict(main=(247, 190, 82), dark=(220, 151, 55), light=(255, 218, 135), brow=(220, 151, 55), iris=(112, 132, 82)),
-        "Bugaboo": dict(main=(48, 61, 112), dark=(34, 44, 92), light=(76, 91, 145), brow=(34, 44, 92), tie=(250, 196, 70), iris=(105, 75, 78))}
+        "Cat": dict(main=(26, 26, 36), dark=(16, 16, 24), light=(70, 70, 90), brow=(96, 220, 140), iris=(80, 190, 110)),
+        "Bugaboo": dict(main=(92, 54, 38), dark=(66, 38, 26), light=(140, 94, 70), brow=(66, 38, 26), tie=(255, 205, 60), iris=(105, 75, 78))}
 MASK = [(145, 325), (170, 290), (220, 300), (280, 325), (340, 300), (390, 290), (415, 325), (390, 385), (345, 390), (280, 370), (215, 390), (170, 385)]
-MASK_COLOR = {"Cat": (74, 52, 96), "Bugaboo": (250, 196, 70)}   # hero masks
+MASK_COLOR = {}   # (old plain masks removed: heroes now get a full cowl / mask from _hero())
+HERO = {"Cat": dict(suit=(34, 34, 48), trim=(96, 220, 140)), "Bugaboo": dict(suit=(206, 40, 56), trim=(255, 205, 60))}
 BLUSH_EXPR = ("embarrassed", "shy", "happy", "excited")
 EXPRESSIONS = ("happy", "excited", "surprised", "sad", "worried", "confused", "embarrassed", "shy")
 
@@ -163,7 +164,37 @@ def _static(name):
                 a = k * 1.2566 - 1.57; ex, ey = 404 + 17 * math.cos(a), 206 + 17 * math.sin(a)
                 cv.ell((ex - 11, ey - 11, ex + 11, ey + 11), (255, 190, 206))
             cv.ell((396, 198, 412, 214), (255, 232, 140))
+    if name in HERO: _hero(cv, name)
     return cv.im
+
+
+def _cowl_pts():
+    top = [(280 + 176 * math.cos(math.radians(a)), 292 - 190 * math.sin(math.radians(a))) for a in range(180, -1, -10)]
+    return top + [(452, 316), (436, 372), (402, 402), (346, 408), (280, 374), (214, 408), (158, 402), (124, 372), (108, 316)]
+
+
+def _hero(cv, name):
+    """Superhero headgear drawn over the hair: Cat gets a full cowl with ears, Bugaboo a winged mask and an antenna headband.
+    White eye patches sit under the eyes so they stay readable on a dark mask."""
+    suit, trim = HERO[name]["suit"], HERO[name]["trim"]
+    if name == "Cat":
+        def ears(dd):
+            cv.poly([(140, 206), (150, 70), (252, 146)], suit, dd); cv.poly([(420, 206), (410, 70), (308, 146)], suit, dd)
+        cv.layer(ears, suit, 3)
+        cv.poly([(166, 176), (162, 108), (224, 150)], trim); cv.poly([(394, 176), (398, 108), (336, 150)], trim)
+        pts = _cowl_pts(); cv.poly(pts, suit); cv.line(pts[18:], trim, 5)
+    else:
+        def band(dd):
+            outer = [(280 + 164 * math.cos(math.radians(a)), 294 - 174 * math.sin(math.radians(a))) for a in range(190, -11, -10)]
+            inner = [(280 + 140 * math.cos(math.radians(a)), 294 - 150 * math.sin(math.radians(a))) for a in range(-10, 191, 10)]
+            cv.poly(outer + inner, suit, dd)
+        cv.layer(band, suit, 3)
+        for sg in (-1, 1):
+            cv.line(_bez((280 + sg * 44, 134), (280 + sg * 66, 92), (280 + sg * 88, 74), 10), suit, 8)
+            cv.ell((280 + sg * 88 - 15, 74 - 15, 280 + sg * 88 + 15, 74 + 15), trim)
+        mask = [(130, 322), (158, 286), (214, 292), (280, 318), (346, 292), (402, 286), (430, 322), (414, 388), (352, 408), (300, 390), (280, 382), (260, 390), (208, 408), (146, 388)]
+        cv.poly(mask, suit); cv.line(mask + [mask[0]], trim, 4)
+    for ex in (214, 346): cv.ell((ex - 40, 314, ex + 40, 402), (252, 252, 252))
 
 
 def _brow(cv, name, ex, side, lift, inner, arch):
