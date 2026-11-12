@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:04,066
+Il pleut ! Où est mon parapluie ?
+It's raining! Where is my umbrella?
+
+2
+00:00:04,366 --> 00:00:08,398
+Je ne sais pas. Il est dans ton sac ?
+I don't know. Is it in your bag?
+
+3
+00:00:08,698 --> 00:00:11,146
+Non, il n'est pas là !
+No, it's not there!
+
+4
+00:00:11,446 --> 00:00:15,334
+Regarde, un petit chien dort sous ton parapluie !
+Look, a little dog is sleeping under your umbrella!
+
+5
+00:00:15,634 --> 00:00:20,002
+Il est mignon ! Je ne veux pas le réveiller.
+He's cute! I don't want to wake him.
+
+6
+00:00:20,302 --> 00:00:23,302
+Alors, nous restons sous la pluie ?
+So, we stay in the rain?
+
+7
+00:00:23,602 --> 00:00:27,490
+Oui ! Un héros aime les animaux !
+Yes! A hero loves animals!
+
+8
+00:00:27,790 --> 00:00:30,502
+Et nous, courons à la maison !
+And us, let's run home!
+
