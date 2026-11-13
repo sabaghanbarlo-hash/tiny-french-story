@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,574
+Un, deux, trois !
+One, two, three!
+
+2
+00:00:02,824 --> 00:00:05,824
+Quatre, cinq, six !
+Four, five, six!
+
+3
+00:00:06,074 --> 00:00:07,946
+Bravo !
+Well done!
+

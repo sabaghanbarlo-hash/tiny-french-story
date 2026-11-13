@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,094
+Bonne journée !
+Have a nice day! (at night!)
+
+2
+00:00:02,344 --> 00:00:04,336
+Pas ce soir !
+Not tonight!
+
+3
+00:00:04,586 --> 00:00:06,578
+Bonne soirée !
+Have a nice evening!
+
