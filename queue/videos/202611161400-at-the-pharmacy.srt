@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:04,282
+Bonjour ! J'ai mal à la tête.
+Hello! I have a headache.
+
+2
+00:00:04,582 --> 00:00:07,054
+Vous avez de la fièvre ?
+Do you have a fever?
+
+3
+00:00:07,354 --> 00:00:10,570
+Non, mais j'ai mal à la gorge aussi.
+No, but my throat hurts too.
+
+4
+00:00:10,870 --> 00:00:14,590
+Prenez ces comprimés, deux fois par jour.
+Take these tablets, twice a day.
+
+5
+00:00:14,890 --> 00:00:17,770
+C'est combien, s'il vous plaît ?
+How much is it, please?
+
+6
+00:00:18,070 --> 00:00:20,134
+C'est huit euros.
+It's eight euros.
+
+7
+00:00:20,434 --> 00:00:24,562
+Merci. Je dois aller chez le médecin ?
+Thanks. Should I see a doctor?
+
+8
+00:00:24,862 --> 00:00:29,806
+Si ça continue, oui. Bon rétablissement !
+If it continues, yes. Get well soon!
+
