@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:03,562
+Excusez-moi, vous parlez anglais ?
+Excuse me, do you speak English?
+
+2
+00:00:03,862 --> 00:00:07,438
+Un peu. Vous êtes touriste ?
+A little. Are you a tourist?
+
+3
+00:00:07,738 --> 00:00:11,458
+Pardon ? Je ne comprends pas.
+Pardon? I don't understand.
+
+4
+00:00:11,758 --> 00:00:15,670
+Vous êtes touriste ? Vous aimez Paris ?
+Are you a tourist? Do you like Paris?
+
+5
+00:00:15,970 --> 00:00:18,802
+Plus lentement, s'il vous plaît.
+More slowly, please.
+
+6
+00:00:19,102 --> 00:00:22,462
+Vous… aimez… Paris ?
+Do… you… like… Paris?
+
+7
+00:00:22,762 --> 00:00:27,010
+Oui ! Comment ça se dit « I love it » ?
+Yes! How do you say "I love it"?
+
+8
+00:00:27,310 --> 00:00:29,950
+Ça se dit « j'adore » !
+You say "j'adore"!
+
