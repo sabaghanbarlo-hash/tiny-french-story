@@ -1,0 +1,9 @@
+title: Adrien is late again! Say this in French
+episode: 10
+scene: classroom
+
+Adrien: Désolé, je suis en retard ! | Sorry, I'm late!
+Marinette: Encore ?! | Again?!
+Adrien: Promis, demain, à l'heure ! | I promise, on time tomorrow!
+
+vocab: Je suis en retard | zhuh swee zahn ruh-TAR | I'm late
