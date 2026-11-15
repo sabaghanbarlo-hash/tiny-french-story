@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:03,486
+Excusez-moi, où sont les toilettes ?
+Excuse me, where are the toilets?
+
+2
+00:00:03,736 --> 00:00:06,424
+Là-bas, à droite !
+Over there, on the right!
+
+3
+00:00:06,674 --> 00:00:09,074
+Merci, sauvé !
+Thanks, saved!
+

@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,334
+Je suis accord !
+I am agreement! (not a sentence!)
+
+2
+00:00:02,584 --> 00:00:04,360
+Oh là là !
+Oh dear!
+
+3
+00:00:04,610 --> 00:00:06,842
+Je suis d'accord !
+I agree!
+

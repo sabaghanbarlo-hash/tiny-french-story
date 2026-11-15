@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:05,286
+Bonjour ! Je voudrais un croissant, s'il vous plaît.
+Hello! I'd like a croissant, please.
+
+2
+00:00:05,536 --> 00:00:08,968
+Voilà ! Deux euros.
+Here you go! Two euros.
+
+3
+00:00:09,218 --> 00:00:11,354
+Il est encore chaud !
+It is still warm!
+
