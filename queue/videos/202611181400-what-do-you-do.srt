@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:03,970
+Salut ! Tu fais quoi dans la vie ?
+Hi! What do you do for a living?
+
+2
+00:00:04,270 --> 00:00:08,326
+Je suis professeure. Et toi ?
+I'm a teacher. And you?
+
+3
+00:00:08,626 --> 00:00:12,970
+Je suis ingénieur. Je travaille à Lyon.
+I'm an engineer. I work in Lyon.
+
+4
+00:00:13,270 --> 00:00:15,598
+Tu aimes ton travail ?
+Do you like your job?
+
+5
+00:00:15,898 --> 00:00:20,506
+Oui, j'adore ! Mais je travaille beaucoup.
+Yes, I love it! But I work a lot.
+
+6
+00:00:20,806 --> 00:00:24,094
+Moi, je travaille avec des enfants.
+I work with children.
+
+7
+00:00:24,394 --> 00:00:28,882
+C'est génial ! Mais c'est fatigant, non ?
+That's great! But it's tiring, no?
+
+8
+00:00:29,182 --> 00:00:32,830
+Oui ! On boit un café ?
+Yes! Shall we have a coffee?
+
