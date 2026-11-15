@@ -1,0 +1,9 @@
+title: Never ask for the bill like this in French
+episode: 13
+scene: restaurant
+
+Adrien: Donne-moi l'addition ! | Give me the bill! (rude!)
+Marinette: Non, non ! | No, no!
+Marinette: L'addition, s'il vous plaît ! | The bill, please!
+
+vocab: L'addition, s'il vous plaît | la-dee-SYOHN seel voo PLAY | The bill, please
