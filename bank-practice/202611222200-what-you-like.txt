@@ -1,0 +1,9 @@
+title: Say what you like in French with Adrien and Marinette
+episode: 14
+scene: cafe
+
+Adrien: Tu aimes quoi ? | What do you like?
+Marinette: J’aime le chocolat ! | I like chocolate!
+Adrien: Moi aussi ! On partage ? | Me too! Shall we share?
+
+vocab: J’aime le chocolat | zhem luh sho-ko-LAH | I like chocolate
