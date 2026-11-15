@@ -149,7 +149,12 @@ def build(text, rate, dummy, tmp, style="practice"):
     aria = "en-US-AriaNeural"
     wav = os.path.join(tmp, "turn.wav"); sm.synth("Now you try! Say it the right way!" if mistake else "Your turn! Say it out loud!", aria, wav, "+5%", dummy, lang="en")
     x = sm.read_wav(wav); turn0 = t; chunks += [x, silence(0.3)]; t += len(x) / SR + 0.3
-    cd0 = t; chunks.append(silence(3.0)); t += 3.0
+    cd0 = t   # the characters count 3-2-1 out loud (no silent gap, so viewers keep watching)
+    for k, (word, who) in enumerate((("Trois !", cast[0]), ("Deux !", cast[1]), ("Un !", cast[0]))):
+        wav = os.path.join(tmp, f"cd{k}.wav"); sm.synth(word, voice(who), wav, "-5%", dummy)
+        x = sm.read_wav(wav)[: int(SR * 0.9)]
+        talk.append(dict(speaker=who, start=t, end=t + len(x) / SR))
+        chunks += [x, silence(1.0 - len(x) / SR)]; t += 1.0
     wav = os.path.join(tmp, "key.wav"); sm.synth(key["fr"], voice(ks), wav, "-20%", dummy)
     x = sm.read_wav(wav); key0 = t; talk.append(dict(speaker=ks, start=t, end=t + len(x) / SR)); chunks += [x, silence(0.3)]; t += len(x) / SR + 0.3
     wav = os.path.join(tmp, "end.wav"); sm.synth("Now you will not make that mistake! Save this, and send it to a friend." if mistake else "Perfect! Save this, and send it to a study buddy.", aria, wav, "+5%", dummy, lang="en")
