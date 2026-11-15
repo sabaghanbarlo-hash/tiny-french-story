@@ -1,0 +1,9 @@
+title: Adrien wants a croissant. Say this at the bakery!
+episode: 9
+scene: bakery
+
+Adrien: Bonjour ! Je voudrais un croissant, s'il vous plaît. | Hello! I'd like a croissant, please.
+Marinette: Voilà ! Deux euros. | Here you go! Two euros.
+Adrien: Il est encore chaud ! | It is still warm!
+
+vocab: Je voudrais un croissant | zhuh voo-DRAY uh krwah-SAHN | I'd like a croissant
