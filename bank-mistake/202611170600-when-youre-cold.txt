@@ -1,0 +1,9 @@
+title: Adrien said this when he was cold. Big mistake!
+episode: 8
+scene: street
+
+Adrien: Je suis froid ! | I am cold! (you are an ice cube!)
+Marinette: Non, non ! Tu es un glaçon ? | No, no! Are you an ice cube?
+Marinette: J'ai froid ! | I'm cold! (I have cold)
+
+vocab: J'ai froid | zhay frwah | I'm cold
