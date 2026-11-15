@@ -1,0 +1,9 @@
+title: It's freezing in Paris! Say this in French
+episode: 12
+scene: street
+
+Adrien: Il fait très froid ! | It's very cold!
+Marinette: Un chocolat chaud ? | A hot chocolate?
+Adrien: Oui, s'il te plaît ! | Yes please!
+
+vocab: Il fait froid | eel fay frwah | It's cold
