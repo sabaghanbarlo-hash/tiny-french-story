@@ -1,0 +1,9 @@
+title: Adrien said his name like this. Never do it!
+episode: 10
+scene: classroom
+
+Adrien: Je suis appelé Adrien. | I am called Adrien. (not how French says it!)
+Marinette: Non, non ! | No, no!
+Marinette: Je m'appelle Marinette ! | My name is Marinette!
+
+vocab: Je m'appelle | zhuh ma-PELL | My name is
