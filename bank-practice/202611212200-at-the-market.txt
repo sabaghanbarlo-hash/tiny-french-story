@@ -1,0 +1,9 @@
+title: Adrien wants apples. Ask the price in French!
+episode: 13
+scene: market
+
+Adrien: C’est combien, les pommes ? | How much are the apples?
+Marinette: Deux euros le kilo ! | Two euros a kilo!
+Adrien: Ce n’est pas cher ! | That's not expensive!
+
+vocab: C’est combien | say kom-BYAN | How much is it?
