@@ -90,7 +90,7 @@ def make_cover(meta, lines, vocab, bg, fg, style):
     d.rounded_rectangle((px, py, px + pw, py + ph), radius=56, fill=(250, 248, 243, 250))
     ep = str(meta.get("episode", "")).strip()
     label = "DON'T SAY THIS" if mistake else "SAY IT OUT LOUD"
-    tag = sm.pill(f"{label}  ·  LEARN FRENCH", accent)
+    tag = sm.pill(f"{label} #{ep}  ·  LEARN FRENCH" if ep else f"{label}  ·  LEARN FRENCH", accent)
     img.paste(tag, (px + 44, py - tag.height // 2), tag)
     st = sticker("x" if mistake else "mic"); img.paste(st, (px + pw - 120, py - 44), st)
     y = py + 96
@@ -108,6 +108,20 @@ def make_cover(meta, lines, vocab, bg, fg, style):
         sub = (key["pron"] + "  =  " if key["pron"] else "") + key["en"]
         d.text((W / 2, y), sub, font=sm.font(38, False), fill=sm.COVER_SOFT, anchor="ma")
     return img.convert("RGB")
+
+
+HANDLE, OTHER_NAME, OTHER_HANDLE, OTHER_FLAG = "@tiny.french", "Japanese", "@tinyjapanes", "🌸"
+SERIES = {"practice": "Say it out loud", "mistake": "Never say this"}
+
+
+def cta_parts(follow, mistake, wrong):
+    """End card: alternates between a specific share ask and a follow ask (odd/even episode)."""
+    ink, soft = (46, 48, 60), (118, 122, 136)
+    if follow:
+        return [("Follow for a new phrase", sm.font(58), ink, 84), ("every single day", sm.font(58), ink, 84), (HANDLE, sm.font(46, False), BRAND, 70)]
+    if mistake and wrong:
+        return [("Send this to a friend", sm.font(56), ink, 80), ("who still says", sm.font(44, False), soft, 64), (wrong, sm.font(56), RED, 84)]
+    return [("Send this to a friend", sm.font(60), ink, 90), ("who is learning French", sm.font(44, False), soft, 70)]
 
 
 def silence(sec):
@@ -139,6 +153,11 @@ def build(text, rate, dummy, tmp, style="practice"):
     if len(cast) == 1:
         cast.append("Adrien" if cast[0] != "Adrien" else "Marinette")
     voice = lambda nm: CHARS[nm]["voice"]
+    ep = str(meta.get("episode", "1")).strip()
+    follow = ep.isdigit() and int(ep) % 2 == 0   # even episodes ask to follow, odd ones ask to share
+    wrong = lines[0]["fr"].strip(" !?.")
+    if len(wrong) > 24:
+        wrong = ""
     ks = lines[-1]["speaker"] if mistake else cast[0]   # who says the key phrase: the one who corrects
     chunks, t = [silence(0.15)], 0.15
     for i, ln in enumerate(lines):
@@ -157,7 +176,7 @@ def build(text, rate, dummy, tmp, style="practice"):
         chunks += [x, silence(1.0 - len(x) / SR)]; t += 1.0
     wav = os.path.join(tmp, "key.wav"); sm.synth(key["fr"], voice(ks), wav, "-20%", dummy)
     x = sm.read_wav(wav); key0 = t; talk.append(dict(speaker=ks, start=t, end=t + len(x) / SR)); chunks += [x, silence(0.3)]; t += len(x) / SR + 0.3
-    wav = os.path.join(tmp, "end.wav"); sm.synth("Now you will not make that mistake! Save this, and send it to a friend." if mistake else "Perfect! Save this, and send it to a study buddy.", aria, wav, "+5%", dummy, lang="en")
+    wav = os.path.join(tmp, "end.wav"); sm.synth(("Now you will not make that mistake! " + ("Follow us for a new phrase every day!" if follow else "Send this to a friend who still does it.")) if mistake else ("Perfect! Follow us for a new phrase every day!" if follow else "Perfect! Send this to a friend who is learning French."), aria, wav, "+5%", dummy, lang="en")
     x = sm.read_wav(wav); end0 = t; chunks += [x, silence(0.6)]; t += len(x) / SR + 0.6
     audio = np.concatenate(chunks); audio = audio / max(0.01, np.abs(audio).max()) * 0.9
     n = int(t * FPS); mouth = sm.mouth_levels(audio, n)
@@ -175,8 +194,8 @@ def build(text, rate, dummy, tmp, style="practice"):
     done_card = sm.card_image("Parfait!", (79, 154, 110), pt, min_h=420)
     if mistake:
         badge(turn_card, "ok"); badge(done_card, "ok")
-    cta_card = sm.card_image("Tiny French", sm.BRAND, ([("Save this so you never", sm.font(56), (46, 48, 60), 80), ("make this mistake again", sm.font(56), (46, 48, 60), 90), ("Send it to a study buddy", sm.font(40, False), (118, 122, 136), 64)] if mistake else [("Save this for later", sm.font(60), (46, 48, 60), 90), ("Send it to a study buddy", sm.font(44, False), (118, 122, 136), 70)]), min_h=380)
-    banner = sm.hook_banner(meta, "Tiny French")
+    cta_card = sm.card_image("Tiny French", sm.BRAND, cta_parts(follow, mistake, wrong), min_h=380)
+    banner = sm.hook_banner(meta, f"Tiny French · {SERIES[style]} #{ep}")
     pills = {(nm, a): sm.pill(nm, CHARS[nm]["accent"] if a else (226, 214, 206), (255, 255, 255) if a else (130, 112, 108)) for nm in cast for a in (0, 1)}
 
     def frame(i):
@@ -214,11 +233,16 @@ def build(text, rate, dummy, tmp, style="practice"):
 
 
 def caption(meta, vocab, lines=None, style="practice"):
-    k = vocab[0]
+    k = vocab[0]; wrong = (lines[0]["fr"].strip(" !?.") if lines else "")
     if style == "mistake" and lines:
-        return (f"{meta['title']} 🇫🇷\n\nDo not say: {lines[0]['fr']} 😅\nSay this instead: {k['fr']} — {k['en']}\n\nSend this to a friend who is learning French 💌\nSmall steps. Big dreams.\n\n#learnfrench #frenchmistakes #frenchforbeginners #french #frenchlanguage #languagelearning #tinyfrench")
-    out = f"{meta['title']} 🇫🇷\n\nSay it out loud:\n• {k['fr']} — {k['en']}\n"
-    return out + "\nSend this to a friend who is learning French 💌\nSmall steps. Big dreams.\n\n#learnfrench #frenchforbeginners #french #frenchlanguage #frenchlesson #languagelearning #tinyfrench"
+        head = f"{meta['title']} 🇫🇷\n\nDo not say: {lines[0]['fr']} 😅\nSay this instead: {k['fr']} — {k['en']}\n\n"
+        share = f"Send this to a friend who says {wrong} 😅" if 0 < len(wrong) <= 24 else "Send this to a friend who is learning French 💌"
+        tags = "#learnfrench #frenchmistakes #frenchforbeginners #french #frenchlanguage #languagelearning #tinyfrench"
+    else:
+        head = f"{meta['title']} 🇫🇷\n\nSay it out loud:\n• {k['fr']} — {k['en']}\n\n"
+        share = "Send this to a friend who is learning French 💌"
+        tags = "#learnfrench #frenchforbeginners #french #frenchlanguage #frenchlesson #languagelearning #tinyfrench"
+    return head + share + f"\nFollow {HANDLE} for a new phrase every day 🇫🇷\nAlso learning {OTHER_NAME}? {OTHER_HANDLE} {OTHER_FLAG}\n\n" + tags
 
 
 def main():
