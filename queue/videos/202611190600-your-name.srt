@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,502
+Je suis appelé Adrien.
+I am called Adrien. (not how French says it!)
+
+2
+00:00:02,752 --> 00:00:04,888
+Non, non !
+No, no!
+
+3
+00:00:05,138 --> 00:00:07,682
+Je m'appelle Marinette !
+My name is Marinette!
+
