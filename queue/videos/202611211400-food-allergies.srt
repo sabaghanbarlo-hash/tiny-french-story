@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:04,306
+Bonsoir ! Voici le menu.
+Good evening! Here's the menu.
+
+2
+00:00:04,606 --> 00:00:08,854
+Bonsoir ! Je suis allergique aux noix.
+Good evening! I'm allergic to nuts.
+
+3
+00:00:09,154 --> 00:00:13,594
+Pas de problème. Le poulet est sans noix.
+No problem. The chicken has no nuts.
+
+4
+00:00:13,894 --> 00:00:17,662
+Et la soupe ? Elle contient du lait ?
+And the soup? Does it contain milk?
+
+5
+00:00:17,962 --> 00:00:21,322
+Oui, il y a de la crème dans la soupe.
+Yes, there's cream in the soup.
+
+6
+00:00:21,622 --> 00:00:25,078
+Alors je prends le poulet, s'il vous plaît.
+Then I'll have the chicken, please.
+
+7
+00:00:25,378 --> 00:00:29,098
+Très bien. Et comme boisson ?
+Very well. And to drink?
+
+8
+00:00:29,398 --> 00:00:32,422
+Une carafe d'eau, s'il vous plaît.
+A jug of water, please.
+
