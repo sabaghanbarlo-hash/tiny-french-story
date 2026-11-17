@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,670
+Oh non, mon café !
+Oh no, my coffee!
+
+2
+00:00:02,920 --> 00:00:06,280
+Aïe ! Mon pull !
+Ouch! My sweater!
+
+3
+00:00:06,530 --> 00:00:08,642
+Je suis désolé !
+I'm so sorry!
+
