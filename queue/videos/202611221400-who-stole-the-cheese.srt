@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:04,618
+Au secours ! Le fromage a disparu !
+Help! The cheese has disappeared!
+
+2
+00:00:04,918 --> 00:00:07,342
+Qui a pris le fromage ?
+Who took the cheese?
+
+3
+00:00:07,642 --> 00:00:11,074
+Je ne sais pas. Regarde ces petites traces !
+I don't know. Look at these little tracks!
+
+4
+00:00:11,374 --> 00:00:15,526
+Des traces de pattes ! Elles vont par là !
+Paw prints! They go that way!
+
+5
+00:00:15,826 --> 00:00:21,538
+Oh non ! Ce sont tes pattes ! Tu es coupable !
+Oh no! Those are your paws! You're guilty!
+
+6
+00:00:21,838 --> 00:00:25,798
+Euh… j'ai toujours faim ! Pardon !
+Uh… I'm always hungry! Sorry!
+
+7
+00:00:26,098 --> 00:00:30,562
+Ha ha ! Le héros a volé le fromage !
+Ha ha! The hero stole the cheese!
+
+8
+00:00:30,862 --> 00:00:33,526
+Je paie tout, c'est promis !
+I'll pay for everything, I promise!
+
