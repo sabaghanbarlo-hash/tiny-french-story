@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,286
+Il fait très froid !
+It's very cold!
+
+2
+00:00:02,536 --> 00:00:04,720
+Un chocolat chaud ?
+A hot chocolate?
+
+3
+00:00:04,970 --> 00:00:07,514
+Oui, s'il te plaît !
+Yes please!
+
