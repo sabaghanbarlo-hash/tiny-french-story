@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,910
+C’est combien, les pommes ?
+How much are the apples?
+
+2
+00:00:03,160 --> 00:00:05,416
+Deux euros le kilo !
+Two euros a kilo!
+
+3
+00:00:05,666 --> 00:00:07,802
+Ce n’est pas cher !
+That's not expensive!
+
