@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,454
+Bonne anniversaire !
+Happy birthday! (wrong word!)
+
+2
+00:00:02,704 --> 00:00:04,696
+Pas tout à fait !
+Not quite!
+
+3
+00:00:04,946 --> 00:00:07,514
+Joyeux anniversaire !
+Happy birthday!
+

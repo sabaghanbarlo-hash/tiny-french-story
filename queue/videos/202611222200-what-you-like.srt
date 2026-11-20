@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,022
+Tu aimes quoi ?
+What do you like?
+
+2
+00:00:02,272 --> 00:00:04,504
+J’aime le chocolat !
+I like chocolate!
+
+3
+00:00:04,754 --> 00:00:08,450
+Moi aussi ! On partage ?
+Me too! Shall we share?
+
