@@ -1,0 +1,9 @@
+title: Say I don't know in French in 10 seconds
+episode: 19
+scene: street
+
+Adrien: Où est le musée ? | Where is the museum?
+Marinette: Je ne sais pas ! | I don't know!
+Adrien: Pas grave ! | No worries!
+
+vocab: Je ne sais pas | zhuh nuh say pah | I don't know
