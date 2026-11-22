@@ -1,0 +1,9 @@
+title: French counting Part 2: four, five, six!
+episode: 15
+scene: cafe
+
+Adrien: Quatre, cinq, six ! | Four, five, six!
+Marinette: Sept, huit, neuf ! | Seven, eight, nine!
+Adrien: Et... dix ! | And... ten!
+
+vocab: Quatre, cinq, six | KAT-ruh sank SEES | Four, five, six
