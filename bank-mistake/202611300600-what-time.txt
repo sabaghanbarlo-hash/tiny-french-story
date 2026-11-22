@@ -1,0 +1,9 @@
+title: Never ask the time like this in French
+episode: 18
+scene: street
+
+Adrien: Quel temps est-il ? | What time is it? (it asks about the weather!)
+Marinette: Il fait beau ! | It's sunny!
+Marinette: Quelle heure est-il ? | What time is it?
+
+vocab: Quelle heure est-il | kel uhr eh-teel | What time is it?
