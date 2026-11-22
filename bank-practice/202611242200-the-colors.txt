@@ -1,0 +1,9 @@
+title: Say the colors in French in 10 seconds
+episode: 16
+scene: park
+
+Adrien: Le ciel est bleu ! | The sky is blue!
+Marinette: Et la rose est rouge ! | And the rose is red!
+Adrien: Vert, jaune, noir ! | Green, yellow, black!
+
+vocab: Rouge, bleu, vert | roozh, bluh, vair | Red, blue, green
