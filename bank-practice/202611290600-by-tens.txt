@@ -1,0 +1,9 @@
+title: Count by tens in French in 10 seconds
+episode: 24
+scene: classroom
+
+Adrien: Dix, vingt, trente ! | Ten, twenty, thirty!
+Marinette: Quarante, cinquante ! | Forty, fifty!
+Adrien: Bravo ! | Well done!
+
+vocab: Dix, vingt, trente | dees, van, trahnt | Ten, twenty, thirty
