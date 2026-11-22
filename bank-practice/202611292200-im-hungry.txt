@@ -1,0 +1,9 @@
+title: Say I'm hungry in French in 10 seconds
+episode: 21
+scene: restaurant
+
+Adrien: J'ai faim ! | I'm hungry!
+Marinette: Moi aussi ! | Me too!
+Adrien: Allons au restaurant ! | Let's go to the restaurant!
+
+vocab: J'ai faim | zhay fahn | I'm hungry
