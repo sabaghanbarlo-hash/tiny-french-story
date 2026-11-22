@@ -1,0 +1,9 @@
+title: Ask how old someone is in French in 10 seconds
+episode: 20
+scene: classroom
+
+Adrien: Tu as quel âge ? | How old are you?
+Marinette: J'ai vingt ans ! | I'm twenty!
+Adrien: Moi, j'ai vingt-et-un ans ! | I'm twenty-one!
+
+vocab: Tu as quel âge | tew ah kel AHZH | How old are you?
