@@ -1,0 +1,9 @@
+title: Days of the week in French in 10 seconds
+episode: 17
+scene: classroom
+
+Adrien: Lundi, mardi, mercredi ! | Monday, Tuesday, Wednesday!
+Marinette: Jeudi, vendredi ! | Thursday, Friday!
+Adrien: Samedi, dimanche... le week-end ! | Saturday, Sunday... the weekend!
+
+vocab: Lundi, mardi, mercredi | lun-DEE, mar-DEE, mair-kruh-DEE | Monday, Tuesday, Wednesday
