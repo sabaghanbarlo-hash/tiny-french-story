@@ -1,0 +1,9 @@
+title: Say yes and no in French in 10 seconds
+episode: 18
+scene: cafe
+
+Adrien: Tu veux un croissant ? | Do you want a croissant?
+Marinette: Oui, merci ! | Yes, thank you!
+Adrien: Et un café ? Non, merci ? | And a coffee? No, thank you?
+
+vocab: Oui, non, merci | wee, noh, mair-SEE | Yes, no, thank you
