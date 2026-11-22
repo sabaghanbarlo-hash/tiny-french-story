@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,166
+Le ciel est bleu !
+The sky is blue!
+
+2
+00:00:02,416 --> 00:00:04,696
+Et la rose est rouge !
+And the rose is red!
+
+3
+00:00:04,946 --> 00:00:07,874
+Vert, jaune, noir !
+Green, yellow, black!
+

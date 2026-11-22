@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,358
+Je vais au boulangerie !
+I'm going to the bakery! (wrong word!)
+
+2
+00:00:02,608 --> 00:00:04,912
+Oh là là, non !
+Oh dear, no!
+
+3
+00:00:05,162 --> 00:00:07,682
+Je vais à la boulangerie !
+I'm going to the bakery!
+
