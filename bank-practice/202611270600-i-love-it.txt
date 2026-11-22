@@ -1,0 +1,9 @@
+title: Say I love it in French in 10 seconds
+episode: 23
+scene: cafe
+
+Adrien: Tu aimes ce gâteau ? | Do you like this cake?
+Marinette: J'adore ! | I love it!
+Adrien: Moi aussi ! | Me too!
+
+vocab: J'adore | zha-DOR | I love it!
