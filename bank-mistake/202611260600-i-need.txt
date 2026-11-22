@@ -1,0 +1,9 @@
+title: Never say you need something like this in French
+episode: 16
+scene: cafe
+
+Adrien: Je besoin un café ! | I need a coffee! (not French!)
+Marinette: Non, non ! | No, no!
+Marinette: J'ai besoin d'un café ! | I need a coffee!
+
+vocab: J'ai besoin d'un café | zhay buh-ZWAN duh-uh ka-FAY | I need a coffee
