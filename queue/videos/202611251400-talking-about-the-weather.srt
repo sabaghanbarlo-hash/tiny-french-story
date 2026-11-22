@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:04,570
+Salut Alia ! Quel temps fait-il aujourd'hui ?
+Hi Alia! What's the weather like today?
+
+2
+00:00:04,870 --> 00:00:07,534
+Il fait froid et il y a du vent.
+It's cold and it's windy.
+
+3
+00:00:07,834 --> 00:00:09,754
+Il pleut aussi ?
+Is it raining too?
+
+4
+00:00:10,054 --> 00:00:13,054
+Non, mais il y a des nuages.
+No, but there are clouds.
+
+5
+00:00:13,354 --> 00:00:15,226
+Et demain ?
+And tomorrow?
+
+6
+00:00:15,526 --> 00:00:18,166
+Demain, il va neiger !
+Tomorrow, it's going to snow!
+
+7
+00:00:18,466 --> 00:00:22,402
+Super ! J'adore la neige !
+Great! I love snow!
+
+8
+00:00:22,702 --> 00:00:25,750
+Moi, je préfère le soleil !
+I prefer the sun!
+
