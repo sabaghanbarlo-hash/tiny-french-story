@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:03,390
+Lundi, mardi, mercredi !
+Monday, Tuesday, Wednesday!
+
+2
+00:00:03,640 --> 00:00:06,448
+Jeudi, vendredi !
+Thursday, Friday!
+
+3
+00:00:06,698 --> 00:00:10,202
+Samedi, dimanche... le week-end !
+Saturday, Sunday... the weekend!
+

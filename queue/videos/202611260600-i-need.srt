@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,526
+Je besoin un café !
+I need a coffee! (not French!)
+
+2
+00:00:02,776 --> 00:00:04,912
+Non, non !
+No, no!
+
+3
+00:00:05,162 --> 00:00:07,682
+J'ai besoin d'un café !
+I need a coffee!
+
