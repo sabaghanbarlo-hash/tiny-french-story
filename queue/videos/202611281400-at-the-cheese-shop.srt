@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:04,042
+Bonjour ! Vous désirez ?
+Hello! What would you like?
+
+2
+00:00:04,342 --> 00:00:10,102
+Bonjour ! Je voudrais un bon fromage, mais pas trop fort.
+Hello! I'd like a good cheese, but not too strong.
+
+3
+00:00:10,402 --> 00:00:15,226
+Essayez ce camembert. Il est doux et crémeux.
+Try this camembert. It's mild and creamy.
+
+4
+00:00:15,526 --> 00:00:17,518
+Je peux goûter ?
+Can I taste?
+
+5
+00:00:17,818 --> 00:00:22,090
+Bien sûr ! Voilà un petit morceau.
+Of course! Here's a small piece.
+
+6
+00:00:22,390 --> 00:00:26,614
+Mmm, délicieux ! Je le prends.
+Mmm, delicious! I'll take it.
+
+7
+00:00:26,914 --> 00:00:30,874
+Parfait ! Une baguette avec ça ?
+Perfect! A baguette with that?
+
+8
+00:00:31,174 --> 00:00:34,630
+Oui, une baguette, s'il vous plaît !
+Yes, a baguette, please!
+
