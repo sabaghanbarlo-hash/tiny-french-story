@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,070
+Où est le musée ?
+Where is the museum?
+
+2
+00:00:02,320 --> 00:00:04,192
+Je ne sais pas !
+I don't know!
+
+3
+00:00:04,442 --> 00:00:06,314
+Pas grave !
+No worries!
+
