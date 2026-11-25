@@ -4,7 +4,9 @@
  "format": "practice",
  "post_at": "2026-11-24T22:00:00Z",
  "queued_at": "2026-11-22T09:06:27Z",
- "status": "pending",
+ "status": "posted",
  "attempts": 0,
- "scheduled_by": "you"
+ "scheduled_by": "you",
+ "posted_at": "2026-11-25T00:45:40Z",
+ "media_id": "18362426134171030"
 }
