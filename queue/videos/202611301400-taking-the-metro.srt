@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:04,138
+Excusez-moi, quelle ligne pour la Tour Eiffel ?
+Excuse me, which line for the Eiffel Tower?
+
+2
+00:00:04,438 --> 00:00:09,382
+Prenez la ligne six. Descendez à Bir-Hakeim.
+Take line six. Get off at Bir-Hakeim.
+
+3
+00:00:09,682 --> 00:00:11,890
+C'est loin d'ici ?
+Is it far from here?
+
+4
+00:00:12,190 --> 00:00:15,166
+Non, c'est à quelques stations.
+No, it's a few stops away.
+
+5
+00:00:15,466 --> 00:00:18,274
+Où est le quai, s'il vous plaît ?
+Where is the platform, please?
+
+6
+00:00:18,574 --> 00:00:21,382
+Tout droit, puis à gauche.
+Straight ahead, then left.
+
+7
+00:00:21,682 --> 00:00:24,226
+Il faut changer de ligne ?
+Do I have to change lines?
+
+8
+00:00:24,526 --> 00:00:29,062
+Non, pas de changement. Bon voyage !
+No, no change. Have a good trip!
+
