@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,142
+Tu as quel âge ?
+How old are you?
+
+2
+00:00:02,392 --> 00:00:04,336
+J'ai vingt ans !
+I'm twenty!
+
+3
+00:00:04,586 --> 00:00:07,274
+Moi, j'ai vingt-et-un ans !
+I'm twenty-one!
+

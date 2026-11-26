@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,934
+Dix, vingt, trente !
+Ten, twenty, thirty!
+
+2
+00:00:03,184 --> 00:00:05,920
+Quarante, cinquante !
+Forty, fifty!
+
+3
+00:00:06,170 --> 00:00:08,042
+Bravo !
+Well done!
+
