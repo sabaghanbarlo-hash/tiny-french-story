@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,214
+Quel temps est-il ?
+What time is it? (it asks about the weather!)
+
+2
+00:00:02,464 --> 00:00:04,336
+Il fait beau !
+It's sunny!
+
+3
+00:00:04,586 --> 00:00:06,602
+Quelle heure est-il ?
+What time is it?
+

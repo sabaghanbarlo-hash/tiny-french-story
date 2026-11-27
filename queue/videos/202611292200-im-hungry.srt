@@ -1,0 +1,15 @@
+1
+00:00:00,150 --> 00:00:02,022
+J'ai faim !
+I'm hungry!
+
+2
+00:00:02,272 --> 00:00:04,168
+Moi aussi !
+Me too!
+
+3
+00:00:04,418 --> 00:00:06,554
+Allons au restaurant !
+Let's go to the restaurant!
+
