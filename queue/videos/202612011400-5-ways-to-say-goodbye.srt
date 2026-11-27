@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:02,914
+Bon, je dois y aller !
+Well, I have to go!
+
+2
+00:00:03,214 --> 00:00:07,390
+Déjà ? Allez, à tout à l'heure !
+Already? Okay, see you later!
+
+3
+00:00:07,690 --> 00:00:11,338
+Oui ! Et on se voit demain ?
+Yes! And do we see each other tomorrow?
+
+4
+00:00:11,638 --> 00:00:13,870
+Oui, à demain !
+Yes, see you tomorrow!
+
+5
+00:00:14,170 --> 00:00:16,138
+Et vendredi ?
+And Friday?
+
+6
+00:00:16,438 --> 00:00:20,854
+À vendredi ! Et à bientôt pour un café.
+See you Friday! And see you soon for a coffee.
+
+7
+00:00:21,154 --> 00:00:23,026
+À plus !
+See ya!
+
+8
+00:00:23,326 --> 00:00:26,782
+Salut ! Bonne soirée !
+Bye! Have a nice evening!
+
