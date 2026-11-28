@@ -1,0 +1,40 @@
+1
+00:00:00,250 --> 00:00:03,850
+Alia, c'est quand, ton anniversaire ?
+Alia, when is your birthday?
+
+2
+00:00:04,150 --> 00:00:07,966
+Mon anniversaire, c'est le quinze décembre.
+My birthday is on December fifteenth.
+
+3
+00:00:08,266 --> 00:00:12,154
+C'est bientôt ! Tu fais une fête ?
+That's soon! Are you having a party?
+
+4
+00:00:12,454 --> 00:00:15,814
+Oui, chez moi, avec un gâteau !
+Yes, at my place, with a cake!
+
+5
+00:00:16,114 --> 00:00:20,122
+Super ! J'apporte un cadeau !
+Great! I'll bring a gift!
+
+6
+00:00:20,422 --> 00:00:24,646
+Oh, merci ! Tu es gentil !
+Oh, thanks! You're kind!
+
+7
+00:00:24,946 --> 00:00:27,970
+Joyeux anniversaire en avance !
+Happy birthday in advance!
+
+8
+00:00:28,270 --> 00:00:32,374
+Merci, Nino ! À bientôt !
+Thanks, Nino! See you soon!
+
