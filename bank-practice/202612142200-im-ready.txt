@@ -1,0 +1,9 @@
+title: Say you are ready in French in 10 seconds
+episode: 45
+scene: street
+
+Adrien: Tu es prête ? | Are you ready?
+Marinette: Oui, je suis prête ! | Yes, I'm ready!
+Adrien: Alors, on y va ! | Then let's go!
+
+vocab: Je suis prête | zhuh swee PRET | I'm ready

@@ -1,0 +1,9 @@
+title: Adrien said play the piano like this. Wrong!
+episode: 54
+scene: classroom
+
+Adrien: Je joue le piano ! | I play the piano! (wrong word!)
+Marinette: Non, non ! | No, no!
+Marinette: Je joue du piano ! | I play the piano!
+
+vocab: jouer du piano | zhoo-AY dew pee-a-NOH | To play the piano

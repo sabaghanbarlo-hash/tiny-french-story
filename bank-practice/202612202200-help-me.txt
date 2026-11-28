@@ -1,0 +1,9 @@
+title: Ask for help in French in 10 seconds
+episode: 51
+scene: street
+
+Adrien: Aidez-moi, s'il vous plaît. | Help me, please.
+Marinette: Qu'est-ce qui se passe ? | What's going on?
+Adrien: Je suis perdu. | I'm lost.
+
+vocab: Aidez-moi | ay-day MWA | Help me

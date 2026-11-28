@@ -1,0 +1,9 @@
+title: Ask for the bill in French in 10 seconds
+episode: 41
+scene: restaurant
+
+Adrien: L'addition, s'il vous plaît. | The bill, please.
+Marinette: Tout de suite ! | Right away!
+Adrien: Merci ! | Thanks!
+
+vocab: L'addition, s'il vous plaît | la-dee-SYON seel voo PLAY | The bill, please

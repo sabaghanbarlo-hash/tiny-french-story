@@ -1,0 +1,9 @@
+title: Never tell the time like this in French
+episode: 56
+scene: station
+
+Adrien: C'est trois heures ! | It's three hours! (wrong!)
+Marinette: Non, non ! | No, no!
+Marinette: Il est trois heures ! | It's three o'clock!
+
+vocab: Il est trois heures | eel ay trwaz UR | It's three o'clock

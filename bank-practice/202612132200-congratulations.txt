@@ -1,0 +1,9 @@
+title: Say congratulations in French in 10 seconds
+episode: 44
+scene: classroom
+
+Marinette: J'ai réussi mon examen ! | I passed my exam!
+Adrien: Félicitations ! | Congratulations!
+Marinette: Merci ! | Thanks!
+
+vocab: Félicitations | fay-lee-see-ta-SYON | Congratulations

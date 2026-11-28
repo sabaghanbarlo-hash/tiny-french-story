@@ -1,0 +1,9 @@
+title: Adrien said by train like this. Wrong!
+episode: 53
+scene: station
+
+Adrien: Je voyage avec le train ! | I travel with the train! (sounds odd!)
+Marinette: Non, non ! | No, no!
+Marinette: Je voyage en train ! | I travel by train!
+
+vocab: en train | on TRAN | By train

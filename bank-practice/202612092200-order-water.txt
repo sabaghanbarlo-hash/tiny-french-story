@@ -1,0 +1,9 @@
+title: Ask for water in French in 10 seconds
+episode: 40
+scene: restaurant
+
+Adrien: Une carafe d'eau, s'il vous plaît. | A jug of water, please.
+Marinette: Voilà ! | Here you go!
+Adrien: Merci ! | Thanks!
+
+vocab: Une carafe d'eau | oon ka-RAF DOH | A jug of tap water

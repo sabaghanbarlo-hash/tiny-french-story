@@ -1,0 +1,9 @@
+title: Adrien said library like this. Wrong!
+episode: 37
+scene: library
+
+Adrien: Je vais à la librairie pour emprunter un livre. | I'm going to the library to borrow a book. (librairie = bookshop!)
+Marinette: Non, non ! | No, no!
+Marinette: La bibliothèque, pas la librairie ! | The library, not the bookshop!
+
+vocab: la bibliothèque | la bee-blee-oh-TEK | The library

@@ -1,0 +1,9 @@
+title: Adrien said allergic like this. Wrong!
+episode: 57
+scene: restaurant
+
+Adrien: Je suis allergique de noix ! | I'm allergic of nuts! (wrong!)
+Marinette: Non, non ! | No, no!
+Marinette: Je suis allergique aux noix ! | I'm allergic to nuts!
+
+vocab: allergique aux noix | a-ler-ZHEEK oh NWA | Allergic to nuts

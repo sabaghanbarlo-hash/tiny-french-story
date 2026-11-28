@@ -1,0 +1,9 @@
+title: Adrien asked for cheese like this. Wrong!
+episode: 51
+scene: market
+
+Adrien: Je veux de le fromage ! | I want some the cheese! (wrong!)
+Marinette: Non, non ! | No, no!
+Marinette: Je veux du fromage ! | I want some cheese!
+
+vocab: du fromage | dew fro-MAZH | Some cheese

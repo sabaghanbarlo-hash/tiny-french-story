@@ -1,0 +1,9 @@
+title: Say you are fine in French in 10 seconds
+episode: 54
+scene: street
+
+Adrien: Ça va ? | How are you?
+Marinette: Ça va bien, merci ! | I'm fine, thanks!
+Adrien: Super ! | Great!
+
+vocab: Ça va bien | sa va BYAN | I'm doing well

@@ -1,0 +1,9 @@
+title: Say see you soon in French in 10 seconds
+episode: 42
+scene: street
+
+Marinette: À bientôt ! | See you soon!
+Adrien: À bientôt, Marinette ! | See you soon, Marinette!
+Marinette: Bonne soirée ! | Have a good evening!
+
+vocab: À bientôt | ah byan-TOH | See you soon

@@ -1,0 +1,9 @@
+title: Say you are cold in French in 10 seconds
+episode: 36
+scene: street
+
+Adrien: J'ai froid ! | I'm cold!
+Marinette: Tiens, mon écharpe. | Here, my scarf.
+Adrien: Merci ! | Thanks!
+
+vocab: J'ai froid | zhay FRWA | I'm cold

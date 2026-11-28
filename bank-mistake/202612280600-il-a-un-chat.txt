@@ -1,0 +1,9 @@
+title: Adrien said there is a cat like this. Oops!
+episode: 58
+scene: street
+
+Adrien: Il a un chat dans la rue ! | He has a cat in the street! (not "there is"!)
+Marinette: Non, non ! | No, no!
+Marinette: Il y a un chat dans la rue ! | There's a cat in the street!
+
+vocab: Il y a | eel ee YA | There is

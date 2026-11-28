@@ -1,0 +1,9 @@
+title: Never introduce yourself like this in French
+episode: 59
+scene: cafe
+
+Adrien: Je suis m'appelle Adrien ! | I am am called Adrien! (wrong!)
+Marinette: Non, non ! | No, no!
+Marinette: Je m'appelle Adrien ! | My name is Adrien!
+
+vocab: Je m'appelle | zhuh ma-PEL | My name is

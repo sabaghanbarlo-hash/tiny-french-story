@@ -1,0 +1,9 @@
+title: Say you agree in French in 10 seconds
+episode: 33
+scene: park
+
+Marinette: On va au parc ? | Shall we go to the park?
+Adrien: D'accord ! | Okay!
+Marinette: Super ! | Great!
+
+vocab: D'accord | da-KOR | Okay / agreed

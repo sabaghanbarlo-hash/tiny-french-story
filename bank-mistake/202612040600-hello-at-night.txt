@@ -1,0 +1,9 @@
+title: Adrien said this when he arrived at night. Oops!
+episode: 34
+scene: restaurant
+
+Adrien: Bonne nuit ! | Good night! (you can't say it when you arrive!)
+Marinette: Non, non ! | No, no!
+Marinette: Bonsoir ! | Good evening!
+
+vocab: Bonsoir | bon-SWAR | Good evening

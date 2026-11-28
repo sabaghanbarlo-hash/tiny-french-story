@@ -1,0 +1,9 @@
+title: Say what you love in French in 10 seconds
+episode: 52
+scene: cafe
+
+Marinette: Tu aimes le chocolat ? | Do you like chocolate?
+Adrien: J'adore le chocolat ! | I love chocolate!
+Marinette: Moi aussi ! | Me too!
+
+vocab: J'adore | zha-DOR | I love

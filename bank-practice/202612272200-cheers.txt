@@ -1,0 +1,9 @@
+title: Say cheers in French in 10 seconds
+episode: 58
+scene: cafe
+
+Marinette: Santé ! | Cheers!
+Adrien: Santé ! | Cheers!
+Marinette: À notre amitié ! | To our friendship!
+
+vocab: Santé | son-TAY | Cheers

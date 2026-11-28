@@ -1,0 +1,9 @@
+title: Ask the price in French in 10 seconds
+episode: 31
+scene: market
+
+Adrien: Ça coûte combien ? | How much is it?
+Marinette: Ça coûte cinq euros. | It's five euros.
+Adrien: Merci ! | Thanks!
+
+vocab: Ça coûte combien | sah koot kom-BYAN | How much is it?

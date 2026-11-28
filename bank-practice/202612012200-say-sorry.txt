@@ -1,0 +1,9 @@
+title: Say sorry in French in 10 seconds
+episode: 32
+scene: street
+
+Adrien: Pardon ! | Sorry!
+Marinette: Ce n'est pas grave. | It's okay.
+Adrien: Merci ! | Thanks!
+
+vocab: Pardon | par-DON | Sorry

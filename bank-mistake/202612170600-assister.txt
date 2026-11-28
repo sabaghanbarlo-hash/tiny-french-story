@@ -1,0 +1,9 @@
+title: Adrien said he attends a concert like this. Oops!
+episode: 47
+scene: classroom
+
+Adrien: J'attends le concert ! | I attend the concert! (it means: I'm waiting for it!)
+Marinette: Non, non ! | No, no!
+Marinette: J'assiste au concert ! | I'm attending the concert!
+
+vocab: assister à | a-sees-TAY ah | To attend

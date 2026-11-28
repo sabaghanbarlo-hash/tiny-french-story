@@ -1,0 +1,9 @@
+title: Say let's go in French in 10 seconds
+episode: 49
+scene: street
+
+Marinette: On y va ? | Shall we go?
+Adrien: Oui, on y va ! | Yes, let's go!
+Marinette: Allez, viens ! | Come on!
+
+vocab: On y va | on ee VAH | Let's go

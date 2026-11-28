@@ -1,0 +1,9 @@
+title: Say you are tired in French in 10 seconds
+episode: 38
+scene: apartment
+
+Adrien: Je suis fatigué. | I'm tired.
+Marinette: Repose-toi un peu. | Rest a little.
+Adrien: Bonne idée ! | Good idea!
+
+vocab: Je suis fatigué | zhuh swee fa-tee-GAY | I'm tired

@@ -1,0 +1,9 @@
+title: Say Happy New Year in French in 10 seconds
+episode: 60
+scene: street
+
+Marinette: Bonne année ! | Happy New Year!
+Adrien: Bonne année et bonne santé ! | Happy New Year and good health!
+Marinette: Merci, pareillement ! | Thanks, likewise!
+
+vocab: Bonne année | bun a-NAY | Happy New Year

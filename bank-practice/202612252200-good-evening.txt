@@ -1,0 +1,9 @@
+title: Say good evening in French in 10 seconds
+episode: 56
+scene: restaurant
+
+Adrien: Bonsoir ! | Good evening!
+Marinette: Bonsoir ! Une table pour deux ? | Good evening! A table for two?
+Adrien: Oui, merci ! | Yes, thanks!
+
+vocab: Bonsoir | bon-SWAR | Good evening

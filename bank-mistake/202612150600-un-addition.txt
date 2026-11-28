@@ -1,0 +1,9 @@
+title: Adrien asked for the bill like this. Wrong!
+episode: 45
+scene: restaurant
+
+Adrien: Un addition, s'il vous plaît ! | A bill, please! (wrong word form!)
+Marinette: Non, non ! | No, no!
+Marinette: Une addition, s'il vous plaît ! | A bill, please!
+
+vocab: Une addition | oon a-dee-SYON | A bill

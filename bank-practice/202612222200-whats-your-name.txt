@@ -1,0 +1,9 @@
+title: Ask someone's name in French in 10 seconds
+episode: 53
+scene: cafe
+
+Marinette: Comment tu t'appelles ? | What's your name?
+Adrien: Je m'appelle Adrien. | I'm Adrien.
+Marinette: Enchantée ! | Nice to meet you!
+
+vocab: Comment tu t'appelles | ko-mon tew ta-PEL | What's your name?

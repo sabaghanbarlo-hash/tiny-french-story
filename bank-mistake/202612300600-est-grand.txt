@@ -1,0 +1,9 @@
+title: Adrien described Marinette like this. Wrong!
+episode: 60
+scene: park
+
+Adrien: Marinette est grand ! | Marinette is tall! (wrong form for a girl!)
+Marinette: Non, non ! | No, no!
+Marinette: Elle est grande ! | She is tall!
+
+vocab: grande | GRAND | Tall (feminine)

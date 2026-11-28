@@ -1,0 +1,9 @@
+title: Say where you are from in French in 10 seconds
+episode: 39
+scene: cafe
+
+Marinette: Tu viens d'où ? | Where are you from?
+Adrien: Je viens de Paris. | I'm from Paris.
+Marinette: Moi aussi ! | Me too!
+
+vocab: Je viens de | zhuh vyan duh | I come from

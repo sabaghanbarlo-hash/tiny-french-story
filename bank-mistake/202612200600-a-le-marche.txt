@@ -1,0 +1,9 @@
+title: Adrien said to the market like this. Wrong!
+episode: 50
+scene: market
+
+Adrien: Je vais à le marché ! | I'm going to the market! (wrong!)
+Marinette: Non, non ! | No, no!
+Marinette: Je vais au marché ! | I'm going to the market!
+
+vocab: au marché | oh mar-SHAY | To the market

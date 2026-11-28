@@ -1,0 +1,9 @@
+title: Say Merry Christmas in French in 10 seconds
+episode: 55
+scene: apartment
+
+Adrien: Joyeux Noël ! | Merry Christmas!
+Marinette: Joyeux Noël, Adrien ! | Merry Christmas, Adrien!
+Adrien: Voici un cadeau ! | Here's a gift!
+
+vocab: Joyeux Noël | zhwa-YUH no-EL | Merry Christmas

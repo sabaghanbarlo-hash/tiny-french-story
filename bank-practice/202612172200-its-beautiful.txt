@@ -1,0 +1,9 @@
+title: Say it is beautiful in French in 10 seconds
+episode: 48
+scene: street
+
+Marinette: Regarde la tour Eiffel ! | Look at the Eiffel Tower!
+Adrien: C'est beau ! | It's beautiful!
+Marinette: Oui, magnifique ! | Yes, magnificent!
+
+vocab: C'est beau | say BOH | It's beautiful

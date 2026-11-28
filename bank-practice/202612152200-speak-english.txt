@@ -1,0 +1,9 @@
+title: Ask if someone speaks English in French in 10 seconds
+episode: 46
+scene: street
+
+Adrien: Vous parlez anglais ? | Do you speak English?
+Marinette: Un peu. | A little.
+Adrien: Merci ! | Thanks!
+
+vocab: Vous parlez anglais | voo par-LAY on-GLAY | Do you speak English?

@@ -1,0 +1,9 @@
+title: Ask for one moment in French in 10 seconds
+episode: 50
+scene: store
+
+Adrien: Un instant, s'il vous plaît. | One moment, please.
+Marinette: Pas de problème. | No problem.
+Adrien: Merci ! | Thanks!
+
+vocab: Un instant | un nan-STON | One moment

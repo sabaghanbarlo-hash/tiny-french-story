@@ -1,0 +1,9 @@
+title: Ask for the toilets in French in 10 seconds
+episode: 35
+scene: restaurant
+
+Adrien: Pardon, où sont les toilettes ? | Excuse me, where are the toilets?
+Marinette: C'est au fond, à gauche. | At the back, on the left.
+Adrien: Merci ! | Thanks!
+
+vocab: Où sont les toilettes | oo son lay twa-LET | Where are the toilets?

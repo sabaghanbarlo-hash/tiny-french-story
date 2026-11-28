@@ -1,0 +1,9 @@
+title: Say have a good day in French in 10 seconds
+episode: 43
+scene: bakery
+
+Adrien: Au revoir, bonne journée ! | Goodbye, have a good day!
+Marinette: Merci, vous aussi ! | Thanks, you too!
+Adrien: À demain ! | See you tomorrow!
+
+vocab: Bonne journée | bun zhoor-NAY | Have a good day
