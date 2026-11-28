@@ -1,0 +1,20 @@
+title: Galette des Rois
+cast: Marinette, Adrien
+episode: 70
+scene: bakery
+cover: King Cake 👑
+
+Marinette: Bonjour ! Une galette des rois, s'il vous plaît. | Hello! A king cake, please.
+Adrien: Pour combien de personnes ? | For how many people?
+Marinette: Pour quatre. Avec une couronne ? | For four. With a crown?
+Adrien: Bien sûr ! Elle est à la frangipane. | Of course! It's almond cream.
+Marinette: Il y a une fève dedans ? | Is there a charm inside?
+Adrien: Oui ! Celui qui la trouve est le roi. | Yes! Whoever finds it is king.
+Marinette: Chouette ! Je veux être la reine ! | Great! I want to be the queen!
+Adrien: Bonne chance ! Ça fait douze euros. | Good luck! That's twelve euros.
+
+vocab: la galette des rois | king cake
+vocab: la couronne | the crown
+vocab: la fève | the charm
+vocab: le roi / la reine | king / queen
+vocab: la frangipane | almond cream

@@ -1,0 +1,20 @@
+title: Opening Presents
+cast: Marinette, Adrien
+episode: 62
+scene: apartment
+cover: Opening Presents 🎁
+
+Marinette: Joyeux Noël, Adrien ! Voici ton cadeau. | Merry Christmas, Adrien! Here's your gift.
+Adrien: Oh, merci ! Je peux l'ouvrir ? | Oh, thanks! Can I open it?
+Marinette: Bien sûr ! Ouvre-le ! | Of course! Open it!
+Adrien: Un livre ! C'est parfait ! | A book! It's perfect!
+Adrien: Et voici ton cadeau, Marinette. | And here's your gift, Marinette.
+Marinette: Un paquet ! C'est quoi ? | A package! What is it?
+Adrien: C'est une surprise. Ouvre ! | It's a surprise. Open it!
+Marinette: Une écharpe ! Merci, c'est joli ! | A scarf! Thanks, it's pretty!
+
+vocab: un cadeau | a gift
+vocab: ouvrir | to open
+vocab: un paquet | a package
+vocab: une surprise | a surprise
+vocab: c'est joli | it's pretty

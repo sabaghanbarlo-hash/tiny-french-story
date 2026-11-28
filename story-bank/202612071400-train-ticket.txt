@@ -1,0 +1,20 @@
+title: Buying a Train Ticket
+cast: Marinette, Adrien
+episode: 44
+scene: station
+cover: Train Ticket 🚆
+
+Marinette: Bonjour, un billet pour Lyon, s'il vous plaît. | Hello, a ticket to Lyon, please.
+Adrien: Aller simple ou aller-retour ? | One-way or round trip?
+Marinette: Aller-retour, s'il vous plaît. | Round trip, please.
+Adrien: Pour quel jour ? | For which day?
+Marinette: Pour demain matin. | For tomorrow morning.
+Adrien: Voilà. Ça fait trente euros. | Here you go. That's thirty euros.
+Marinette: Le train part de quelle voie ? | Which platform does the train leave from?
+Adrien: De la voie quatre. Bon voyage ! | From platform four. Have a good trip!
+
+vocab: un aller simple | a one-way ticket
+vocab: un aller-retour | a round trip
+vocab: une voie | a platform
+vocab: un billet | a ticket
+vocab: Bon voyage | Have a good trip

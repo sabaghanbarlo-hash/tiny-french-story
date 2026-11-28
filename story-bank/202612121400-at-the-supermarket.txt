@@ -1,0 +1,20 @@
+title: At the Supermarket
+cast: Alia, Nino
+episode: 49
+scene: store
+cover: Supermarket 🛒
+
+Alia: Pardon, où est le lait ? | Excuse me, where is the milk?
+Nino: Au fond, à droite. | At the back, on the right.
+Alia: Et les œufs ? | And the eggs?
+Nino: Ils sont à côté du lait. | They're next to the milk.
+Alia: Je cherche aussi du pain. | I'm also looking for bread.
+Nino: Le pain est près de la caisse. | The bread is near the checkout.
+Alia: Merci beaucoup ! | Thank you very much!
+Nino: De rien ! Bonne journée ! | You're welcome! Have a nice day!
+
+vocab: le lait | milk
+vocab: les œufs | the eggs
+vocab: au fond | at the back
+vocab: à côté de | next to
+vocab: la caisse | the checkout

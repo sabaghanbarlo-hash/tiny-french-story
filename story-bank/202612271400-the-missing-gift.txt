@@ -1,0 +1,20 @@
+title: The Missing Gift
+cast: Bugaboo, Cat
+episode: 64
+scene: apartment
+cover: Missing Gift 🎁
+
+Bugaboo: Cat ! Mon cadeau a disparu ! | Cat! My gift has disappeared!
+Cat: Quoi ? Il était sous le sapin ! | What? It was under the tree!
+Bugaboo: Qui l'a pris ? | Who took it?
+Cat: Je regarde... Il y a des traces ! | I'm looking... There are tracks!
+Bugaboo: Des petites traces de pattes ! | Little paw prints!
+Cat: Elles vont vers la cuisine. | They go toward the kitchen.
+Bugaboo: Un chien ! Il a le cadeau ! | A dog! He has the gift!
+Cat: Il le rend ! Quel gentil chien ! | He's giving it back! What a nice dog!
+
+vocab: disparu | disappeared
+vocab: sous | under
+vocab: une trace | a track
+vocab: une patte | a paw
+vocab: gentil | nice

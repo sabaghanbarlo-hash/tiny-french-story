@@ -1,0 +1,20 @@
+title: 5 Ways to Say Happy Holidays
+cast: Marinette, Adrien
+episode: 59
+scene: street
+cover: Holiday Wishes 🎅
+
+Marinette: Adrien ! Joyeux Noël ! | Adrien! Merry Christmas!
+Adrien: Joyeux Noël, Marinette ! | Merry Christmas, Marinette!
+Marinette: Je te souhaite de bonnes fêtes ! | I wish you happy holidays!
+Adrien: Merci ! Et bon réveillon ! | Thanks! And enjoy the Christmas Eve dinner!
+Marinette: On peut dire autre chose ? | Can we say something else?
+Adrien: Oui : « Joyeuses fêtes » ou « Meilleurs vœux » ! | Yes: "Happy holidays" or "Best wishes"!
+Marinette: C'est joli ! Joyeuses fêtes, Adrien ! | That's pretty! Happy holidays, Adrien!
+Adrien: Meilleurs vœux à toi aussi ! | Best wishes to you too!
+
+vocab: Joyeux Noël | Merry Christmas
+vocab: Bonnes fêtes | Happy holidays
+vocab: Bon réveillon | Enjoy the Christmas Eve dinner
+vocab: Joyeuses fêtes | Happy holidays
+vocab: Meilleurs vœux | Best wishes

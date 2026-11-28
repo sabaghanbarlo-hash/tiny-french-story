@@ -1,0 +1,20 @@
+title: The Snowman
+cast: Bugaboo, Cat
+episode: 50
+scene: park
+cover: Snowman ☃️
+
+Bugaboo: Cat ! Regarde ! Il a neigé ! | Cat! Look! It snowed!
+Cat: Super ! On fait un bonhomme de neige ? | Great! Shall we make a snowman?
+Bugaboo: Oui ! Je roule la grosse boule. | Yes! I'm rolling the big ball.
+Cat: Moi, je cherche un nez. | I'm looking for a nose.
+Bugaboo: Une carotte ! C'est parfait ! | A carrot! It's perfect!
+Cat: Il a froid ! Je lui donne mon écharpe. | He's cold! I'm giving him my scarf.
+Bugaboo: Voilà ! Il est magnifique ! | There! He's magnificent!
+Cat: Miaou ! Il fond déjà ! | Meow! He's already melting!
+
+vocab: un bonhomme de neige | a snowman
+vocab: la neige | snow
+vocab: une écharpe | a scarf
+vocab: une carotte | a carrot
+vocab: fondre | to melt

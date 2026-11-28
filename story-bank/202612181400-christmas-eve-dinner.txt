@@ -1,0 +1,20 @@
+title: Christmas Eve Dinner
+cast: Marinette, Adrien
+episode: 55
+scene: apartment
+cover: Christmas Eve 🎄
+
+Marinette: Dans une semaine, c'est le réveillon de Noël ! | In a week, it's Christmas Eve dinner!
+Adrien: On va manger quoi ? | What are we going to eat?
+Marinette: Du saumon fumé et du foie gras. | Smoked salmon and foie gras.
+Adrien: Et comme dessert ? | And for dessert?
+Marinette: Une bûche de Noël ! | A Yule log cake!
+Adrien: On ouvre les cadeaux le soir ou le matin ? | Do we open gifts in the evening or the morning?
+Marinette: Chez nous, c'est après le repas. | At our place, it's after the meal.
+Adrien: J'adore cette tradition ! | I love this tradition!
+
+vocab: le réveillon | Christmas / New Year's Eve dinner
+vocab: le saumon fumé | smoked salmon
+vocab: le foie gras | foie gras
+vocab: une bûche de Noël | a Yule log cake
+vocab: un cadeau | a gift

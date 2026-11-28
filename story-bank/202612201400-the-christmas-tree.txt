@@ -1,0 +1,20 @@
+title: The Christmas Tree
+cast: Bugaboo, Cat
+episode: 57
+scene: apartment
+cover: Christmas Tree 🎄
+
+Bugaboo: Cat, on décore le sapin ! | Cat, let's decorate the tree!
+Cat: J'accroche les boules rouges. | I'm hanging the red baubles.
+Bugaboo: Moi, je mets les guirlandes. | I'm putting on the garlands.
+Cat: Miaou ! Les lumières brillent ! | Meow! The lights are shining!
+Bugaboo: Attention, Cat ! Pas sur le sapin ! | Careful, Cat! Not on the tree!
+Cat: Oups ! Le sapin tombe ! | Oops! The tree is falling!
+Bugaboo: Pas de panique, je le rattrape ! | Don't panic, I'll catch it!
+Cat: Joyeux Noël, Bugaboo ! | Merry Christmas, Bugaboo!
+
+vocab: le sapin | the Christmas tree
+vocab: une boule | a bauble
+vocab: une guirlande | a garland
+vocab: les lumières | the lights
+vocab: rattraper | to catch

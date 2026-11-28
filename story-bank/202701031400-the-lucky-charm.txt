@@ -1,0 +1,20 @@
+title: The Lucky Charm
+cast: Bugaboo, Cat
+episode: 71
+scene: apartment
+cover: The Charm 👑
+
+Bugaboo: Cat ! On mange la galette ! | Cat! We're eating the king cake!
+Cat: Miaou ! Qui a la fève ? | Meow! Who has the charm?
+Bugaboo: Je coupe quatre parts. | I'm cutting four slices.
+Cat: Hmm... Pas de fève dans ma part. | Hmm... No charm in my slice.
+Bugaboo: Ni dans la mienne ! | Nor in mine!
+Cat: Regarde ! Le chien a la fève ! | Look! The dog has the charm!
+Bugaboo: Alors, c'est lui le roi ! | So he's the king!
+Cat: Vive le roi chien ! | Long live King Dog!
+
+vocab: une part | a slice
+vocab: la fève | the charm
+vocab: couper | to cut
+vocab: le roi | the king
+vocab: vive | long live

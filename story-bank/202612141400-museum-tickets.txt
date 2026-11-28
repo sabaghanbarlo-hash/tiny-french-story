@@ -1,0 +1,20 @@
+title: Museum Tickets
+cast: Marinette, Adrien
+episode: 51
+scene: museum
+cover: Museum Tickets 🖼️
+
+Marinette: Bonjour, deux billets, s'il vous plaît. | Hello, two tickets, please.
+Adrien: Tarif plein ou tarif réduit ? | Full price or reduced?
+Marinette: Un plein tarif et un tarif étudiant. | One full price and one student.
+Adrien: Vous avez une carte d'étudiant ? | Do you have a student card?
+Marinette: Oui, la voilà. | Yes, here it is.
+Adrien: Ça fait vingt euros. | That's twenty euros.
+Marinette: Où est l'entrée de l'exposition ? | Where's the entrance to the exhibition?
+Adrien: Au premier étage. Bonne visite ! | On the first floor. Enjoy your visit!
+
+vocab: un billet | a ticket
+vocab: le tarif réduit | the reduced price
+vocab: une carte d'étudiant | a student card
+vocab: une exposition | an exhibition
+vocab: au premier étage | on the first floor

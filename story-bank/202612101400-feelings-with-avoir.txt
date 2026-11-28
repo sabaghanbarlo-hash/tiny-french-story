@@ -1,0 +1,20 @@
+title: Feelings Use AVOIR
+cast: Marinette, Adrien
+episode: 47
+scene: apartment
+cover: Hot, Cold, Thirsty
+
+Marinette: J'ai chaud ! Il fait vraiment chaud. | I'm hot! It's really hot.
+Adrien: Moi, j'ai froid. | I'm cold.
+Marinette: Tu as soif ? | Are you thirsty?
+Adrien: Oui, j'ai très soif ! | Yes, I'm very thirsty!
+Marinette: Moi, j'ai sommeil. | I'm sleepy.
+Adrien: Tu as peur du noir ? | Are you scared of the dark?
+Marinette: Non ! Mais j'ai peur des araignées. | No! But I'm scared of spiders.
+Adrien: En français, on a chaud, froid, soif et peur. | In French, we "have" hot, cold, thirst and fear.
+
+vocab: j'ai chaud | I'm hot
+vocab: j'ai froid | I'm cold
+vocab: j'ai soif | I'm thirsty
+vocab: j'ai sommeil | I'm sleepy
+vocab: j'ai peur | I'm scared

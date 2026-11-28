@@ -1,0 +1,20 @@
+title: 5 Ways to Say Sorry
+cast: Marinette, Adrien
+episode: 52
+scene: street
+cover: 5 Ways to Say Sorry
+
+Adrien: Aïe ! Pardon ! | Ouch! Sorry!
+Marinette: Ce n'est pas grave. | It's no big deal.
+Adrien: Je suis vraiment désolé. | I'm really sorry.
+Marinette: Pas de souci ! | No worries!
+Adrien: Excuse-moi, je ne t'ai pas vue. | Excuse me, I didn't see you.
+Marinette: Ça arrive ! | It happens!
+Adrien: Oups ! Mon café est tombé ! | Oops! My coffee fell!
+Marinette: Ha ha ! Je suis navrée pour ton café. | Ha ha! I'm sorry about your coffee.
+
+vocab: pardon | sorry
+vocab: désolé | sorry
+vocab: excuse-moi | excuse me
+vocab: navré | very sorry
+vocab: pas de souci | no worries

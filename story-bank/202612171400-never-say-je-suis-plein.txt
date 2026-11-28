@@ -1,0 +1,20 @@
+title: Never Say Je Suis Plein
+cast: Marinette, Adrien
+episode: 54
+scene: restaurant
+cover: After a Big Meal
+
+Marinette: Tu veux encore du gâteau ? | Do you want more cake?
+Adrien: Non merci, je suis plein ! | No thanks, I'm full! (don't say that!)
+Marinette: Plein ? Ha ha ! Attention ! | Full? Ha ha! Careful!
+Adrien: Quoi ? Qu'est-ce que j'ai dit ? | What? What did I say?
+Marinette: « Je suis plein », ça se dit d'un animal ! | "Je suis plein" is said about an animal!
+Adrien: Oh non ! Alors, que dire ? | Oh no! So what do I say?
+Marinette: Dis « J'ai trop mangé » ou « Je n'ai plus faim ». | Say "I ate too much" or "I'm not hungry anymore".
+Adrien: J'ai trop mangé, merci ! | I ate too much, thanks!
+
+vocab: j'ai trop mangé | I ate too much
+vocab: je n'ai plus faim | I'm not hungry anymore
+vocab: encore | more / again
+vocab: le gâteau | cake
+vocab: attention | careful

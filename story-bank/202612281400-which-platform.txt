@@ -1,0 +1,20 @@
+title: Which Platform?
+cast: Marinette, Adrien
+episode: 65
+scene: station
+cover: Which Platform? 🚉
+
+Marinette: Excusez-moi, le train pour Paris, c'est quelle voie ? | Excuse me, which platform is the train to Paris?
+Adrien: Regardez le panneau. Voie sept. | Look at the board. Platform seven.
+Marinette: Il part à quelle heure ? | What time does it leave?
+Adrien: À dix-huit heures quinze. | At 6:15 p.m.
+Marinette: Il est à l'heure ? | Is it on time?
+Adrien: Non, il a dix minutes de retard. | No, it's ten minutes late.
+Marinette: Merci ! Je peux composter mon billet ici ? | Thanks! Can I validate my ticket here?
+Adrien: Oui, devant la voie. Bon voyage ! | Yes, in front of the platform. Have a good trip!
+
+vocab: une voie | a platform
+vocab: le panneau | the board
+vocab: à l'heure | on time
+vocab: un retard | a delay
+vocab: composter | to validate a ticket

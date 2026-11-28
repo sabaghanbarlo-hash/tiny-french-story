@@ -1,0 +1,20 @@
+title: 5 Ways to Say Good Luck
+cast: Marinette, Adrien
+episode: 73
+scene: cafe
+cover: Good Luck 🍀
+
+Marinette: Demain, j'ai un examen ! | Tomorrow I have an exam!
+Adrien: Bonne chance ! | Good luck!
+Marinette: Merci ! J'ai un peu peur. | Thanks! I'm a bit scared.
+Adrien: Bon courage ! Tu vas y arriver ! | Keep it up! You'll make it!
+Marinette: On dit aussi « bonne continuation » ? | Do we also say "bonne continuation"?
+Adrien: Oui, pour quelqu'un qui continue un projet. | Yes, for someone continuing a project.
+Marinette: Et « je croise les doigts » ? | And "I'm crossing my fingers"?
+Adrien: Oui ! Je croise les doigts pour toi ! | Yes! I'm crossing my fingers for you!
+
+vocab: bonne chance | good luck
+vocab: bon courage | keep it up
+vocab: bonne continuation | all the best going forward
+vocab: je croise les doigts | I'm crossing my fingers
+vocab: un examen | an exam

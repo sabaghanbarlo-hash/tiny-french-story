@@ -1,0 +1,20 @@
+title: The Winter Sales
+cast: Marinette, Adrien
+episode: 72
+scene: store
+cover: Winter Sales 🛍️
+
+Marinette: Les soldes commencent mercredi ! | The sales start Wednesday!
+Adrien: Je cherche un manteau. | I'm looking for a coat.
+Marinette: Regarde, celui-ci est en solde ! | Look, this one is on sale!
+Adrien: Il coûte combien ? | How much is it?
+Marinette: Il est à moins cinquante pour cent ! | It's fifty percent off!
+Adrien: Je peux l'essayer ? | Can I try it on?
+Marinette: Oui, la cabine est là-bas. | Yes, the fitting room is over there.
+Adrien: Il me va bien ! Je le prends ! | It suits me! I'll take it!
+
+vocab: les soldes | the sales
+vocab: en solde | on sale
+vocab: essayer | to try on
+vocab: la cabine | the fitting room
+vocab: moins cinquante pour cent | fifty percent off

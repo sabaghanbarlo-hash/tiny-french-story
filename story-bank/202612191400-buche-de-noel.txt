@@ -1,0 +1,20 @@
+title: Ordering a Bûche de Noël
+cast: Marinette, Adrien
+episode: 56
+scene: bakery
+cover: Bûche de Noël 🎂
+
+Marinette: Bonjour ! Je voudrais une bûche de Noël. | Hello! I'd like a Yule log.
+Adrien: Pour combien de personnes ? | For how many people?
+Marinette: Pour six personnes. | For six people.
+Adrien: Chocolat ou vanille ? | Chocolate or vanilla?
+Marinette: Chocolat, s'il vous plaît. | Chocolate, please.
+Adrien: C'est pour quand ? | When is it for?
+Marinette: C'est pour le vingt-quatre décembre. | It's for December twenty-fourth.
+Adrien: Parfait ! Joyeux Noël ! | Perfect! Merry Christmas!
+
+vocab: une bûche | a Yule log
+vocab: pour combien de personnes | for how many people
+vocab: chocolat ou vanille | chocolate or vanilla
+vocab: c'est pour quand | when is it for
+vocab: le vingt-quatre décembre | December 24th

@@ -1,0 +1,20 @@
+title: Countdown to Midnight
+cast: Marinette, Adrien
+episode: 68
+scene: street
+cover: Countdown 🎆
+
+Marinette: C'est le réveillon de la Saint-Sylvestre ! | It's New Year's Eve!
+Adrien: Il est presque minuit ! | It's almost midnight!
+Marinette: Dix, neuf, huit, sept, six ! | Ten, nine, eight, seven, six!
+Adrien: Cinq, quatre, trois, deux, un ! | Five, four, three, two, one!
+Marinette: Bonne année, Adrien ! | Happy New Year, Adrien!
+Adrien: Bonne année, Marinette ! Bonne santé ! | Happy New Year, Marinette! Good health!
+Marinette: En France, on dit « bonne année et bonne santé ». | In France, we say "happy New Year and good health".
+Adrien: Et on dit aussi « meilleurs vœux » ! | And we also say "best wishes"!
+
+vocab: la Saint-Sylvestre | New Year's Eve
+vocab: minuit | midnight
+vocab: Bonne année | Happy New Year
+vocab: Bonne santé | Good health
+vocab: meilleurs vœux | best wishes

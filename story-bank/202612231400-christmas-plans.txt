@@ -1,0 +1,20 @@
+title: What Are You Doing for Christmas?
+cast: Chloé, Lucas
+episode: 60
+scene: apartment
+cover: Christmas Plans 🎄
+
+Lucas: Tu fais quoi pour Noël ? | What are you doing for Christmas?
+Chloé: Je vais chez mes grands-parents. | I'm going to my grandparents'.
+Lucas: Ils habitent où ? | Where do they live?
+Chloé: À Lyon. Je prends le train. | In Lyon. I'm taking the train.
+Chloé: Et toi ? | And you?
+Lucas: Je reste à la maison avec ma famille. | I'm staying home with my family.
+Chloé: Tu as des cadeaux ? | Do you have gifts?
+Lucas: Oui, j'ai un cadeau pour toi ! | Yes, I have a gift for you!
+
+vocab: chez mes grands-parents | at my grandparents'
+vocab: je reste | I stay
+vocab: un cadeau | a gift
+vocab: je prends le train | I take the train
+vocab: Tu fais quoi ? | What are you doing?

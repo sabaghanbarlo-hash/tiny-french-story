@@ -1,0 +1,20 @@
+title: 5 Ways to Say Yes
+cast: Marinette, Adrien
+episode: 45
+scene: cafe
+cover: 5 Ways to Say Yes
+
+Marinette: Adrien, tu veux un café ? | Adrien, do you want a coffee?
+Adrien: Oui, avec plaisir ! | Yes, with pleasure!
+Marinette: Et un croissant ? | And a croissant?
+Adrien: Bien sûr ! | Of course!
+Marinette: On s'assoit là ? | Shall we sit there?
+Adrien: D'accord ! | Okay!
+Marinette: Tu aimes ce café ? | Do you like this café?
+Adrien: Ouais, carrément ! | Yeah, totally! (casual)
+
+vocab: avec plaisir | with pleasure
+vocab: bien sûr | of course
+vocab: d'accord | okay / agreed
+vocab: ouais | yeah (casual)
+vocab: carrément | totally (casual)

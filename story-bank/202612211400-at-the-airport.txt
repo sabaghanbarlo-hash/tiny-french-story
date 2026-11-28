@@ -1,0 +1,20 @@
+title: At the Airport
+cast: Marinette, Adrien
+episode: 58
+scene: airport
+cover: Airport ✈️
+
+Marinette: Bonjour, voici mon passeport. | Hello, here's my passport.
+Adrien: Vous avez des bagages à enregistrer ? | Do you have bags to check in?
+Marinette: Oui, une valise. | Yes, one suitcase.
+Adrien: Voici votre carte d'embarquement. | Here's your boarding pass.
+Marinette: À quelle porte, s'il vous plaît ? | Which gate, please?
+Adrien: Porte douze, à quatorze heures. | Gate twelve, at two p.m.
+Marinette: Merci. Où est la sécurité ? | Thanks. Where is security?
+Adrien: Tout droit, puis à gauche. Bon vol ! | Straight ahead, then left. Have a good flight!
+
+vocab: un passeport | a passport
+vocab: une valise | a suitcase
+vocab: une carte d'embarquement | a boarding pass
+vocab: une porte | a gate
+vocab: Bon vol | Have a good flight

@@ -1,0 +1,20 @@
+title: Happy New Year and Resolutions
+cast: Chloé, Lucas
+episode: 69
+scene: cafe
+cover: Resolutions 🎉
+
+Lucas: Bonne année, Chloé ! | Happy New Year, Chloé!
+Chloé: Bonne année, Lucas ! Bonne santé ! | Happy New Year, Lucas! Good health!
+Lucas: Tu as une bonne résolution ? | Do you have a New Year's resolution?
+Chloé: Oui, je veux apprendre une nouvelle langue ! | Yes, I want to learn a new language!
+Lucas: Moi, je veux faire plus de sport. | I want to do more sport.
+Chloé: Et manger moins de chocolat ? | And eat less chocolate?
+Lucas: Ha ha ! Peut-être pas ! | Ha ha! Maybe not!
+Chloé: Alors, à nos résolutions ! | Then, to our resolutions!
+
+vocab: une résolution | a resolution
+vocab: apprendre | to learn
+vocab: plus de | more
+vocab: moins de | less
+vocab: peut-être | maybe

@@ -1,0 +1,20 @@
+title: La Bise
+cast: Marinette, Adrien
+episode: 48
+scene: cafe
+cover: La Bise 😘
+
+Marinette: Salut Adrien ! | Hi Adrien!
+Adrien: Salut Marinette ! On fait la bise ? | Hi Marinette! Shall we do the bise?
+Marinette: Oui ! Une, deux... | Yes! One, two...
+Adrien: En France, on fait la bise pour dire bonjour. | In France, we kiss on the cheek to say hello.
+Marinette: Mais pas avec tout le monde ! | But not with everyone!
+Adrien: Non. Avec un collègue, on se serre la main. | No. With a colleague, we shake hands.
+Marinette: Et combien de bises ? | And how many kisses?
+Adrien: Ça dépend de la région : deux, trois ou quatre ! | It depends on the region: two, three or four!
+
+vocab: la bise | the cheek kiss
+vocab: se serrer la main | to shake hands
+vocab: un collègue | a colleague
+vocab: ça dépend | it depends
+vocab: une région | a region

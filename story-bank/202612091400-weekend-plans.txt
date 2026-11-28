@@ -1,0 +1,20 @@
+title: What Are You Doing This Weekend?
+cast: Marinette, Adrien
+episode: 46
+scene: cafe
+cover: Weekend Plans
+
+Marinette: Salut Adrien ! Tu fais quoi ce week-end ? | Hi Adrien! What are you doing this weekend?
+Adrien: Samedi, je vais au marché. | On Saturday, I'm going to the market.
+Marinette: Et dimanche ? | And Sunday?
+Adrien: Dimanche, je me repose à la maison. | On Sunday, I'm resting at home.
+Marinette: Moi, je vais au cinéma avec Chloé. | I'm going to the cinema with Chloé.
+Adrien: Quel film vous allez voir ? | Which film are you going to see?
+Marinette: Un film d'animation. | An animated film.
+Adrien: Super ! Bon week-end ! | Great! Have a good weekend!
+
+vocab: Tu fais quoi ? | What are you doing?
+vocab: le week-end | the weekend
+vocab: je me repose | I rest
+vocab: le cinéma | the cinema
+vocab: Bon week-end | Have a good weekend

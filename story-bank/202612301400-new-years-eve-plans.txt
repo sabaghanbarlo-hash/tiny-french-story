@@ -1,0 +1,20 @@
+title: New Year's Eve Plans
+cast: Alia, Nino
+episode: 67
+scene: apartment
+cover: New Year Plans 🥂
+
+Alia: Tu fais quoi pour le Nouvel An ? | What are you doing for New Year's?
+Nino: Je vais à une fête chez des amis. | I'm going to a party at friends'.
+Alia: Vous mangez quoi ? | What are you eating?
+Nino: On prépare des huîtres et du champagne ! | We're making oysters and champagne!
+Alia: À minuit, on dit quoi ? | At midnight, what do we say?
+Nino: « Bonne année ! » et on trinque. | "Happy New Year!" and we clink glasses.
+Alia: Et on s'embrasse sous le gui ? | And we kiss under the mistletoe?
+Nino: Oui, c'est la tradition ! | Yes, it's tradition!
+
+vocab: le Nouvel An | New Year
+vocab: une fête | a party
+vocab: minuit | midnight
+vocab: trinquer | to clink glasses
+vocab: le gui | mistletoe

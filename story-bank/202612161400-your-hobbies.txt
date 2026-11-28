@@ -1,0 +1,20 @@
+title: What Do You Like to Do?
+cast: Chloé, Lucas
+episode: 53
+scene: park
+cover: Hobbies 🎨
+
+Chloé: Qu'est-ce que tu aimes faire ? | What do you like to do?
+Lucas: J'aime jouer au foot. | I like playing football.
+Chloé: Moi, j'aime lire et dessiner. | I like reading and drawing.
+Lucas: Tu dessines quoi ? | What do you draw?
+Chloé: Des chats et des paysages. | Cats and landscapes.
+Lucas: Je peux voir ? | Can I see?
+Chloé: Oui, regarde mon carnet ! | Yes, look at my notebook!
+Lucas: Wow ! Tu as beaucoup de talent ! | Wow! You have a lot of talent!
+
+vocab: jouer au foot | to play football
+vocab: lire | to read
+vocab: dessiner | to draw
+vocab: un paysage | a landscape
+vocab: un carnet | a notebook

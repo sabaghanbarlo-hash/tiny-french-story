@@ -1,0 +1,20 @@
+title: Ordering Dessert
+cast: Marinette, Adrien
+episode: 63
+scene: restaurant
+cover: Dessert 🍮
+
+Adrien: Voulez-vous un dessert ? | Would you like a dessert?
+Marinette: Oui ! Qu'est-ce que vous avez ? | Yes! What do you have?
+Adrien: Nous avons une crème brûlée, une tarte et une glace. | We have a crème brûlée, a tart and an ice cream.
+Marinette: Je prends la crème brûlée. | I'll have the crème brûlée.
+Adrien: Très bien. Et avec ça ? | Very good. Anything with that?
+Marinette: Un café, s'il vous plaît. | A coffee, please.
+Adrien: Voilà. Bon appétit ! | Here you go. Enjoy!
+Marinette: Merci ! Et l'addition, s'il vous plaît ? | Thanks! And the bill, please?
+
+vocab: un dessert | a dessert
+vocab: une crème brûlée | a crème brûlée
+vocab: une tarte | a tart
+vocab: une glace | an ice cream
+vocab: l'addition | the bill

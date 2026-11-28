@@ -1,0 +1,20 @@
+title: Never Say Je Suis Accord
+cast: Marinette, Adrien
+episode: 61
+scene: cafe
+cover: I Agree
+
+Marinette: On va au parc ? | Shall we go to the park?
+Adrien: Oui, je suis accord ! | Yes, I am agree! (wrong!)
+Marinette: Attention ! On ne dit pas ça ! | Careful! We don't say that!
+Adrien: Pourquoi ? | Why?
+Marinette: En français, on dit « je suis d'accord ». | In French, we say "je suis d'accord".
+Adrien: Je suis d'accord ! | I agree!
+Marinette: Parfait ! Et pour dire non ? | Perfect! And to say no?
+Adrien: Je ne suis pas d'accord ! | I don't agree!
+
+vocab: je suis d'accord | I agree
+vocab: je ne suis pas d'accord | I don't agree
+vocab: d'accord | okay
+vocab: pourquoi | why
+vocab: attention | careful
